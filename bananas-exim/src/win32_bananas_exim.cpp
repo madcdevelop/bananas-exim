@@ -5,6 +5,12 @@
 #include <windows.h>
 #include <glad\glad.h>
 
+const int WIDTH  = 800;
+const int HEIGHT = 600;
+
+HDC deviceContext;
+HGLRC renderContext;
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 // Entry point to program
@@ -27,9 +33,8 @@ wWinMain(HINSTANCE hInstance,
     // Create the window.
     HWND hwnd;
 
-    int width  = 640;
-    int height = 480;
-    RECT wr = {0, 0, width, height};
+    // Window Size
+    RECT wr = {0, 0, WIDTH, HEIGHT};
     AdjustWindowRect((LPRECT)&wc, WS_OVERLAPPEDWINDOW, FALSE);
 
     hwnd = CreateWindow(CLASS_NAME, L"Bananas Export/Import Tool",
@@ -49,10 +54,10 @@ wWinMain(HINSTANCE hInstance,
     // Run the message loop.
     MSG msg = {0};
 
-    int running = 1;
-
+    bool running = 1;
     while(running)
     {
+        // Windows Messages
         while(PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
         {
             if(msg.message == WM_QUIT)
@@ -63,6 +68,11 @@ wWinMain(HINSTANCE hInstance,
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+        //  Update, render
+        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        SwapBuffers(deviceContext);
     }
 
     return 0;
@@ -72,6 +82,42 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 {
     switch(message)
     {
+    case WM_CREATE:
+        {
+            PIXELFORMATDESCRIPTOR pfd = {
+                sizeof(PIXELFORMATDESCRIPTOR),  //  size of this pfd  
+                1,                     // version number  
+                PFD_DRAW_TO_WINDOW |   // support window  
+                PFD_SUPPORT_OPENGL |   // support OpenGL  
+                PFD_DOUBLEBUFFER,      // double buffered  
+                PFD_TYPE_RGBA,         // RGBA type  
+                24,                    // 24-bit color depth  
+                0, 0, 0, 0, 0, 0,      // color bits ignored  
+                0,                     // no alpha buffer  
+                0,                     // shift bit ignored  
+                0,                     // no accumulation buffer  
+                0, 0, 0, 0,            // accum bits ignored  
+                32,                    // 32-bit z-buffer      
+                0,                     // no stencil buffer  
+                0,                     // no auxiliary buffer  
+                PFD_MAIN_PLANE,        // main layer  
+                0,                     // reserved  
+                0, 0, 0                // layer masks ignored  
+                };
+            deviceContext = GetDC(hwnd);
+            int pixelFormat = ChoosePixelFormat(deviceContext, &pfd);
+            SetPixelFormat(deviceContext, pixelFormat, &pfd);
+            
+            // Create Open GL Context
+            renderContext = wglCreateContext(deviceContext);
+            wglMakeCurrent(deviceContext, renderContext);
+            gladLoadGL();
+            glViewport(0, 0, WIDTH, HEIGHT);
+
+            MessageBoxA(0, (char*)glGetString(GL_VERSION), "OPENGL VERSION", 0);
+            
+            return 0;
+        }
     case WM_CLOSE:
         {
             if(MessageBox(hwnd, L"Quit?", L"App", MB_OKCANCEL) == IDOK)
@@ -82,6 +128,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
         } break;
     case WM_DESTROY:
         {
+            // Delete Open GL Context
+            ReleaseDC(hwnd, deviceContext);
+            wglDeleteContext(renderContext);
+
             PostQuitMessage(0);
             return 0;
         } break;
