@@ -22,6 +22,10 @@
     <ClCompile Include="src\extern\glad\glad.c" />
     <ClCompile Include="src\win32_bananas_exim.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="content\test_fs.glsl" />
+    <None Include="content\test_vs.glsl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

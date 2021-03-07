@@ -2,6 +2,11 @@
 #define UNICODE
 #endif
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
 #include <windows.h>
 #include <glad\glad.h>
 
@@ -12,6 +17,7 @@ HDC deviceContext;
 HGLRC renderContext;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+std::string ReadFile(const char* filePath);
 
 // Entry point to program
 int WINAPI 
@@ -70,10 +76,30 @@ wWinMain(HINSTANCE hInstance,
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
+    // Shaders
+    std::string vertexShaderStr   = ReadFile("content/test_vs.glsl");
+    std::string fragmentShaderStr = ReadFile("content/test_fs.glsl");
+
+    const char* vertexShader   = vertexShaderStr.c_str();
+    const char* fragmentShader = fragmentShaderStr.c_str();
+
+    // Load Shaders
+    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vs, 1, &vertexShader, NULL);
+    glCompileShader(vs);
+    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fs, 1, &fragmentShader, NULL);
+    glCompileShader(fs);
+
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vs);
+    glAttachShader(shaderProgram, fs);
+    glLinkProgram(shaderProgram);
+
     // Run the message loop.
     MSG msg = {0};
     
-    bool running = 1;
+    int running = 1;
     while(running)
     {
         // Windows Messages
@@ -89,8 +115,10 @@ wWinMain(HINSTANCE hInstance,
         }
 
         // Update, render
-        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(shaderProgram);
 
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -168,4 +196,23 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
         } break;
     }
     return 0;
+}
+
+std::string ReadFile(const char* filePath)
+{
+    std::ifstream fileStream(filePath, std::ios::in);
+    if(!fileStream.is_open()) {
+        std::cerr << "Could not read file" << filePath << ". File does not exist." << "\n";
+        return "";
+    }
+
+    std::string line = "";
+    std::string content = "";
+    while(!fileStream.eof()) {
+        std::getline(fileStream, line);
+        content.append(line + "\n");
+    }
+
+    fileStream.close();
+    return content;
 }
