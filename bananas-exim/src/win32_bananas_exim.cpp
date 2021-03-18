@@ -10,6 +10,8 @@
 #include <windows.h>
 #include <glad\glad.h>
 
+#include "VertexBuffer.h"
+
 const int WIDTH  = 800;
 const int HEIGHT = 600;
 
@@ -20,7 +22,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 std::string ReadFile(const char* filePath);
 
 // Entry point to program
-int WINAPI 
+int WINAPI
 wWinMain(HINSTANCE hInstance,
          HINSTANCE hPrevInstance,
          LPWSTR lpCmdLine,
@@ -37,13 +39,10 @@ wWinMain(HINSTANCE hInstance,
     RegisterClass(&wc);
 
     // Create the window.
-    HWND hwnd;
-
-    // Window Size
     RECT wr = {0, 0, WIDTH, HEIGHT};
     AdjustWindowRect((LPRECT)&wc, WS_OVERLAPPEDWINDOW, FALSE);
 
-    hwnd = CreateWindow(CLASS_NAME, L"Bananas Export/Import Tool",
+    HWND hwnd = CreateWindow(CLASS_NAME, L"Bananas Export/Import Tool",
                         WS_OVERLAPPEDWINDOW|WS_VISIBLE, 
                         0, 0, 
                         wr.right - wr.left,
@@ -65,11 +64,7 @@ wWinMain(HINSTANCE hInstance,
         -0.5f, -0.5f, 0.0f
     };
 
-    // Vertex Buffer Object
-    GLuint vbo = 0;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), points, GL_STATIC_DRAW);
+    VertexBuffer vbo(points, 9 * sizeof(float));
 
     // Vertex Array Object
     GLuint vao = 0;
@@ -121,7 +116,8 @@ wWinMain(HINSTANCE hInstance,
         glUseProgram(shaderProgram);
 
         glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        vbo.Bind();
+        // glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
         glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -133,7 +129,8 @@ wWinMain(HINSTANCE hInstance,
     return 0;
 }
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK
+WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch(message)
     {
