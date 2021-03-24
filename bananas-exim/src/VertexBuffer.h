@@ -2,7 +2,9 @@
 #define VERTEX_BUFFER_H
 #endif  VERTEX_BUFFER_H
 
-
+namespace Core
+{
+    
 class VertexBuffer {
 
     unsigned int m_RenderId;
@@ -15,3 +17,5 @@ public:
     void UnBind() const;
 
 };
+
+}

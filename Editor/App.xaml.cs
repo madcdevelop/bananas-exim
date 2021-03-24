@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace bananas_exim.wpf
+namespace Editor
 {
     /// <summary>
     /// Interaction logic for App.xaml

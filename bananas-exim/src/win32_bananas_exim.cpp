@@ -64,7 +64,7 @@ wWinMain(HINSTANCE hInstance,
         -0.5f, -0.5f, 0.0f
     };
 
-    VertexBuffer vbo(points, 9 * sizeof(float));
+    Core::VertexBuffer vbo{points, 9 * sizeof(float)};
 
     // Vertex Array Object
     GLuint vao = 0;

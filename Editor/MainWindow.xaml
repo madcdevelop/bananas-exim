@@ -1,0 +1,22 @@
+﻿<Window x:Class="Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Editor"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" VerticalAlignment="Center"
+        ShowInTaskbar="True">
+    <Window.Resources>
+        <sys:String x:Key="strHelloWorld">Hello, world!</sys:String>
+    </Window.Resources>
+    <Grid Name="MainGrid" Background="LightBlue">
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72">
+            <TextBlock Text="{StaticResource strHelloWorld}" />
+        </TextBlock>
+        <TextBlock>
+            Just another "<TextBlock Text="{StaticResource strHelloWorld}" />" example, but with resources!
+        </TextBlock>
+    </Grid>
+</Window>

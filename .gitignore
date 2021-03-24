@@ -7,3 +7,4 @@ bananas-exim.code-workspace
 
 # Binaries
 bin/
+obj/
