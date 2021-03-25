@@ -8,15 +8,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" VerticalAlignment="Center"
         ShowInTaskbar="True">
-    <Window.Resources>
-        <sys:String x:Key="strHelloWorld">Hello, world!</sys:String>
-    </Window.Resources>
     <Grid Name="MainGrid" Background="LightBlue">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72">
-            <TextBlock Text="{StaticResource strHelloWorld}" />
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="72" Grid.Row="0">
+            <TextBlock Name="entityText1" />
         </TextBlock>
-        <TextBlock>
-            Just another "<TextBlock Text="{StaticResource strHelloWorld}" />" example, but with resources!
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="72" Grid.Row="1">
+            <TextBlock Name="entityTextMove" />
         </TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="72" Grid.Row="2">
+            <TextBlock Name="entityText2" />
+        </TextBlock>
+
     </Grid>
 </Window>
