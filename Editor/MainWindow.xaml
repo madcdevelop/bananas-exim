@@ -6,24 +6,20 @@
         xmlns:local="clr-namespace:Editor"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" VerticalAlignment="Center"
-        ShowInTaskbar="True">
-    <Grid Name="MainGrid" Background="LightBlue">
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="72" Grid.Row="0">
-            <TextBlock Name="entityText1" />
-        </TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="72" Grid.Row="1">
-            <TextBlock Name="entityTextMove" />
-        </TextBlock>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="72" Grid.Row="2">
-            <TextBlock Name="entityText2" />
-        </TextBlock>
+        Name="mainWindow"
+        Title="MainWindow" 
+        Height="615" Width="800" VerticalAlignment="Center"
+        ShowInTaskbar="True"
+        Loaded="On_UIReady">
 
-    </Grid>
+    <DockPanel Background="LightGreen">
+        <Border Name="ControlHostElement"
+        Width="800"
+        Height="600"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        BorderBrush="LightGray"
+        BorderThickness="3"
+        DockPanel.Dock="Right"/>
+    </DockPanel>
 </Window>

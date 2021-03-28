@@ -22,18 +22,22 @@ namespace Editor
     /// </summary>
     public partial class MainWindow : Window
     {
+        ControlHost listControl;
+        Application app;
+        Window myWindow;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            // test run
-            Entity e = new Entity("The Wallman", 20, 35);
-            entityText1.Text = "First Position: " + e.XPosition + " " + e.YPosition;
-            entityTextMove.Text = "Entity Moved!";
-            e.Move(5, -10);
-            entityText2.Text = "Next Position: " + e.XPosition + " " + e.YPosition;
-
-            // Open win32 API Window (opengl context)
+        private void On_UIReady(object sender, EventArgs e)
+        {
+            app = System.Windows.Application.Current;
+            myWindow = app.MainWindow;
+            myWindow.SizeToContent = SizeToContent.WidthAndHeight;
+            listControl = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
+            ControlHostElement.Child = listControl;
         }
 
     }
