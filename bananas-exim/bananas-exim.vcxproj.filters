@@ -8,11 +8,14 @@
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\Window.h" />
+    <ClInclude Include="src\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\win32_bananas_exim.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\extern\glad\glad.c" />
+    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
   </ItemGroup>
 </Project>
