@@ -66,7 +66,7 @@ namespace Editor
                                                      IntPtr hwndParent,
                                                      IntPtr hMenu,
                                                      IntPtr hInst,
-                                                     [MarshalAs(UnmanagedType.AsAny)] object pvParam);
+                                                     [MarshalAs(UnmanagedType.Struct)] object pvParam);
 
         [DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Unicode)]
         internal static extern bool DestroyWindow(IntPtr hwnd); 
