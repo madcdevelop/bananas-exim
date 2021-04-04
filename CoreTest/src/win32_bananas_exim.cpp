@@ -12,7 +12,7 @@ WinMain(HINSTANCE hInstance,
         LPSTR     lpCmdLine,
         int       nShowCmd)
 {
-    Core::Window window(hInstance);
+    Core::Window window{ hInstance, NULL };
     if(!window.Init())
         return 1;
     

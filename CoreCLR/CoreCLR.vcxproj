@@ -101,6 +101,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -131,6 +132,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

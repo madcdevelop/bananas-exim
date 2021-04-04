@@ -17,14 +17,10 @@ LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 namespace Core
 {
 
-Window::Window()
-{
-}
-
-Window::Window(HINSTANCE hInstance)
-    : m_hInstance(hInstance), m_hWnd(NULL), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
-      m_Width(800), m_Height(600), m_WindowTitle(L"Main Window"), 
-      m_WindowStyle(WS_OVERLAPPEDWINDOW|WS_VISIBLE)
+Window::Window(HINSTANCE hInstance, HWND hwnd)
+    : m_hInstance(hInstance), m_hWnd(hwnd), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
+      m_Width(800), m_Height(600), m_WindowTitle(nullptr), 
+      m_WindowStyle(WS_VISIBLE)
 {
     g_Window = this;
 }
@@ -81,11 +77,15 @@ bool Window::InitWindow()
     int y = GetSystemMetrics(SM_CYSCREEN)/2 - height/2;
 
     // Create Window
-    m_hWnd = CreateWindow(L"WindowClass", m_WindowTitle, m_WindowStyle, x, y, width, height, NULL, NULL, m_hInstance, NULL);
+    m_WindowStyle |=  m_hWnd ? WS_CHILD : WS_OVERLAPPEDWINDOW;
+    m_hWnd = CreateWindow(wc.lpszClassName, m_WindowTitle, m_WindowStyle, x, y, width, height, m_hWnd, NULL, m_hInstance, NULL);
     if(!m_hWnd) MessageBoxA(NULL, "Failed to create window.", "Error", 0);
 
     // Show Window
-    ShowWindow(m_hWnd, SW_SHOW);
+    if (m_hWnd) {
+        SetWindowLongPtr(m_hWnd, GWL_STYLE, m_WindowStyle);
+        ShowWindow(m_hWnd, m_WindowStyle);
+    }
 
     return true;
 }
@@ -118,8 +118,6 @@ bool Window::InitGL()
         return MessageBoxA(NULL, "Failed to load Glad.", "Error", 0);
     glViewport(0, 0, m_Width, m_Height);
     
-    MessageBoxA(0, (char*)glGetString(GL_VERSION), "OPENGL VERSION", 0);
-
     return true;
 }
 
@@ -137,8 +135,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
     case WM_CLOSE:
         {
-            if(MessageBox(hwnd, L"Quit?", L"App", MB_OKCANCEL) == IDOK)
-                DestroyWindow(hwnd);
+            DestroyWindow(hwnd);
             return 0;
         } break;
     case WM_DESTROY:

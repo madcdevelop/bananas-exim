@@ -20,8 +20,7 @@ public:
     const wchar_t*  m_WindowTitle;
 
 public:
-    Window();
-    Window(HINSTANCE hInstance);
+    Window(HINSTANCE hInstance, HWND hwnd);
     ~Window();
 
     // Main Window Loop

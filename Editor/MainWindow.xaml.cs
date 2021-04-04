@@ -21,9 +21,9 @@ namespace Editor
     /// </summary>
     public partial class MainWindow : Window
     {
-        ControlHost listControl;
-        Application app;
-        Window myWindow;
+        Application mainApp;
+        Window parentWindow;
+        ControlHost windowHost;
 
         public MainWindow()
         {
@@ -32,11 +32,16 @@ namespace Editor
 
         private void On_UIReady(object sender, EventArgs e)
         {
-            app = System.Windows.Application.Current;
-            myWindow = app.MainWindow;
-            myWindow.SizeToContent = SizeToContent.WidthAndHeight;
-            listControl = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
-            ControlHostElement.Child = listControl;
+            // Init Window
+            mainApp = System.Windows.Application.Current;
+            parentWindow = mainApp.MainWindow;
+            parentWindow.SizeToContent = SizeToContent.WidthAndHeight;
+
+            // Host win32 Window inside WPF
+            windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
+            ControlHostElement.Child = windowHost;
+            // @TODO: Bug - Closing window when using native Run() function does not close application
+            windowHost.Run();
         }
 
     }
