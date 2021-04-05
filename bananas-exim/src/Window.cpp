@@ -62,7 +62,7 @@ bool Window::InitWindow()
     wc.lpfnWndProc = MainWndProc;
     wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
+    wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wc.lpszClassName = L"WindowClass";
     wc.lpszMenuName = NULL;
 
