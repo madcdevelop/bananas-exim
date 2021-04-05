@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
 
@@ -6,71 +7,64 @@ namespace Editor
 {
     public class ControlHost : HwndHost
     {
-        internal const int 
-            WS_CHILD   = 0x40000000,
+        #region PInvoke
+        //PInvoke declarations
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        [DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Unicode)]
+        internal static extern bool DestroyWindow(IntPtr hwnd);
+        #endregion
+
+        internal const int
+            WS_CHILD = 0x40000000,
             WS_VISIBLE = 0x10000000,
-            LBS_NOTIFY = 0x00000001,
-            HOST_ID    = 0x00000002,
-            LISTBOX_ID = 0x00000001,
-            WS_VSCROLL = 0x00200000,
-            WS_BORDER  = 0x00800000;
+            GWL_STYLE = (-16);
 
-        IntPtr hwndControl;
-        IntPtr hwndHost;
+        private readonly int m_hostHeight;
+        private readonly int m_hostWidth;
+        IntPtr m_hwndChild = IntPtr.Zero;
 
-        int hostHeight;
-        int hostWidth;
+        CLI.Window hostWindow;
 
         public ControlHost(double height, double width)
         {
-            hostHeight = (int)height;
-            hostWidth  = (int)width;
+            m_hostHeight = (int)height;
+            m_hostWidth  = (int)width;
+        }
+
+        public int Run()
+        {
+            return hostWindow.Run();
         }
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
         {
-            hwndControl = IntPtr.Zero;
-            hwndHost    = IntPtr.Zero;
+            HandleRef href = new HandleRef();
 
-            hwndHost = CreateWindowEx(0, "static", "",
-                                      WS_CHILD | WS_VISIBLE,
-                                      0, 0,
-                                      hostWidth, hostHeight,
-                                      hwndParent.Handle,
-                                      (IntPtr)HOST_ID,
-                                      IntPtr.Zero,
-                                      0);
+            if(m_hwndChild == IntPtr.Zero)
+            {
+                hostWindow = new CLI.Window(IntPtr.Zero, hwndParent.Handle);
+                if(!hostWindow.Init())
+                    return href;
+                m_hwndChild = hostWindow.WindowHandle;
+                Debug.Assert(m_hwndChild != IntPtr.Zero);
 
-            return new HandleRef(this, hwndHost);
-        }
+                SetWindowLong(m_hwndChild, GWL_STYLE, WS_CHILD | WS_VISIBLE);
+                SetParent(m_hwndChild, hwndParent.Handle);
 
-        protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            handled = false;
-            return IntPtr.Zero;
+                href = new HandleRef(this, m_hwndChild);
+            }
+
+            return href;
         }
         
         protected override void DestroyWindowCore(HandleRef hwnd) 
         {
             DestroyWindow(hwnd.Handle);
         }
-
-        //PInvoke declarations
-        [DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Unicode)]
-        internal static extern IntPtr CreateWindowEx(int dwExStyle,
-                                                     string lpszClassName,
-                                                     string lpszWindowName,
-                                                     int style,
-                                                     int x, int y,
-                                                     int width, int height,
-                                                     IntPtr hwndParent,
-                                                     IntPtr hMenu,
-                                                     IntPtr hInst,
-                                                     [MarshalAs(UnmanagedType.AsAny)] object pvParam);
-
-        [DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Unicode)]
-        internal static extern bool DestroyWindow(IntPtr hwnd); 
-
     }
-
 }
