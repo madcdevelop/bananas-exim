@@ -39,14 +39,20 @@ void Renderer::Init()
     glAttachShader(m_shaderProgram, vs);
     glAttachShader(m_shaderProgram, fs);
     glLinkProgram(m_shaderProgram);
+
 }
 
 void Renderer::Draw()
 {
+
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(m_shaderProgram);
+
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
+    // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
+    CameraTransform(projection);
 
     glEnableVertexAttribArray(0);
     m_VertexBuffer->Bind();
@@ -54,6 +60,21 @@ void Renderer::Draw()
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glDisableVertexAttribArray(0);
+}
+
+void Renderer::CameraTransform(glm::mat4 projection)
+{
+    // Camera Matrix
+    glm::mat4 view = glm::lookAt(glm::vec3(4,3,3), glm::vec3(0,0,0), glm::vec3(0,1,0));
+
+    // Model Matrix : an identity matrix which will be at the origin
+    glm::mat4 model = glm::mat4(1.0f);
+
+    // ModelViewProjection : multiplication of 3 matrices
+    glm::mat4 mvp = projection * view * model;
+
+    GLuint matrixId = glGetUniformLocation(m_shaderProgram, "mvp");
+    glUniformMatrix4fv(matrixId, 1, GL_FALSE, &mvp[0][0]);
 }
 
 std::string Renderer::ReadFile(const char* filePath)

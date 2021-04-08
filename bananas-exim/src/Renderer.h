@@ -5,6 +5,9 @@
 #include <sstream>
 #include <string>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Window.h"
 #include "VertexBuffer.h"
 
@@ -25,6 +28,7 @@ public:
 
     void Init();
     void Draw();
+    void CameraTransform(glm::mat4 projection);
 
     std::string ReadFile(const char* filePath);
 };
