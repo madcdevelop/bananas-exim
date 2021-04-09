@@ -10,6 +10,7 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\IndexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Entity.cpp" />
@@ -17,5 +18,6 @@
     <ClCompile Include="src\extern\glad\glad.c" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\IndexBuffer.cpp" />
   </ItemGroup>
 </Project>

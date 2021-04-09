@@ -2,8 +2,8 @@
 
 namespace Core
 {
-Renderer::Renderer(VertexBuffer* vbo, Window* window)
-    : m_VertexBuffer(vbo), m_Window(window)
+Renderer::Renderer(VertexBuffer* vbo, IndexBuffer* ibo, Window* window)
+    : m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Window(window)
 {
     Init();
 }
@@ -46,7 +46,7 @@ void Renderer::Draw()
 {
 
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(m_shaderProgram);
 
@@ -54,18 +54,24 @@ void Renderer::Draw()
     // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
     CameraTransform(projection);
 
+    // Vertex Buffer
     glEnableVertexAttribArray(0);
     m_VertexBuffer->Bind();
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // Index Buffer
+     glEnableVertexAttribArray(1);
+     m_IndexBuffer->Bind();
+     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);    
+
+    glDrawArrays(GL_TRIANGLES, 0, 12*3);
     glDisableVertexAttribArray(0);
 }
 
 void Renderer::CameraTransform(glm::mat4 projection)
 {
     // Camera Matrix
-    glm::mat4 view = glm::lookAt(glm::vec3(4,3,3), glm::vec3(0,0,0), glm::vec3(0,1,0));
+    glm::mat4 view = glm::lookAt(glm::vec3(4,3,-3), glm::vec3(0,0,0), glm::vec3(0,1,0));
 
     // Model Matrix : an identity matrix which will be at the origin
     glm::mat4 model = glm::mat4(1.0f);
