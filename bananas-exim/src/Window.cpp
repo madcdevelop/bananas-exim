@@ -237,7 +237,9 @@ void Window::Render()
 
     VertexBuffer vbo(vertexBufferData, sizeof(vertexBufferData));
     IndexBuffer ibo(colorBufferData, sizeof(colorBufferData));
-    Renderer renderOpenGL{&vbo, &ibo, this};
+    Texture texture("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\uvtemplate.bmp");
+
+    Renderer renderOpenGL{this, &vbo, &ibo, &texture};
 
     renderOpenGL.Draw();
 }

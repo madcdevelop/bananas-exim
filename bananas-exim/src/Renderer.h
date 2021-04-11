@@ -11,6 +11,7 @@
 #include "Window.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Texture.h"
 
 namespace Core
 {
@@ -20,12 +21,13 @@ class Renderer {
 private:
     VertexBuffer* m_VertexBuffer;
     IndexBuffer* m_IndexBuffer;
+    Texture* m_Texture;
     Window* m_Window;
     
     GLuint m_shaderProgram;
 
 public:
-    Renderer(VertexBuffer* vbo, IndexBuffer* ibo, Window* window);
+    Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture);
     ~Renderer();
 
     void Init();

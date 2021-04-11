@@ -2,8 +2,8 @@
 
 namespace Core
 {
-Renderer::Renderer(VertexBuffer* vbo, IndexBuffer* ibo, Window* window)
-    : m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Window(window)
+Renderer::Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture)
+    : m_Window(window), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(texture) 
 {
     Init();
 }
