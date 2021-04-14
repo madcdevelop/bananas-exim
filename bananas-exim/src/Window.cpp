@@ -1,9 +1,14 @@
 #include "Window.h"
 #include "Renderer.h"
+#include "RendererTestData.h"
 
 namespace
 {
-    Core::Window* g_Window = NULL;
+    Core::Window* g_Window = nullptr;
+    Core::VertexBuffer* g_vbo = nullptr;
+    Core::IndexBuffer* g_ibo = nullptr;
+    Core::Texture* g_Texture = nullptr;
+    Core::Renderer* g_RenderOpenGL = nullptr;
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -121,6 +126,12 @@ bool Window::InitGL()
     // Z Buffer Init
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
+    // Init Rendering
+    g_vbo = new Core::VertexBuffer{vertices, sizeof(vertices)};
+    g_ibo = new Core::IndexBuffer{indices, sizeof(indices)};
+    g_Texture = new Core::Texture;
+    g_RenderOpenGL = new Core::Renderer{this, g_vbo, g_ibo, g_Texture};
     
     return true;
 }
@@ -155,66 +166,17 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 void Window::Render()
 {
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-    };
-
-    unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-
-    VertexBuffer vbo(vertices, sizeof(vertices));
-    IndexBuffer ibo(indices, sizeof(indices));
-    Texture texture;
-
-    Renderer renderOpenGL{this, &vbo, &ibo, &texture};
-
-    renderOpenGL.Draw();
+    g_RenderOpenGL->Draw();
 }
 
 void Window::Shutdown()
 {
+    // Delete Rendering objects
+    delete g_vbo;
+    delete g_ibo;
+    delete g_Texture;
+    delete g_RenderOpenGL;
+
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(m_hRenderContext);
     ReleaseDC(m_hWnd, m_hDeviceContext);

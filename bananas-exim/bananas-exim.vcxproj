@@ -27,6 +27,7 @@
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RendererTestData.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\Window.h" />

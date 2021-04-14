@@ -40,6 +40,8 @@ namespace Editor
             // Host win32 Window inside WPF
             windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
             ControlHostElement.Child = windowHost;
+            // @TODO: Closing window does not close program.
+            windowHost.Run();
         }
 
     }
