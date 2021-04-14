@@ -67,7 +67,7 @@ void Renderer::Draw()
     CameraTransform(projection);
 
     m_VertexBuffer->Bind();
-    // m_IndexBuffer->Bind();
+    m_IndexBuffer->Bind();
     m_Texture->Bind(0);
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
