@@ -1,4 +1,4 @@
 #pragma once
-#include "VertexBuffer.h"
+#include "Renderer.h"
 #include "Window.h"
 #include "Entity.h"

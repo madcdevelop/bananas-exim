@@ -100,8 +100,9 @@
       <AdditionalIncludeDirectories>$(SolutionDir)bananas-exim\src;$(SolutionDir)bananas-exim\src\extern;$(SolutionDir)extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib;Core.lib</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\Core\x64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -131,8 +132,9 @@
       <AdditionalIncludeDirectories>$(SolutionDir)bananas-exim\src;$(SolutionDir)bananas-exim\src\extern;$(SolutionDir)extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib;Core.lib</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\Core\x64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
