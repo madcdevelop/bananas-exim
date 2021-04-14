@@ -11,7 +11,7 @@ namespace Core
     {
         glGenBuffers(1, &m_RenderId);
         Bind();
-        glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 
         std::cout << "Created the Index Buffer!\n";
     }
@@ -23,11 +23,11 @@ namespace Core
 
     void IndexBuffer::Bind() const
     {
-        glBindBuffer(GL_ARRAY_BUFFER, m_RenderId);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderId);
     } 
 
     void IndexBuffer::UnBind() const
     {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }

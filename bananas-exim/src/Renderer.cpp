@@ -10,6 +10,9 @@ Renderer::Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture*
 
 Renderer::~Renderer()
 {
+    glDeleteBuffers(1, &m_shaderProgram);
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
 }
 
 void Renderer::Init()
@@ -40,11 +43,20 @@ void Renderer::Init()
     glAttachShader(m_shaderProgram, fs);
     glLinkProgram(m_shaderProgram);
 
+    // Vertex attributes
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    // Texture coordinates(UV) attributes
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    // Load Textures
+    m_Texture->m_RenderId = m_Texture->LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\uvtemplate.bmp");
+    glUniform1i(glGetUniformLocation(m_shaderProgram, "texture1"), 0);
 }
 
 void Renderer::Draw()
 {
-
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -54,18 +66,11 @@ void Renderer::Draw()
     // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
     CameraTransform(projection);
 
-    // Vertex Buffer
-    glEnableVertexAttribArray(0);
     m_VertexBuffer->Bind();
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    // m_IndexBuffer->Bind();
+    m_Texture->Bind(0);
 
-    // Index Buffer
-     glEnableVertexAttribArray(1);
-     m_IndexBuffer->Bind();
-     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);    
-
-    glDrawArrays(GL_TRIANGLES, 0, 12*3);
-    glDisableVertexAttribArray(0);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 void Renderer::CameraTransform(glm::mat4 projection)
@@ -79,7 +84,7 @@ void Renderer::CameraTransform(glm::mat4 projection)
     // ModelViewProjection : multiplication of 3 matrices
     glm::mat4 mvp = projection * view * model;
 
-    GLuint matrixId = glGetUniformLocation(m_shaderProgram, "mvp");
+    unsigned int matrixId = glGetUniformLocation(m_shaderProgram, "mvp");
     glUniformMatrix4fv(matrixId, 1, GL_FALSE, &mvp[0][0]);
 }
 
