@@ -1,4 +1,5 @@
 #include "Window.h"
+
 #include "Renderer.h"
 #include "RendererTestData.h"
 
@@ -121,11 +122,7 @@ bool Window::InitGL()
     // Initialize Glad
     if(!gladLoadGL())
         return MessageBoxA(NULL, "Failed to load Glad.", "Error", 0);
-    glViewport(0, 0, m_Width, m_Height);
-    
-    // Z Buffer Init
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
     g_vbo = new Core::VertexBuffer{vertices, sizeof(vertices)};

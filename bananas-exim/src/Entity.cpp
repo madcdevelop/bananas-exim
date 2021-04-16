@@ -2,7 +2,8 @@
 //@ToBeRemoved Tutorial Files
 
 #include "Entity.h"
-#include <iostream>
+
+#include "Common.h"
 
 namespace Core
 {
