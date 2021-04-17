@@ -1,6 +1,4 @@
-#ifndef VERTEX_BUFFER_H
-#define VERTEX_BUFFER_H
-#endif  VERTEX_BUFFER_H
+#pragma once
 
 namespace Core
 {

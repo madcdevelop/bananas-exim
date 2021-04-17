@@ -1,27 +1,29 @@
 #include "Texture.h"
-#include "Renderer.h"
+
+#include "Common.h"
 
 namespace Core
 {
 
     Texture::Texture()
+        : m_RenderId(0)
     {
     }
 
     Texture::~Texture()
     {
-        glDeleteTextures(1, &m_RenderId);
+        GLCALL(glDeleteTextures(1, &m_RenderId));
     }
 
     void Texture::Bind(unsigned int textureIndex) const
     {
-        glActiveTexture(GL_TEXTURE0 + textureIndex);
-        glBindTexture(GL_TEXTURE_2D, m_RenderId);
+        GLCALL(glActiveTexture(GL_TEXTURE0 + textureIndex));
+        GLCALL(glBindTexture(GL_TEXTURE_2D, m_RenderId));
     }
 
     void Texture::UnBind() const
     {
-        glBindTexture(GL_TEXTURE_2D, 0);
+        GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
     }
 
     unsigned int Texture::LoadBMPCustom(const char* imagepath)
@@ -71,23 +73,23 @@ namespace Core
         fclose(file);
 
         unsigned int textureId;
-        glGenTextures(1, &textureId);
-        glBindTexture(GL_TEXTURE_2D, textureId);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+        GLCALL(glGenTextures(1, &textureId));
+        GLCALL(glBindTexture(GL_TEXTURE_2D, textureId));
+        GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data));
 
         // Open GL has now copied the data. Free our own version
         delete [] data;
 
         // Low Texture Quality
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        // GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        // GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 
         // Nice trilinear filtering
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+        GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+        GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+        GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+        GLCALL(glGenerateMipmap(GL_TEXTURE_2D));
 
         return textureId;
     }

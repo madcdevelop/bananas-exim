@@ -13,6 +13,7 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\RendererTestData.h" />
+    <ClInclude Include="src\Common.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Entity.cpp" />
@@ -22,5 +23,6 @@
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Common.cpp" />
   </ItemGroup>
 </Project>

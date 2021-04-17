@@ -23,6 +23,7 @@
     <None Include="content\test_vs.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\IndexBuffer.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\extern\glad\glad.c" />
     <ClCompile Include="src\IndexBuffer.cpp" />
