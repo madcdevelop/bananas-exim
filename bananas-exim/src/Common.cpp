@@ -1,7 +1,5 @@
 #include "Common.h"
 
-#include <string>
-
 void glClearError_()
 {
     while(glGetError() != GL_NO_ERROR);

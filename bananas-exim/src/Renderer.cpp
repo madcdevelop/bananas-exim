@@ -58,9 +58,6 @@ void Renderer::Init()
 
     // Load Textures
     m_Texture->m_RenderId = m_Texture->LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\uvtemplate.bmp");
-    GLCALL(GLint texture1 = glGetUniformLocation(m_shaderProgram, "texture1"));
-    // @todo: fix assert bug
-    GLCALL(glUniform1i(texture1, 0));
 }
 
 void Renderer::Draw()
@@ -77,6 +74,7 @@ void Renderer::Draw()
     m_VertexBuffer->Bind();
     m_IndexBuffer->Bind();
     m_Texture->Bind(0);
+    GLCALL(glUniform1i(glGetUniformLocation(m_shaderProgram, "texture1"), 0));
 
     GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 }
