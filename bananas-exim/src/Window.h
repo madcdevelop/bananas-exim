@@ -17,6 +17,9 @@ public:
     DWORD           m_WindowStyle;
     const wchar_t*  m_WindowTitle;
 
+private:
+    double m_LastFrameTime = 0.0;
+
 public:
     Window(HINSTANCE hInstance, HWND hwnd);
     ~Window();

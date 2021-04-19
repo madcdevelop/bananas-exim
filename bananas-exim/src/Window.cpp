@@ -38,8 +38,15 @@ Window::~Window()
 int Window::Run()
 {
     MSG msg = {0};
+    Timestep timestep;
+    timestep.StartCounter();
     while(WM_QUIT != msg.message)
     {
+        double time = timestep.GetTime();
+        double deltaTime = time - m_LastFrameTime;
+        timestep.Print(m_LastFrameTime, time, deltaTime);
+        m_LastFrameTime = time;
+
         if(PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
         {
             TranslateMessage(&msg);
@@ -145,6 +152,46 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch(msg)
     {
+    // Keyboard Input
+    case WM_KEYDOWN:
+        {
+            switch(wParam)
+            {
+                case VK_LEFT:  
+                    OutputDebugStringA("Left Arrow Key Pressed\n");
+                    // Call function in g_RenderOpenGL that moves the camera left 
+                    break;
+                case VK_RIGHT: 
+                    OutputDebugStringA("Right Arrow Key Pressed\n"); 
+                    break;
+                case VK_UP:    
+                    OutputDebugStringA("Up Arrow Key Pressed\n");    
+                    break;
+                case VK_DOWN:  
+                    OutputDebugStringA("Down Arrow Key Pressed\n");  
+                    break;
+                default: break;
+            } 
+        } break;
+    case WM_KEYUP:
+        {
+            switch(wParam)
+            {
+                case VK_LEFT:  
+                    OutputDebugStringA("Left Arrow Key Released\n");  
+                    break;
+                case VK_RIGHT: 
+                    OutputDebugStringA("Right Arrow Key Released\n"); 
+                    break;
+                case VK_UP:    
+                    OutputDebugStringA("Up Arrow Key Released\n");    
+                    break;
+                case VK_DOWN:  
+                    OutputDebugStringA("Down Arrow Key Released\n");  
+                    break;
+                default: break;
+            }
+        } break;
     case WM_CLOSE:
         {
             DestroyWindow(hwnd);
