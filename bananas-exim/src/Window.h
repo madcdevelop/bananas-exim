@@ -18,6 +18,7 @@ public:
     const wchar_t*  m_WindowTitle;
 
 private:
+    double m_DeltaTime = 0.0;
     double m_LastFrameTime = 0.0;
 
 public:

@@ -1,7 +1,5 @@
 #include "Renderer.h"
 
-#include "Common.h"
-
 namespace Core
 {
 Renderer::Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture)
@@ -81,11 +79,11 @@ void Renderer::Draw()
 
 void Renderer::CameraTransform(glm::mat4 projection)
 {
-    // Camera Matrix
-    glm::mat4 view = glm::lookAt(glm::vec3(4,3,-3), glm::vec3(0,0,0), glm::vec3(0,1,0));
-
     // Model Matrix : an identity matrix which will be at the origin
     glm::mat4 model = glm::mat4(1.0f);
+
+    // Camera Matrix
+    glm::mat4 view = glm::lookAt(m_CameraPos, m_CameraPos + m_CameraFront, m_CameraUp);
 
     // ModelViewProjection : multiplication of 3 matrices
     glm::mat4 mvp = projection * view * model;

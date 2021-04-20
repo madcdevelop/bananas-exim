@@ -10,6 +10,8 @@ namespace
     Core::IndexBuffer* g_ibo = nullptr;
     Core::Texture* g_Texture = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
+    Core::Timestep* g_Timestep = nullptr;
+
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -38,13 +40,13 @@ Window::~Window()
 int Window::Run()
 {
     MSG msg = {0};
-    Timestep timestep;
-    timestep.StartCounter();
+    g_Timestep = new Timestep;
+    g_Timestep->StartCounter();
     while(WM_QUIT != msg.message)
     {
-        double time = timestep.GetTime();
-        double deltaTime = time - m_LastFrameTime;
-        timestep.Print(m_LastFrameTime, time, deltaTime);
+        double time = g_Timestep->GetTime();
+        m_DeltaTime = time - m_LastFrameTime;
+        //g_Timestep->Print(m_LastFrameTime, time, deltaTime);
         m_LastFrameTime = time;
 
         if(PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
@@ -155,42 +157,17 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     // Keyboard Input
     case WM_KEYDOWN:
         {
-            switch(wParam)
-            {
-                case VK_LEFT:  
-                    OutputDebugStringA("Left Arrow Key Pressed\n");
-                    // Call function in g_RenderOpenGL that moves the camera left 
-                    break;
-                case VK_RIGHT: 
-                    OutputDebugStringA("Right Arrow Key Pressed\n"); 
-                    break;
-                case VK_UP:    
-                    OutputDebugStringA("Up Arrow Key Pressed\n");    
-                    break;
-                case VK_DOWN:  
-                    OutputDebugStringA("Down Arrow Key Pressed\n");  
-                    break;
-                default: break;
-            } 
-        } break;
-    case WM_KEYUP:
-        {
-            switch(wParam)
-            {
-                case VK_LEFT:  
-                    OutputDebugStringA("Left Arrow Key Released\n");  
-                    break;
-                case VK_RIGHT: 
-                    OutputDebugStringA("Right Arrow Key Released\n"); 
-                    break;
-                case VK_UP:    
-                    OutputDebugStringA("Up Arrow Key Released\n");    
-                    break;
-                case VK_DOWN:  
-                    OutputDebugStringA("Down Arrow Key Released\n");  
-                    break;
-                default: break;
-            }
+            float cameraSpeed = 25.0f * (float)m_DeltaTime;
+            // @TODO: Create seperate defines for virtual keyboard inputs.
+            // @TODO: Change to be able to press 2 keys at same time for diagonal movement.
+            if(0x57 == wParam)
+                g_RenderOpenGL->m_CameraPos += cameraSpeed * g_RenderOpenGL->m_CameraFront;
+            if(0x53 == wParam)
+                g_RenderOpenGL->m_CameraPos -= cameraSpeed * g_RenderOpenGL->m_CameraFront;
+            if(0x41 == wParam)
+                g_RenderOpenGL->m_CameraPos -= cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
+            if(0x44 == wParam)
+                g_RenderOpenGL->m_CameraPos += cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
         } break;
     case WM_CLOSE:
         {
@@ -220,6 +197,7 @@ void Window::Shutdown()
     delete g_ibo;
     delete g_Texture;
     delete g_RenderOpenGL;
+    delete g_Timestep;
 
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(m_hRenderContext);
