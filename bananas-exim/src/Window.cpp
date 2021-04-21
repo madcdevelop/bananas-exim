@@ -154,20 +154,20 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch(msg)
     {
-    // Keyboard Input
     case WM_KEYDOWN:
         {
-            float cameraSpeed = 25.0f * (float)m_DeltaTime;
-            // @TODO: Create seperate defines for virtual keyboard inputs.
-            // @TODO: Change to be able to press 2 keys at same time for diagonal movement.
-            if(0x57 == wParam)
-                g_RenderOpenGL->m_CameraPos += cameraSpeed * g_RenderOpenGL->m_CameraFront;
-            if(0x53 == wParam)
-                g_RenderOpenGL->m_CameraPos -= cameraSpeed * g_RenderOpenGL->m_CameraFront;
-            if(0x41 == wParam)
-                g_RenderOpenGL->m_CameraPos -= cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
-            if(0x44 == wParam)
-                g_RenderOpenGL->m_CameraPos += cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
+            KeyboardInput();
+        } break;
+    case WM_MOUSEMOVE:
+        {
+            POINT p{ 0, 0 };
+            BOOL result = GetCursorPos(&p);
+            if (result)
+            {
+                // rotate camera up/down (pitch)
+
+                // rotate camera left/right (yaw)
+            }
         } break;
     case WM_CLOSE:
         {
@@ -202,6 +202,19 @@ void Window::Shutdown()
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(m_hRenderContext);
     ReleaseDC(m_hWnd, m_hDeviceContext);
+}
+
+void Window::KeyboardInput()
+{
+    float cameraSpeed = 25.0f * (float)m_DeltaTime;
+    if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
+        g_RenderOpenGL->m_CameraPos += cameraSpeed * g_RenderOpenGL->m_CameraFront;
+    if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
+        g_RenderOpenGL->m_CameraPos -= cameraSpeed * g_RenderOpenGL->m_CameraFront;
+    if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
+        g_RenderOpenGL->m_CameraPos -= cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
+    if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
+        g_RenderOpenGL->m_CameraPos += cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
 }
 
 }

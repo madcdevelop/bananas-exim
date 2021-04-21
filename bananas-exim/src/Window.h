@@ -2,6 +2,13 @@
 
 #include "Common.h"
 
+// Virtual Key Codes
+// https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+#define BANANAS_KEY_W 0x57
+#define BANANAS_KEY_S 0x53
+#define BANANAS_KEY_D 0x44
+#define BANANAS_KEY_A 0x41
+
 namespace Core
 {
 
@@ -37,6 +44,10 @@ protected:
     bool InitGL();
     void Render();
     void Shutdown();
+
+private:
+    void KeyboardInput();
+
 };
 
 }
