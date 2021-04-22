@@ -25,8 +25,17 @@ public:
     const wchar_t*  m_WindowTitle;
 
 private:
+    // Timing
     double m_DeltaTime = 0.0;
     double m_LastFrameTime = 0.0;
+
+    // Camera
+    bool m_FirstMouse = true;
+    float m_Yaw   = -90.0f;
+    float m_Pitch =  0.0f;
+    float m_LastX;
+    float m_LastY;
+    float m_Fov   =  45.0f;
 
 public:
     Window(HINSTANCE hInstance, HWND hwnd);
@@ -46,7 +55,8 @@ protected:
     void Shutdown();
 
 private:
-    void KeyboardInput();
+    void CameraMoveKeyboardInput();
+    void CameraMoveMouseInput();
 
 };
 
