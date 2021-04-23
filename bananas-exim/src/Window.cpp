@@ -164,7 +164,11 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             if(GetAsyncKeyState(VK_MBUTTON) & 0x8000)
             {
-                CameraMoveMouseInput();
+                POINT pos{ 0, 0 };
+                if (GetCursorPos(&pos))
+                {
+                    CameraMoveMouseInput(pos);
+                }
             }
             else {
                 m_FirstMouse = true;
@@ -218,44 +222,38 @@ void Window::CameraMoveKeyboardInput()
         g_RenderOpenGL->m_CameraPos += cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
 }
 
-void Window::CameraMoveMouseInput()
+void Window::CameraMoveMouseInput(const POINT& pos)
 {
-    POINT pos{ 0, 0 };
-    BOOL result = GetCursorPos(&pos);
-    if (result)
+    if(m_FirstMouse)
     {
-        if(m_FirstMouse)
-        {
-            m_LastX = (float)pos.x;
-            m_LastY = (float)pos.y;
-            m_FirstMouse = false;
-        }
-
-        float xoffset = (float)pos.x - m_LastX;
-        float yoffset = m_LastY - (float)pos.y;
         m_LastX = (float)pos.x;
         m_LastY = (float)pos.y;
-
-        float sensitivity = 0.1f;
-        xoffset *= sensitivity;
-        yoffset *= sensitivity;
-
-        m_Yaw   += xoffset;
-        m_Pitch += yoffset;
-
-        // if pitch is out of bounds, screen doesn't get flipped
-        if(m_Pitch > 89.0f)
-            m_Pitch = 89.0f;
-        if(m_Pitch < -89.0f)
-            m_Pitch = -89.0f;
-
-        glm::vec3 direction;
-        direction.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-        direction.y = sin(glm::radians(m_Pitch));
-        direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-        g_RenderOpenGL->m_CameraFront = glm::normalize(direction);
+        m_FirstMouse = false;
     }
 
+    float xoffset = (float)pos.x - m_LastX;
+    float yoffset = m_LastY - (float)pos.y;
+    m_LastX = (float)pos.x;
+    m_LastY = (float)pos.y;
+
+    float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    m_Yaw   += xoffset;
+    m_Pitch += yoffset;
+
+    // if pitch is out of bounds, screen doesn't get flipped
+    if(m_Pitch > 89.0f)
+        m_Pitch = 89.0f;
+    if(m_Pitch < -89.0f)
+        m_Pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+    direction.y = sin(glm::radians(m_Pitch));
+    direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+    g_RenderOpenGL->m_CameraFront = glm::normalize(direction);
 }
 
 }

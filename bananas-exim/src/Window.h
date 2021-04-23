@@ -56,7 +56,7 @@ protected:
 
 private:
     void CameraMoveKeyboardInput();
-    void CameraMoveMouseInput();
+    void CameraMoveMouseInput(const POINT& pos);
 
 };
 
