@@ -23,6 +23,7 @@
     <None Include="content\test_vs.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Entity.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\extern\glad\glad.c" />

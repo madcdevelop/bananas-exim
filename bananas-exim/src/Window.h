@@ -31,11 +31,8 @@ private:
 
     // Camera
     bool m_FirstMouse = true;
-    float m_Yaw   = -90.0f;
-    float m_Pitch =  0.0f;
     float m_LastX;
     float m_LastY;
-    float m_Fov   =  45.0f;
 
 public:
     Window(HINSTANCE hInstance, HWND hwnd);
@@ -55,8 +52,8 @@ protected:
     void Shutdown();
 
 private:
-    void CameraMoveKeyboardInput();
-    void CameraMoveMouseInput(const POINT& pos);
+    void CameraKeyboardCallback();
+    void CameraMouseCallback(const POINT& pos);
 
 };
 

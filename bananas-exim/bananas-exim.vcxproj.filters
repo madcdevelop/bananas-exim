@@ -15,6 +15,7 @@
     <ClInclude Include="src\RendererTestData.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\Timestep.h" />
+    <ClInclude Include="src\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Entity.cpp" />
@@ -26,5 +27,6 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Timestep.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
   </ItemGroup>
 </Project>

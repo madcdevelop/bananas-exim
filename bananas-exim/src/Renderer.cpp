@@ -3,7 +3,8 @@
 namespace Core
 {
 Renderer::Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture)
-    : m_Window(window), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(texture) 
+    : m_Window(window), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(texture),
+      m_Camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
     Init();
 }
@@ -83,7 +84,7 @@ void Renderer::CameraTransform(glm::mat4 projection)
     glm::mat4 model = glm::mat4(1.0f);
 
     // Camera Matrix
-    glm::mat4 view = glm::lookAt(m_CameraPos, m_CameraPos + m_CameraFront, m_CameraUp);
+    glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
 
     // ModelViewProjection : multiplication of 3 matrices
     glm::mat4 mvp = projection * view * model;

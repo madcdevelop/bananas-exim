@@ -158,7 +158,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
     case WM_KEYDOWN:
         {
-            CameraMoveKeyboardInput();
+            CameraKeyboardCallback();
         } break;
     case WM_MOUSEMOVE:
         {
@@ -167,7 +167,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 POINT pos{ 0, 0 };
                 if (GetCursorPos(&pos))
                 {
-                    CameraMoveMouseInput(pos);
+                    CameraMouseCallback(pos);
                 }
             }
             else {
@@ -209,20 +209,19 @@ void Window::Shutdown()
     ReleaseDC(m_hWnd, m_hDeviceContext);
 }
 
-void Window::CameraMoveKeyboardInput()
+void Window::CameraKeyboardCallback()
 {
-    float cameraSpeed = 75.0f * (float)m_DeltaTime;
     if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-        g_RenderOpenGL->m_CameraPos += cameraSpeed * g_RenderOpenGL->m_CameraFront;
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::FORWARD, (float)m_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-        g_RenderOpenGL->m_CameraPos -= cameraSpeed * g_RenderOpenGL->m_CameraFront;
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::BACKWARD, (float)m_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-        g_RenderOpenGL->m_CameraPos -= cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::LEFT, (float)m_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-        g_RenderOpenGL->m_CameraPos += cameraSpeed * glm::normalize(glm::cross(g_RenderOpenGL->m_CameraFront, g_RenderOpenGL->m_CameraUp));
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::RIGHT, (float)m_DeltaTime);
 }
 
-void Window::CameraMoveMouseInput(const POINT& pos)
+void Window::CameraMouseCallback(const POINT& pos)
 {
     if(m_FirstMouse)
     {
@@ -236,24 +235,7 @@ void Window::CameraMoveMouseInput(const POINT& pos)
     m_LastX = (float)pos.x;
     m_LastY = (float)pos.y;
 
-    float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    m_Yaw   += xoffset;
-    m_Pitch += yoffset;
-
-    // if pitch is out of bounds, screen doesn't get flipped
-    if(m_Pitch > 89.0f)
-        m_Pitch = 89.0f;
-    if(m_Pitch < -89.0f)
-        m_Pitch = -89.0f;
-
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-    direction.y = sin(glm::radians(m_Pitch));
-    direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-    g_RenderOpenGL->m_CameraFront = glm::normalize(direction);
+    g_RenderOpenGL->m_Camera.MouseMovement(xoffset, yoffset);
 }
 
 }
