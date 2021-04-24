@@ -10,6 +10,8 @@ namespace
     Core::IndexBuffer* g_ibo = nullptr;
     Core::Texture* g_Texture = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
+    Core::Timestep* g_Timestep = nullptr;
+
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -29,6 +31,8 @@ Window::Window(HINSTANCE hInstance, HWND hwnd)
       m_WindowStyle(WS_VISIBLE)
 {
     g_Window = this;
+    m_LastX =  m_Width  / 2.0f;
+    m_LastY =  m_Height / 2.0f;
 }
 
 Window::~Window()
@@ -38,8 +42,15 @@ Window::~Window()
 int Window::Run()
 {
     MSG msg = {0};
+    g_Timestep = new Timestep;
+    g_Timestep->StartCounter();
     while(WM_QUIT != msg.message)
     {
+        double time = g_Timestep->GetTime();
+        m_DeltaTime = time - m_LastFrameTime;
+        //g_Timestep->Print(m_LastFrameTime, time, deltaTime);
+        m_LastFrameTime = time;
+
         if(PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
         {
             TranslateMessage(&msg);
@@ -145,6 +156,24 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch(msg)
     {
+    case WM_KEYDOWN:
+        {
+            CameraKeyboardCallback();
+        } break;
+    case WM_MOUSEMOVE:
+        {
+            if(GetAsyncKeyState(VK_MBUTTON) & 0x8000)
+            {
+                POINT pos{ 0, 0 };
+                if (GetCursorPos(&pos))
+                {
+                    CameraMouseCallback(pos);
+                }
+            }
+            else {
+                m_FirstMouse = true;
+            }
+        } break;
     case WM_CLOSE:
         {
             DestroyWindow(hwnd);
@@ -173,10 +202,40 @@ void Window::Shutdown()
     delete g_ibo;
     delete g_Texture;
     delete g_RenderOpenGL;
+    delete g_Timestep;
 
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(m_hRenderContext);
     ReleaseDC(m_hWnd, m_hDeviceContext);
+}
+
+void Window::CameraKeyboardCallback()
+{
+    if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::FORWARD, (float)m_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::BACKWARD, (float)m_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::LEFT, (float)m_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
+        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::RIGHT, (float)m_DeltaTime);
+}
+
+void Window::CameraMouseCallback(const POINT& pos)
+{
+    if(m_FirstMouse)
+    {
+        m_LastX = (float)pos.x;
+        m_LastY = (float)pos.y;
+        m_FirstMouse = false;
+    }
+
+    float xoffset = (float)pos.x - m_LastX;
+    float yoffset = m_LastY - (float)pos.y;
+    m_LastX = (float)pos.x;
+    m_LastY = (float)pos.y;
+
+    g_RenderOpenGL->m_Camera.MouseMovement(xoffset, yoffset);
 }
 
 }

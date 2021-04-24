@@ -1,11 +1,10 @@
 #include "Renderer.h"
 
-#include "Common.h"
-
 namespace Core
 {
 Renderer::Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture)
-    : m_Window(window), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(texture) 
+    : m_Window(window), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(texture),
+      m_Camera(glm::vec3(0.0f, 0.0f, 3.0f))
 {
     Init();
 }
@@ -81,11 +80,11 @@ void Renderer::Draw()
 
 void Renderer::CameraTransform(glm::mat4 projection)
 {
-    // Camera Matrix
-    glm::mat4 view = glm::lookAt(glm::vec3(4,3,-3), glm::vec3(0,0,0), glm::vec3(0,1,0));
-
     // Model Matrix : an identity matrix which will be at the origin
     glm::mat4 model = glm::mat4(1.0f);
+
+    // Camera Matrix
+    glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
 
     // ModelViewProjection : multiplication of 3 matrices
     glm::mat4 mvp = projection * view * model;

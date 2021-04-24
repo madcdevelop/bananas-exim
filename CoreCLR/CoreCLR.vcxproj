@@ -143,11 +143,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\ManagedObject.h" />
     <ClInclude Include="src\Window.h" />
   </ItemGroup>

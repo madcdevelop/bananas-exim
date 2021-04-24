@@ -4,12 +4,15 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Texture.h"
-
+#include "Camera.h"
 
 namespace Core
 {
 
 class Renderer {
+
+public:
+    Camera m_Camera;
 
 private:
     VertexBuffer* m_VertexBuffer;
