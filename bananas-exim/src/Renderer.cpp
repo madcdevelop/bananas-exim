@@ -1,17 +1,19 @@
 #include "Renderer.h"
 
+
 namespace Core
 {
 Renderer::Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture)
     : m_Window(window), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(texture),
-      m_Camera(glm::vec3(0.0f, 0.0f, 3.0f))
+      m_Camera(glm::vec3(0.0f, 0.0f, 3.0f)), 
+      m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
+                "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl")
 {
     Init();
 }
 
 Renderer::~Renderer()
 {
-    GLCALL(glDeleteBuffers(1, &m_shaderProgram));
     GLCALL(glDisableVertexAttribArray(0));
     GLCALL(glDisableVertexAttribArray(1));
 }
@@ -26,27 +28,6 @@ void Renderer::Init()
     GLuint vao = 0;
     GLCALL(glGenVertexArrays(1, &vao));
     GLCALL(glBindVertexArray(vao));
-
-    // Shaders
-    // @TODO: Change to relative paths ("content/file_name.glsl")
-    std::string vertexShaderStr   = ReadFile("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl");
-    std::string fragmentShaderStr = ReadFile("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl");
-
-    const char* vertexShader   = vertexShaderStr.c_str();
-    const char* fragmentShader = fragmentShaderStr.c_str();
-
-    // Load Shaders
-    GLCALL(GLuint vs = glCreateShader(GL_VERTEX_SHADER));
-    GLCALL(glShaderSource(vs, 1, &vertexShader, NULL));
-    GLCALL(glCompileShader(vs));
-    GLCALL(GLuint fs = glCreateShader(GL_FRAGMENT_SHADER));
-    GLCALL(glShaderSource(fs, 1, &fragmentShader, NULL));
-    GLCALL(glCompileShader(fs));
-
-    GLCALL(m_shaderProgram = glCreateProgram());
-    GLCALL(glAttachShader(m_shaderProgram, vs));
-    GLCALL(glAttachShader(m_shaderProgram, fs));
-    GLCALL(glLinkProgram(m_shaderProgram));
 
     // Vertex attributes
     GLCALL(glEnableVertexAttribArray(0));
@@ -64,7 +45,7 @@ void Renderer::Draw()
     GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-    GLCALL(glUseProgram(m_shaderProgram));
+    GLCALL(glUseProgram(m_Shader1.m_ProgramId));
 
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
     // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
@@ -73,7 +54,7 @@ void Renderer::Draw()
     m_VertexBuffer->Bind();
     m_IndexBuffer->Bind();
     m_Texture->Bind(0);
-    GLCALL(glUniform1i(glGetUniformLocation(m_shaderProgram, "texture1"), 0));
+    GLCALL(glUniform1i(glGetUniformLocation(m_Shader1.m_ProgramId, "texture1"), 0));
 
     GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 }
@@ -89,7 +70,7 @@ void Renderer::CameraTransform(glm::mat4 projection)
     // ModelViewProjection : multiplication of 3 matrices
     glm::mat4 mvp = projection * view * model;
 
-    GLCALL(unsigned int matrixId = glGetUniformLocation(m_shaderProgram, "mvp"));
+    GLCALL(unsigned int matrixId = glGetUniformLocation(m_Shader1.m_ProgramId, "mvp"));
     GLCALL(glUniformMatrix4fv(matrixId, 1, GL_FALSE, &mvp[0][0]));
 }
 

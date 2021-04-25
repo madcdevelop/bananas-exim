@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Window.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Texture.h"
 #include "Camera.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "VertexBuffer.h"
+#include "Window.h"
 
 namespace Core
 {
@@ -20,7 +21,7 @@ private:
     Texture* m_Texture;
     Window* m_Window;
     
-    GLuint m_shaderProgram;
+    Shader m_Shader1;
 
 public:
     Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture);
