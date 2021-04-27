@@ -3,9 +3,8 @@
 
 namespace Core
 {
-Renderer::Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture)
-    : m_Window(window), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(texture),
-      m_Camera(glm::vec3(0.0f, 0.0f, 3.0f)), 
+Renderer::Renderer(Window* window, Model* model)
+    : m_Window(window), m_Model(model), m_Camera(glm::vec3(0.0f, 0.0f, 3.0f)), 
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl")
 {
@@ -24,20 +23,8 @@ void Renderer::Init()
     GLCALL(glEnable(GL_DEPTH_TEST));
     GLCALL(glDepthFunc(GL_LESS));
 
-    // Vertex Array Object
-    GLuint vao = 0;
-    GLCALL(glGenVertexArrays(1, &vao));
-    GLCALL(glBindVertexArray(vao));
-
-    // Vertex attributes
-    GLCALL(glEnableVertexAttribArray(0));
-    GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));
-    // Texture coordinates(UV) attributes
-    GLCALL(glEnableVertexAttribArray(1));
-    GLCALL(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))));
-
     // Load Textures
-    m_Texture->m_RenderId = m_Texture->LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\uvtemplate.bmp");
+    m_Model->m_Texture.m_RenderId = m_Model->m_Texture.LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\uvtemplate.bmp");
 }
 
 void Renderer::Draw()
@@ -51,9 +38,9 @@ void Renderer::Draw()
     // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
     CameraTransform(projection);
 
-    m_VertexBuffer->Bind();
-    m_IndexBuffer->Bind();
-    m_Texture->Bind(0);
+    m_Model->m_VertexBuffer.Bind();
+    m_Model->m_IndexBuffer.Bind();
+    m_Model->m_Texture.Bind(0);
     GLCALL(glUniform1i(glGetUniformLocation(m_Shader1.m_ProgramId, "texture1"), 0));
 
     GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
@@ -72,25 +59,6 @@ void Renderer::CameraTransform(glm::mat4 projection)
 
     GLCALL(unsigned int matrixId = glGetUniformLocation(m_Shader1.m_ProgramId, "mvp"));
     GLCALL(glUniformMatrix4fv(matrixId, 1, GL_FALSE, &mvp[0][0]));
-}
-
-std::string Renderer::ReadFile(const char* filePath)
-{
-    std::ifstream fileStream(filePath, std::ios::in);
-    if(!fileStream.is_open()) {
-        std::cerr << "Could not read file" << filePath << ". File does not exist." << "\n";
-        return "";
-    }
-
-    std::string line = "";
-    std::string content = "";
-    while(!fileStream.eof()) {
-        std::getline(fileStream, line);
-        content.append(line + "\n");
-    }
-
-    fileStream.close();
-    return content;
 }
 
 }

@@ -8,10 +8,10 @@ namespace
     Core::Window* g_Window = nullptr;
     Core::VertexBuffer* g_vbo = nullptr;
     Core::IndexBuffer* g_ibo = nullptr;
-    Core::Texture* g_Texture = nullptr;
+    Core::Texture* g_tex = nullptr;
+    Core::Model* g_Model = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
-
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -136,10 +136,11 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
-    g_vbo = new Core::VertexBuffer{vertices, sizeof(vertices)};
-    g_ibo = new Core::IndexBuffer{indices, sizeof(indices)};
-    g_Texture = new Core::Texture;
-    g_RenderOpenGL = new Core::Renderer{this, g_vbo, g_ibo, g_Texture};
+    g_vbo = new Core::VertexBuffer{ vertices, sizeof(vertices) };
+    g_ibo = new Core::IndexBuffer{ indices, sizeof(indices) };
+    g_tex = new Core::Texture;
+    g_Model = new Core::Model{ *g_vbo, *g_ibo, *g_tex };
+    g_RenderOpenGL = new Core::Renderer{this, g_Model};
     
     return true;
 }
@@ -200,7 +201,8 @@ void Window::Shutdown()
     // Delete Rendering objects
     delete g_vbo;
     delete g_ibo;
-    delete g_Texture;
+    delete g_tex;
+    delete g_Model;
     delete g_RenderOpenGL;
     delete g_Timestep;
 
