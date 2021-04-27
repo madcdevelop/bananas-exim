@@ -32,6 +32,22 @@ Shader::~Shader()
     GLCALL(glDeleteBuffers(1, &m_ProgramId));
 }
 
+void Shader::UseProgram()
+{
+    GLCALL(glUseProgram(m_ProgramId));
+}
+
+void Shader::SetInt1(const char* name, int v0)
+{
+    GLCALL(glUniform1i(glGetUniformLocation(m_ProgramId, name), v0));
+}
+
+void Shader::SetMatrix4fv(const char* name, int count, bool transpose, const float* matrix)
+{
+    GLCALL(unsigned int matrixId = glGetUniformLocation(m_ProgramId, name));
+    GLCALL(glUniformMatrix4fv(matrixId, count, transpose, matrix));
+}
+
 std::string Shader::ReadFile(const char* filePath)
 {
     std::ifstream fileStream(filePath, std::ios::in);

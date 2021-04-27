@@ -13,10 +13,10 @@ Model::Model(const VertexBuffer& vbo, const IndexBuffer& ibo, const Texture& tex
     GLCALL(glGenVertexArrays(1, &vao));
     GLCALL(glBindVertexArray(vao));
 
-    //unsigned int lightVAO;
-    //GLCALL(glGenVertexArrays(1, &lightVAO));
-    //GLCALL(glBindVertexArray(lightVAO));
-
+    unsigned int lightVAO;
+    GLCALL(glGenVertexArrays(1, &lightVAO));
+    GLCALL(glBindVertexArray(lightVAO));
+    
     // Vertex attributes
     GLCALL(glEnableVertexAttribArray(0));
     GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));

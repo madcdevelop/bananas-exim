@@ -4,9 +4,11 @@
 namespace Core
 {
 Renderer::Renderer(Window* window, Model* model)
-    : m_Window(window), m_Model(model), m_Camera(glm::vec3(0.0f, 0.0f, 3.0f)), 
+    : m_Model(model), m_Camera(glm::vec3(0.0f, 0.0f, 3.0f)), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
-                "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl")
+                "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
+      m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
+                    "C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_fs.glsl")
 {
     Init();
 }
@@ -32,7 +34,8 @@ void Renderer::Draw()
     GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-    GLCALL(glUseProgram(m_Shader1.m_ProgramId));
+    m_Shader1.UseProgram();
+    m_Shader1.SetInt1("texture1", 0);    
 
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
     // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
@@ -41,7 +44,8 @@ void Renderer::Draw()
     m_Model->m_VertexBuffer.Bind();
     m_Model->m_IndexBuffer.Bind();
     m_Model->m_Texture.Bind(0);
-    GLCALL(glUniform1i(glGetUniformLocation(m_Shader1.m_ProgramId, "texture1"), 0));
+
+    // m_ShaderLight.UseProgram();
 
     GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 }
@@ -57,8 +61,8 @@ void Renderer::CameraTransform(glm::mat4 projection)
     // ModelViewProjection : multiplication of 3 matrices
     glm::mat4 mvp = projection * view * model;
 
-    GLCALL(unsigned int matrixId = glGetUniformLocation(m_Shader1.m_ProgramId, "mvp"));
-    GLCALL(glUniformMatrix4fv(matrixId, 1, GL_FALSE, &mvp[0][0]));
+    // Uniform
+    m_Shader1.SetMatrix4fv("mvp", 1, GL_FALSE, &mvp[0][0]);
 }
 
 }

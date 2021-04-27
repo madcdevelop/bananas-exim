@@ -17,6 +17,7 @@ public:
 private:
     Window* m_Window;
     Shader m_Shader1;
+    Shader m_ShaderLight;
 
 public:
     Renderer(Window* window, Model* model);
