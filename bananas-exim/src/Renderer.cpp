@@ -37,32 +37,27 @@ void Renderer::Draw()
     m_Shader1.UseProgram();
     m_Shader1.SetInt1("texture1", 0);    
 
+    // mvp
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
-    // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
-    CameraTransform(projection);
+    glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 mvp = projection * view * model;
+    m_Shader1.SetMatrix4fv("mvp", 1, GL_FALSE, &mvp[0][0]);
 
     m_Model->m_VertexBuffer.Bind();
     m_Model->m_IndexBuffer.Bind();
     m_Model->m_Texture.Bind(0);
 
-    // m_ShaderLight.UseProgram();
-
     GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
-}
 
-void Renderer::CameraTransform(glm::mat4 projection)
-{
-    // Model Matrix : an identity matrix which will be at the origin
-    glm::mat4 model = glm::mat4(1.0f);
+     m_ShaderLight.UseProgram();
+     model = glm::mat4(1.0f);
+     model = glm::translate(model, glm::vec3(1.2f, 1.0f, 2.0f));
+     model = glm::scale(model, glm::vec3(0.2f));
+     mvp   = projection * view * model;
+     m_ShaderLight.SetMatrix4fv("mvp", 1, GL_FALSE, &mvp[0][0]);
 
-    // Camera Matrix
-    glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
-
-    // ModelViewProjection : multiplication of 3 matrices
-    glm::mat4 mvp = projection * view * model;
-
-    // Uniform
-    m_Shader1.SetMatrix4fv("mvp", 1, GL_FALSE, &mvp[0][0]);
+     GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 }
 
 }

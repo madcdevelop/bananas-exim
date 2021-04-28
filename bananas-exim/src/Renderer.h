@@ -25,7 +25,6 @@ public:
 
     void Init();
     void Draw();
-    void CameraTransform(glm::mat4 projection);
 
 };
 

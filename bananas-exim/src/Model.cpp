@@ -4,18 +4,13 @@ namespace Core
 {
 
 Model::Model(const VertexBuffer& vbo, const IndexBuffer& ibo, const Texture& tex)
-    : m_VertexBuffer(vbo),
-      m_IndexBuffer(ibo),
-      m_Texture(tex)
+    : m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Texture(tex),
+      m_VAO(0)
 {
     // Vertex Array Object
-    unsigned int vao = 0;
-    GLCALL(glGenVertexArrays(1, &vao));
-    GLCALL(glBindVertexArray(vao));
-
-    unsigned int lightVAO;
-    GLCALL(glGenVertexArrays(1, &lightVAO));
-    GLCALL(glBindVertexArray(lightVAO));
+    unsigned int m_VAO;
+    GLCALL(glGenVertexArrays(1, &m_VAO));
+    GLCALL(glBindVertexArray(m_VAO));
     
     // Vertex attributes
     GLCALL(glEnableVertexAttribArray(0));
