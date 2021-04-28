@@ -18,7 +18,7 @@ public:
 
     // Uniforms
     void SetInt1(const char* name, int v0);
-    void SetMatrix4fv(const char* name, int count, bool transpose, const float* value);
+    void SetMatrix4fv(const char* name, int count, bool transpose, const float* matrix);
 
 private:
     std::string ReadFile(const char* filePath);
