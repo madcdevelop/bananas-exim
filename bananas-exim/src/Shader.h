@@ -18,6 +18,9 @@ public:
 
     // Uniforms
     void SetInt1(const char* name, int v0);
+
+    void SetVec3fv(const char* name, int count, const float* vec);
+
     void SetMatrix4fv(const char* name, int count, bool transpose, const float* matrix);
 
 private:

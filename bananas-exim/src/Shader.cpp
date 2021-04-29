@@ -42,10 +42,14 @@ void Shader::SetInt1(const char* name, int v0)
     GLCALL(glUniform1i(glGetUniformLocation(m_ProgramId, name), v0));
 }
 
+void Shader::SetVec3fv(const char* name, int count, const float* vec)
+{
+    GLCALL(glUniform3fv(glGetUniformLocation(m_ProgramId, name), count, vec));
+}
+
 void Shader::SetMatrix4fv(const char* name, int count, bool transpose, const float* matrix)
 {
-    GLCALL(unsigned int matrixId = glGetUniformLocation(m_ProgramId, name));
-    GLCALL(glUniformMatrix4fv(matrixId, count, transpose, matrix));
+    GLCALL(glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name), count, transpose, matrix));
 }
 
 std::string Shader::ReadFile(const char* filePath)

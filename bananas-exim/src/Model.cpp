@@ -14,10 +14,13 @@ Model::Model(const VertexBuffer& vbo, const IndexBuffer& ibo, const Texture& tex
     
     // Vertex attributes
     GLCALL(glEnableVertexAttribArray(0));
-    GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0));
-    // Texture coordinates(UV) attributes
+    GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0));
+    // Normal attributes
     GLCALL(glEnableVertexAttribArray(1));
-    GLCALL(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))));
+    GLCALL(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))));
+    // Texture coordinates(UV) attributes
+    GLCALL(glEnableVertexAttribArray(2));
+    GLCALL(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))));
 }
 
 Model::~Model()
