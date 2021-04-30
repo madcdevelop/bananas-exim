@@ -193,7 +193,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 void Window::Render()
 {
-    g_RenderOpenGL->Draw();
+    g_RenderOpenGL->Draw((float)g_Timestep->GetTime());
 }
 
 void Window::Shutdown()

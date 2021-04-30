@@ -29,12 +29,17 @@ void Renderer::Init()
     m_Model->m_Texture.m_RenderId = m_Model->m_Texture.LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\uvtemplate.bmp");
 }
 
-void Renderer::Draw()
+void Renderer::Draw(float timestep)
 {
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-    glm::vec3 lightPos = glm::vec3(1.5f, 1.5f, 2.0f);
+    // Move light around scene
+    float lightPosX = 1.5f * sin(timestep);
+    float lightPosY = 1.2f;
+    float lightPosZ = 2.0f * cos(timestep);
+    glm::vec3 lightPos = glm::vec3(lightPosX, lightPosY, lightPosZ);
+
     m_Shader1.UseProgram();
     m_Shader1.SetInt1("texture1", 0);
     m_Shader1.SetVec3fv("lightPos", 1, &lightPos[0]);

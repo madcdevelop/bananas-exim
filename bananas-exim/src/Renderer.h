@@ -24,7 +24,7 @@ public:
     ~Renderer();
 
     void Init();
-    void Draw();
+    void Draw(float timestep);
 
 };
 
