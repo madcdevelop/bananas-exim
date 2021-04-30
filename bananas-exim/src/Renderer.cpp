@@ -39,6 +39,7 @@ void Renderer::Draw()
     m_Shader1.SetInt1("texture1", 0);
     m_Shader1.SetVec3fv("lightPos", 1, &lightPos[0]);
     m_Shader1.SetVec3fv("lightColor", 1, &glm::vec3(1.2f, 1.2f, 1.2f)[0]);
+    m_Shader1.SetVec3fv("viewPos", 1, &m_Camera.m_Position[0]);
 
     // mvp
     glm::mat4 model = glm::mat4(1.0f);
