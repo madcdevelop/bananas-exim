@@ -37,19 +37,29 @@ void Shader::UseProgram()
     GLCALL(glUseProgram(m_ProgramId));
 }
 
-void Shader::SetInt1(const char* name, int v0)
+void Shader::SetFloat(const std::string& name, float v0)
 {
-    GLCALL(glUniform1i(glGetUniformLocation(m_ProgramId, name), v0));
+    GLCALL(glUniform1f(glGetUniformLocation(m_ProgramId, name.c_str()), v0));
 }
 
-void Shader::SetVec3fv(const char* name, int count, const float* vec)
+void Shader::SetInt(const std::string& name, int v0)
 {
-    GLCALL(glUniform3fv(glGetUniformLocation(m_ProgramId, name), count, vec));
+    GLCALL(glUniform1i(glGetUniformLocation(m_ProgramId, name.c_str()), v0));
 }
 
-void Shader::SetMatrix4fv(const char* name, int count, bool transpose, const float* matrix)
+void Shader::SetVec3(const std::string& name, float v0, float v1, float v2)
 {
-    GLCALL(glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name), count, transpose, matrix));
+    GLCALL(glUniform3f(glGetUniformLocation(m_ProgramId, name.c_str()), v0, v1, v2));
+}
+
+void Shader::SetVec3(const std::string& name, const glm::vec3& vec) const
+{
+    GLCALL(glUniform3fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, &vec[0]));
+}
+
+void Shader::SetMatrix4(const std::string& name, const bool isTranspose, const glm::mat4& matrix) const
+{
+    GLCALL(glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, isTranspose, &matrix[0][0]));
 }
 
 std::string Shader::ReadFile(const char* filePath)
