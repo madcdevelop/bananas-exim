@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include <vector>
+
 #include "Renderer.h"
 #include "RendererTestData.h"
 
@@ -9,6 +11,7 @@ namespace
     Core::VertexBuffer* g_vbo = nullptr;
     Core::IndexBuffer* g_ibo = nullptr;
     Core::Texture* g_tex = nullptr;
+    std::vector<Core::Texture>* g_textures = nullptr;
     Core::Model* g_Model = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
@@ -138,8 +141,10 @@ bool Window::InitGL()
     // Init Rendering
     g_vbo = new Core::VertexBuffer{ vertices, sizeof(vertices) };
     g_ibo = new Core::IndexBuffer{ indices, sizeof(indices) };
-    g_tex = new Core::Texture;
-    g_Model = new Core::Model{ *g_vbo, *g_ibo, *g_tex };
+    g_textures = new std::vector<Texture>();
+    g_textures->push_back(Core::Texture()); // diffuse map
+    g_textures->push_back(Core::Texture()); // specular map
+    g_Model = new Core::Model{ *g_vbo, *g_ibo, *g_textures };
     g_RenderOpenGL = new Core::Renderer{this, g_Model};
     
     return true;
@@ -201,7 +206,7 @@ void Window::Shutdown()
     // Delete Rendering objects
     delete g_vbo;
     delete g_ibo;
-    delete g_tex;
+    delete g_textures;
     delete g_Model;
     delete g_RenderOpenGL;
     delete g_Timestep;

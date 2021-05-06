@@ -26,7 +26,8 @@ void Renderer::Init()
     GLCALL(glDepthFunc(GL_LESS));
 
     // Load Textures
-    m_Model->m_Texture.m_RenderId = m_Model->m_Texture.LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
+    m_Model->m_Textures[0].m_RenderId = m_Model->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
+    m_Model->m_Textures[1].m_RenderId = m_Model->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container_specular.bmp");
 }
 
 void Renderer::Draw(float timestep)
@@ -43,6 +44,7 @@ void Renderer::Draw(float timestep)
     // textured cube
     m_Shader1.UseProgram();
     m_Shader1.SetInt("material.diffuse", 0);
+    m_Shader1.SetInt("material.specular", 1);
     m_Shader1.SetVec3("viewPos", m_Camera.m_Position);
 
     glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
@@ -54,12 +56,12 @@ void Renderer::Draw(float timestep)
     m_Shader1.SetVec3("light.diffuse", diffuseColor);
     m_Shader1.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
     m_Shader1.SetVec3("material.ambient",  1.0f, 0.5f, 0.31f);
-    m_Shader1.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
     m_Shader1.SetFloat("material.shininess", 32.0f);
 
     m_Model->m_VertexBuffer.Bind();
     m_Model->m_IndexBuffer.Bind();
-    m_Model->m_Texture.Bind(0);
+    m_Model->m_Textures[0].Bind(0);
+    m_Model->m_Textures[1].Bind(1);
     GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 
     // mvp
