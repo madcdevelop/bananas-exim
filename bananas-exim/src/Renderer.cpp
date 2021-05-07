@@ -48,34 +48,44 @@ void Renderer::Draw(float timestep)
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
-    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+    // glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
     // textured cube
     m_Shader1.UseProgram();
-    m_Shader1.SetInt("material.diffuse", 0);
-    m_Shader1.SetInt("material.specular", 1);
+    m_Shader1.SetVec3("light.position", m_Camera.m_Position);
+    m_Shader1.SetVec3("light.direction", m_Camera.m_Front);
+    m_Shader1.SetFloat("light.cutoff", glm::cos(glm::radians(12.5f)));
+    m_Shader1.SetFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
     m_Shader1.SetVec3("viewPos", m_Camera.m_Position);
-
-    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-    glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
-    m_Shader1.SetVec3("light.position", lightPos);
-    // m_Shader1.SetVec3("light.direction", -0.2f, -1.0f, -0.3f);
-    m_Shader1.SetVec3("light.ambient", ambientColor);
-    m_Shader1.SetVec3("light.diffuse", diffuseColor);
+    
+    // light properties
+    m_Shader1.SetVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+    m_Shader1.SetVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
     m_Shader1.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
-    m_Shader1.SetVec3("material.ambient",  1.0f, 0.5f, 0.31f);
-    m_Shader1.SetFloat("material.shininess", 32.0f);
     m_Shader1.SetFloat("light.constant", 1.0f);
     m_Shader1.SetFloat("light.linear", 0.09f);
     m_Shader1.SetFloat("light.quadratic", 0.032f);
 
+    // material properties
+    m_Shader1.SetFloat("material.shininess", 32.0f);
+
+    // camera
+    glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
+    m_Shader1.SetMatrix4("view", GL_FALSE, view);
+    m_Shader1.SetMatrix4("projection", GL_FALSE, projection);
+
+    // world transformation
+    glm::mat4 model = glm::mat4(1.0f);
+    m_Shader1.SetMatrix4("model", GL_FALSE, model);
+
+    // Bind buffers
     m_Model->m_VertexBuffer.Bind();
     m_Model->m_IndexBuffer.Bind();
     m_Model->m_Textures[0].Bind(0);
     m_Model->m_Textures[1].Bind(1);
 
+    // Local transform
     for(unsigned int i = 0; i < 10; i++)
     {
         glm::mat4 model = glm::mat4(1.0f);
@@ -87,22 +97,17 @@ void Renderer::Draw(float timestep)
         GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
     }
     
-    // camera
-    glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
-    m_Shader1.SetMatrix4("view", GL_FALSE, view);
-    m_Shader1.SetMatrix4("projection", GL_FALSE, projection);
 
     // light cube
-    m_ShaderLight.UseProgram();
-    glm::mat4 lightModel = glm::mat4(1.0f);
-    lightModel = glm::translate(lightModel, lightPos);
-    lightModel = glm::scale(lightModel, glm::vec3(0.2f));
-    m_ShaderLight.SetMatrix4("model", GL_FALSE, lightModel);
-    m_ShaderLight.SetMatrix4("view", GL_FALSE, view);
-    m_ShaderLight.SetMatrix4("projection", GL_FALSE, projection);
+    // m_ShaderLight.UseProgram();
+    // glm::mat4 lightModel = glm::mat4(1.0f);
+    // lightModel = glm::translate(lightModel, lightPos);
+    // lightModel = glm::scale(lightModel, glm::vec3(0.2f));
+    // m_ShaderLight.SetMatrix4("model", GL_FALSE, lightModel);
+    // m_ShaderLight.SetMatrix4("view", GL_FALSE, view);
+    // m_ShaderLight.SetMatrix4("projection", GL_FALSE, projection);
 
-    GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+    // GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 }
 
 }
