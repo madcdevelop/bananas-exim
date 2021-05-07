@@ -48,6 +48,8 @@ void Renderer::Draw(float timestep)
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
+    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
     // textured cube
     m_Shader1.UseProgram();
     m_Shader1.SetInt("material.diffuse", 0);
@@ -58,12 +60,16 @@ void Renderer::Draw(float timestep)
     glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f);
     glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
-    m_Shader1.SetVec3("light.direction", -0.2f, -1.0f, -0.3f);
+    m_Shader1.SetVec3("light.position", lightPos);
+    // m_Shader1.SetVec3("light.direction", -0.2f, -1.0f, -0.3f);
     m_Shader1.SetVec3("light.ambient", ambientColor);
     m_Shader1.SetVec3("light.diffuse", diffuseColor);
     m_Shader1.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
     m_Shader1.SetVec3("material.ambient",  1.0f, 0.5f, 0.31f);
     m_Shader1.SetFloat("material.shininess", 32.0f);
+    m_Shader1.SetFloat("light.constant", 1.0f);
+    m_Shader1.SetFloat("light.linear", 0.09f);
+    m_Shader1.SetFloat("light.quadratic", 0.032f);
 
     m_Model->m_VertexBuffer.Bind();
     m_Model->m_IndexBuffer.Bind();
@@ -88,15 +94,15 @@ void Renderer::Draw(float timestep)
     m_Shader1.SetMatrix4("projection", GL_FALSE, projection);
 
     // light cube
-    // m_ShaderLight.UseProgram();
-    // model = glm::mat4(1.0f);
-    // model = glm::translate(model, lightPos);
-    // model = glm::scale(model, glm::vec3(0.2f));
-    // m_ShaderLight.SetMatrix4("model", GL_FALSE, model);
-    // m_ShaderLight.SetMatrix4("view", GL_FALSE, view);
-    // m_ShaderLight.SetMatrix4("projection", GL_FALSE, projection);
+    m_ShaderLight.UseProgram();
+    glm::mat4 lightModel = glm::mat4(1.0f);
+    lightModel = glm::translate(lightModel, lightPos);
+    lightModel = glm::scale(lightModel, glm::vec3(0.2f));
+    m_ShaderLight.SetMatrix4("model", GL_FALSE, lightModel);
+    m_ShaderLight.SetMatrix4("view", GL_FALSE, view);
+    m_ShaderLight.SetMatrix4("projection", GL_FALSE, projection);
 
-    // GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+    GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
 }
 
 }
