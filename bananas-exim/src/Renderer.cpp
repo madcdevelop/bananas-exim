@@ -1,8 +1,10 @@
 #include "Renderer.h"
 
+#define NR_POINT_LIGHTS 4
 
 namespace Core
 {
+
 Renderer::Renderer(Window* window, Model* model)
     : m_Model(model), m_Camera(glm::vec3(1.0f, 1.0f, 3.0f)), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
@@ -35,6 +37,7 @@ void Renderer::Draw(float timestep)
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
+    // @TODO: move to global render data
     glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f),
         glm::vec3( 2.0f,  5.0f, -15.0f),
@@ -48,26 +51,53 @@ void Renderer::Draw(float timestep)
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
-    // glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+    // @TODO: move to global render data
+    glm::vec3 pointLightPositions[] = {
+        glm::vec3( 0.7f,  0.2f,  2.0f),
+        glm::vec3( 2.3f, -3.3f, -4.0f),
+        glm::vec3(-4.0f,  2.0f, -12.0f),
+        glm::vec3( 0.0f,  0.0f, -3.0f)
+    };
+
+    const float constant  = 1.0f;
+    const float linear    = 0.09f;
+    const float quadratic = 0.032f;
 
     // textured cube
     m_Shader1.UseProgram();
-    m_Shader1.SetVec3("light.position", m_Camera.m_Position);
-    m_Shader1.SetVec3("light.direction", m_Camera.m_Front);
-    m_Shader1.SetFloat("light.cutoff", glm::cos(glm::radians(12.5f)));
-    m_Shader1.SetFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
     m_Shader1.SetVec3("viewPos", m_Camera.m_Position);
-    
-    // light properties
-    m_Shader1.SetVec3("light.ambient", 0.1f, 0.1f, 0.1f);
-    m_Shader1.SetVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
-    m_Shader1.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
-    m_Shader1.SetFloat("light.constant", 1.0f);
-    m_Shader1.SetFloat("light.linear", 0.09f);
-    m_Shader1.SetFloat("light.quadratic", 0.032f);
-
-    // material properties
     m_Shader1.SetFloat("material.shininess", 32.0f);
+
+    // directional light properties
+    m_Shader1.SetVec3("dirLight.direction",  m_Camera.m_Front);
+    m_Shader1.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+    m_Shader1.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+    m_Shader1.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+
+    // point light properties
+    for(unsigned int i = 0; i < NR_POINT_LIGHTS; i++)
+    {
+        std::string index = std::to_string(i);
+        m_Shader1.SetVec3("pointLights[" + index + "].position", pointLightPositions[0]);
+        m_Shader1.SetVec3("pointLights[" + index + "].ambient", 0.05f, 0.05f, 0.05f);
+        m_Shader1.SetVec3("pointLights[" + index + "].diffuse", 0.8f, 0.8f, 0.8f);
+        m_Shader1.SetVec3("pointLights[" + index + "].specular", 1.0f, 1.0f, 1.0f);
+        m_Shader1.SetFloat("pointLights[" + index + "].constant", constant);
+        m_Shader1.SetFloat("pointLights[" + index + "].linear", linear);
+        m_Shader1.SetFloat("pointLights[" + index + "].quadratic", quadratic);
+    }
+
+    // spot light properties
+    m_Shader1.SetVec3("spotLight.position", m_Camera.m_Position);
+    m_Shader1.SetVec3("spotLight.direction", m_Camera.m_Front);
+    m_Shader1.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+    m_Shader1.SetVec3("spotLight.diffuse", 0.8f, 0.8f, 0.8f);
+    m_Shader1.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+    m_Shader1.SetFloat("spotLight.cutoff", glm::cos(glm::radians(12.5f)));
+    m_Shader1.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
+    m_Shader1.SetFloat("spotLight.constant", constant);
+    m_Shader1.SetFloat("spotLight.linear", linear);
+    m_Shader1.SetFloat("spotLight.quadratic", quadratic);
 
     // camera
     glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
@@ -85,7 +115,7 @@ void Renderer::Draw(float timestep)
     m_Model->m_Textures[0].Bind(0);
     m_Model->m_Textures[1].Bind(1);
 
-    // Local transform
+    // Textured Cubes Transform
     for(unsigned int i = 0; i < 10; i++)
     {
         glm::mat4 model = glm::mat4(1.0f);
@@ -96,18 +126,22 @@ void Renderer::Draw(float timestep)
 
         GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
     }
-    
 
     // light cube
-    // m_ShaderLight.UseProgram();
-    // glm::mat4 lightModel = glm::mat4(1.0f);
-    // lightModel = glm::translate(lightModel, lightPos);
-    // lightModel = glm::scale(lightModel, glm::vec3(0.2f));
-    // m_ShaderLight.SetMatrix4("model", GL_FALSE, lightModel);
-    // m_ShaderLight.SetMatrix4("view", GL_FALSE, view);
-    // m_ShaderLight.SetMatrix4("projection", GL_FALSE, projection);
+    m_ShaderLight.UseProgram();
+    m_ShaderLight.SetMatrix4("view", GL_FALSE, view);
+    m_ShaderLight.SetMatrix4("projection", GL_FALSE, projection);
 
-    // GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+    for(unsigned int i = 0; i < 4; i++)
+    {
+        glm::mat4 lightModel = glm::mat4(1.0f);
+        lightModel = glm::translate(lightModel, pointLightPositions[i]);
+        lightModel = glm::scale(lightModel, glm::vec3(0.2f));
+        m_ShaderLight.SetMatrix4("model", GL_FALSE, lightModel);
+        
+        GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+    }
+
 }
 
 }
