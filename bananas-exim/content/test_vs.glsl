@@ -5,8 +5,8 @@ layout(location = 1) in vec3 normalPositionLocal;
 layout(location = 2) in vec2 vertexUV;
 
 out vec3 FragPos;
-out vec3 normal;
-out vec2 uv;
+out vec3 Normal;
+out vec2 UV;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -19,7 +19,7 @@ void main() {
 
     // Normal Matrix: very costly on the gpu. For performance move this  
     // op to cpu and send via a uniform
-    normal = mat3(transpose(inverse(model))) * normalPositionLocal;
+    Normal = mat3(transpose(inverse(model))) * normalPositionLocal;
 
-    uv = vertexUV;
+    UV = vertexUV;
 }
