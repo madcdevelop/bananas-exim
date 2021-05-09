@@ -8,18 +8,16 @@ out vec3 FragPos;
 out vec3 Normal;
 out vec2 UV;
 
+uniform mat4 MVP;
 uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat3 normalMatrix;
 
 void main() {
-    gl_Position = projection * view * model * vec4(vertexPositionLocal,1.0);
+    gl_Position = MVP * vec4(vertexPositionLocal,1.0);
     
     FragPos = vec3(model * vec4(vertexPositionLocal, 1.0)); 
 
-    // Normal Matrix: very costly on the gpu. For performance move this  
-    // op to cpu and send via a uniform
-    Normal = mat3(transpose(inverse(model))) * normalPositionLocal;
+    Normal = normalMatrix * normalPositionLocal;
 
     UV = vertexUV;
 }

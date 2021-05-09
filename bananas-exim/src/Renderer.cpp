@@ -101,12 +101,9 @@ void Renderer::Draw(float timestep)
     // Camera
     glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
-    m_Shader1.SetMatrix4("view", GL_FALSE, view);
-    m_Shader1.SetMatrix4("projection", GL_FALSE, projection);
 
     // World transformation
     glm::mat4 model = glm::mat4(1.0f);
-    m_Shader1.SetMatrix4("model", GL_FALSE, model);
 
     // Bind buffers
     m_Model->m_VertexBuffer.Bind();
@@ -121,22 +118,25 @@ void Renderer::Draw(float timestep)
         model = glm::translate(model, g_CubePositions[i]);
         float angle = 20.0f * i;
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
+        glm::mat4 mvp = projection * view * model;
         m_Shader1.SetMatrix4("model", GL_FALSE, model);
+        m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
+        m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
 
         GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
     }
 
     // Light cube
     m_ShaderLight.UseProgram();
-    m_ShaderLight.SetMatrix4("view", GL_FALSE, view);
-    m_ShaderLight.SetMatrix4("projection", GL_FALSE, projection);
 
     for(unsigned int i = 0; i < 4; i++)
     {
         glm::mat4 lightModel = glm::mat4(1.0f);
         lightModel = glm::translate(lightModel, g_PointLightPositions[i]);
         lightModel = glm::scale(lightModel, glm::vec3(0.2f));
-        m_ShaderLight.SetMatrix4("model", GL_FALSE, lightModel);
+        glm::mat4 lightMVP = projection * view * lightModel;
+        m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
         
         GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
     }

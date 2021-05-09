@@ -25,6 +25,8 @@ public:
 
     void SetVec3(const std::string& name, const glm::vec3& vec) const;
 
+    void SetMatrix3(const std::string& name, const bool isTranspose, const glm::mat3& matrix) const;
+
     void SetMatrix4(const std::string& name, const bool isTranspose, const glm::mat4& matrix) const;
 
 private:

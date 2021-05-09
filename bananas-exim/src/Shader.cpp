@@ -57,6 +57,11 @@ void Shader::SetVec3(const std::string& name, const glm::vec3& vec) const
     GLCALL(glUniform3fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, &vec[0]));
 }
 
+void Shader::SetMatrix3(const std::string& name, const bool isTranspose, const glm::mat3& matrix) const
+{
+    GLCALL(glUniformMatrix3fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, isTranspose, &matrix[0][0]));
+}
+
 void Shader::SetMatrix4(const std::string& name, const bool isTranspose, const glm::mat4& matrix) const
 {
     GLCALL(glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, isTranspose, &matrix[0][0]));
