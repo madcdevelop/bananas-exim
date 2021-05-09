@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Window.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Texture.h"
 #include "Camera.h"
+#include "Model.h"
+#include "Shader.h"
+#include "Window.h"
 
 namespace Core
 {
@@ -12,25 +11,21 @@ namespace Core
 class Renderer {
 
 public:
+    Model* m_Model;
     Camera m_Camera;
 
 private:
-    VertexBuffer* m_VertexBuffer;
-    IndexBuffer* m_IndexBuffer;
-    Texture* m_Texture;
     Window* m_Window;
-    
-    GLuint m_shaderProgram;
+    Shader m_Shader1;
+    Shader m_ShaderLight;
 
 public:
-    Renderer(Window* window, VertexBuffer* vbo, IndexBuffer* ibo, Texture* texture);
+    Renderer(Window* window, Model* model);
     ~Renderer();
 
     void Init();
-    void Draw();
-    void CameraTransform(glm::mat4 projection);
+    void Draw(float timestep);
 
-    std::string ReadFile(const char* filePath);
 };
 
 }

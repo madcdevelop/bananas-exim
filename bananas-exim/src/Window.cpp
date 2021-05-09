@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include <vector>
+
 #include "Renderer.h"
 #include "RendererTestData.h"
 
@@ -8,10 +10,11 @@ namespace
     Core::Window* g_Window = nullptr;
     Core::VertexBuffer* g_vbo = nullptr;
     Core::IndexBuffer* g_ibo = nullptr;
-    Core::Texture* g_Texture = nullptr;
+    Core::Texture* g_tex = nullptr;
+    std::vector<Core::Texture>* g_textures = nullptr;
+    Core::Model* g_Model = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
-
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -136,10 +139,13 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
-    g_vbo = new Core::VertexBuffer{vertices, sizeof(vertices)};
-    g_ibo = new Core::IndexBuffer{indices, sizeof(indices)};
-    g_Texture = new Core::Texture;
-    g_RenderOpenGL = new Core::Renderer{this, g_vbo, g_ibo, g_Texture};
+    g_vbo = new Core::VertexBuffer{ vertices, sizeof(vertices) };
+    g_ibo = new Core::IndexBuffer{ indices, sizeof(indices) };
+    g_textures = new std::vector<Texture>();
+    g_textures->push_back(Core::Texture()); // diffuse map
+    g_textures->push_back(Core::Texture()); // specular map
+    g_Model = new Core::Model{ *g_vbo, *g_ibo, *g_textures };
+    g_RenderOpenGL = new Core::Renderer{this, g_Model};
     
     return true;
 }
@@ -192,7 +198,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 void Window::Render()
 {
-    g_RenderOpenGL->Draw();
+    g_RenderOpenGL->Draw((float)g_Timestep->GetTime());
 }
 
 void Window::Shutdown()
@@ -200,7 +206,8 @@ void Window::Shutdown()
     // Delete Rendering objects
     delete g_vbo;
     delete g_ibo;
-    delete g_Texture;
+    delete g_textures;
+    delete g_Model;
     delete g_RenderOpenGL;
     delete g_Timestep;
 

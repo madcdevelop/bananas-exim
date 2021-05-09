@@ -72,7 +72,7 @@ namespace Core
         // Everything is in memory now, the file can be closed
         fclose(file);
 
-        unsigned int textureId;
+        unsigned int textureId = 0;
         GLCALL(glGenTextures(1, &textureId));
         GLCALL(glBindTexture(GL_TEXTURE_2D, textureId));
         GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data));
