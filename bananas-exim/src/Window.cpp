@@ -139,8 +139,24 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
-    g_vbo = new Core::VertexBuffer{ vertices, sizeof(vertices) };
-    g_ibo = new Core::IndexBuffer{ indices, sizeof(indices) };
+
+    // Convert to Vertex and Index buffer to vectors
+    std::vector<Vertex> outVertices;
+    int length = sizeof(vertices)/sizeof(*vertices);
+    for(int i = 0; i < length; (i+=8))
+    {
+        Vertex vertex;
+        vertex.Position   = glm::vec3(vertices[i], vertices[i+1], vertices[i+2]);
+        vertex.Normal     = glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]);
+        vertex.TextureUV  = glm::vec2(vertices[i+6], vertices[i+7]);
+        outVertices.push_back(vertex);
+    }
+
+    std::vector<unsigned int> outIndices;
+    std::copy(std::begin(indices), std::end(indices), std::back_inserter(outIndices));
+
+    g_vbo = new Core::VertexBuffer{ outVertices };
+    g_ibo = new Core::IndexBuffer{ outIndices };
     g_textures = new std::vector<Texture>();
     g_textures->push_back(Core::Texture()); // diffuse map
     g_textures->push_back(Core::Texture()); // specular map
