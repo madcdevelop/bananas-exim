@@ -196,6 +196,14 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 m_FirstMouse = true;
             }
         } break;
+    case WM_SIZE:
+        {
+            // skip first call to resize window
+            if (m_firstResize) ResizeWindowCallback();
+            else m_firstResize = true;
+            
+            return 0;
+        } break;
     case WM_CLOSE:
         {
             DestroyWindow(hwnd);
@@ -259,6 +267,17 @@ void Window::CameraMouseCallback(const POINT& pos)
     m_LastY = (float)pos.y;
 
     g_RenderOpenGL->m_Camera.MouseMovement(xoffset, yoffset);
+}
+
+void Window::ResizeWindowCallback()
+{
+    RECT windowRect = {0};
+    if(GetWindowRect(m_hWnd, &windowRect))
+    {
+        m_Width  = windowRect.right - windowRect.left;
+        m_Height = windowRect.bottom - windowRect.top;
+        GLCALL(glViewport(0, 0, m_Width, m_Height));
+    }
 }
 
 }
