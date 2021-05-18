@@ -35,7 +35,7 @@ private:
     float m_LastY;
 
     // Window Size
-    bool m_initSize = false;
+    bool m_FirstResize = false;
 
 public:
     Window(HINSTANCE hInstance, HWND hwnd);

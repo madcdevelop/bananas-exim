@@ -199,8 +199,8 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_SIZE:
         {
             // skip first call to resize window
-            if (m_firstResize) ResizeWindowCallback();
-            else m_firstResize = true;
+            if (m_FirstResize) ResizeWindowCallback();
+            else m_FirstResize = true;
             
             return 0;
         } break;
