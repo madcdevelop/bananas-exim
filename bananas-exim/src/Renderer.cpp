@@ -1,7 +1,5 @@
 #include "Renderer.h"
 
-#define NR_POINT_LIGHTS 4
-
 // Render data
 glm::vec3 g_CubePositions[] = {
     glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -15,6 +13,7 @@ glm::vec3 g_CubePositions[] = {
     glm::vec3( 1.5f,  0.2f, -1.5f),
     glm::vec3(-1.3f,  1.0f, -1.5f)
 };
+const unsigned int g_CubeCount = sizeof(g_CubePositions) / sizeof(*g_CubePositions);
 
 glm::vec3 g_PointLightPositions[] = {
     glm::vec3( 0.7f,  0.2f,  2.0f),
@@ -22,6 +21,7 @@ glm::vec3 g_PointLightPositions[] = {
     glm::vec3(-4.0f,  2.0f, -12.0f),
     glm::vec3( 0.0f,  0.0f, -3.0f)
 };
+const unsigned int g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
 
 const float g_Constant  = 1.0f;
 const float g_Linear    = 0.09f;
@@ -74,7 +74,7 @@ void Renderer::Draw(float timestep)
     m_Shader1.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
     // Point light properties
-    for(unsigned int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(unsigned int i = 0; i < g_PointLightsCount; i++)
     {
         std::string index = std::to_string(i);
         m_Shader1.SetVec3("pointLights[" + index + "].position", g_PointLightPositions[0]);
@@ -110,7 +110,7 @@ void Renderer::Draw(float timestep)
     m_Mesh->m_IndexBuffer.Bind();
 
     // Textured Cubes Transform
-    for(unsigned int i = 0; i < 10; i++)
+    for(unsigned int i = 0; i < g_CubeCount; i++)
     {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, g_CubePositions[i]);
@@ -128,7 +128,7 @@ void Renderer::Draw(float timestep)
     // Light cube
     m_ShaderLight.UseProgram();
 
-    for(unsigned int i = 0; i < 4; i++)
+    for(unsigned int i = 0; i < g_PointLightsCount; i++)
     {
         glm::mat4 lightModel = glm::mat4(1.0f);
         lightModel = glm::translate(lightModel, g_PointLightPositions[i]);
