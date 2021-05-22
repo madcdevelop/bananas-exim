@@ -5,11 +5,12 @@
 namespace Core
 {
     
-IndexBuffer::IndexBuffer(std::vector<unsigned int> indices)
+IndexBuffer::IndexBuffer(const std::vector<unsigned int>& indices)
+    : m_Indices(indices)
 {
     GLCALL(glGenBuffers(1, &m_RenderId));
     Bind();
-    GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW));
+    GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Indices.size() * sizeof(unsigned int), &m_Indices[0], GL_STATIC_DRAW));
 }
 
 IndexBuffer::~IndexBuffer()

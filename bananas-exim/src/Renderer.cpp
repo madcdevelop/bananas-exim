@@ -65,8 +65,6 @@ void Renderer::Draw(float timestep)
     // Textured cube
     m_Shader1.UseProgram();
     m_Shader1.SetVec3("viewPos", m_Camera.m_Position);
-    m_Shader1.SetInt("material.texture_diffuse1", 0);
-    m_Shader1.SetInt("material.texture_specular1", 1);
     m_Shader1.SetFloat("material.shininess", 32.0f);
 
     // Directional light properties
@@ -110,8 +108,6 @@ void Renderer::Draw(float timestep)
     // Bind buffers
     m_Mesh->m_VertexBuffer.Bind();
     m_Mesh->m_IndexBuffer.Bind();
-    m_Mesh->m_Textures[0].Bind(0);
-    m_Mesh->m_Textures[1].Bind(1);
 
     // Textured Cubes Transform
     for(unsigned int i = 0; i < 10; i++)
@@ -126,8 +122,7 @@ void Renderer::Draw(float timestep)
         m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
         m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
 
-        GLCALL(glDrawElements(GL_TRIANGLES, 6*6, GL_UNSIGNED_INT, 0));
-
+        m_Mesh->Draw(m_Shader1);
     }
 
     // Light cube
@@ -141,7 +136,7 @@ void Renderer::Draw(float timestep)
         glm::mat4 lightMVP = projection * view * lightModel;
         m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
         
-        GLCALL(glDrawElements(GL_TRIANGLES, 6*6, GL_UNSIGNED_INT, 0));
+        m_Mesh->Draw(m_ShaderLight);
     }
 
 }

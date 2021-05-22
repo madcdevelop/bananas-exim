@@ -5,6 +5,8 @@
 #include "IndexBuffer.h"
 #include "Texture.h"
 
+#include "Shader.h"
+
 namespace Core
 {
 
@@ -19,6 +21,8 @@ public:
 public:
     Mesh(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
     ~Mesh();
+
+    void Draw(Shader& shader);
 
 private:
     void SetupMesh();

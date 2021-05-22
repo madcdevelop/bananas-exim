@@ -7,10 +7,14 @@ namespace Core
 
 class IndexBuffer {
 
+public:
+    std::vector<unsigned int> m_Indices;
+
+private:
     unsigned int m_RenderId;
 
 public:
-    IndexBuffer(std::vector<unsigned int> indices);
+    IndexBuffer(const std::vector<unsigned int>& indices);
     ~IndexBuffer();
 
     void Bind() const;
