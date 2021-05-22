@@ -12,7 +12,7 @@ namespace
     Core::IndexBuffer* g_ibo = nullptr;
     Core::Texture* g_tex = nullptr;
     std::vector<Core::Texture>* g_textures = nullptr;
-    Core::Model* g_Model = nullptr;
+    Core::Mesh* g_Mesh = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
 }
@@ -161,8 +161,8 @@ bool Window::InitGL()
     g_textures = new std::vector<Texture>();
     g_textures->push_back(Core::Texture("texture_diffuse"));
     g_textures->push_back(Core::Texture("texture_specular"));
-    g_Model = new Core::Model{ *g_vbo, *g_ibo, *g_textures };
-    g_RenderOpenGL = new Core::Renderer{this, g_Model};
+    g_Mesh = new Core::Mesh{ *g_vbo, *g_ibo, *g_textures };
+    g_RenderOpenGL = new Core::Renderer{this, g_Mesh};
     
     return true;
 }
@@ -232,7 +232,7 @@ void Window::Shutdown()
     delete g_vbo;
     delete g_ibo;
     delete g_textures;
-    delete g_Model;
+    delete g_Mesh;
     delete g_RenderOpenGL;
     delete g_Timestep;
 

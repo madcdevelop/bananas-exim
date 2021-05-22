@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Camera.h"
-#include "Model.h"
+#include "Mesh.h"
 #include "Shader.h"
 #include "Window.h"
 
@@ -11,7 +11,7 @@ namespace Core
 class Renderer {
 
 public:
-    Model* m_Model;
+    Mesh* m_Mesh;
     Camera m_Camera;
 
 private:
@@ -20,7 +20,7 @@ private:
     Shader m_ShaderLight;
 
 public:
-    Renderer(Window* window, Model* model);
+    Renderer(Window* window, Mesh* mesh);
     ~Renderer();
 
     void Init();

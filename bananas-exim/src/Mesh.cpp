@@ -1,20 +1,20 @@
-#include "Model.h"
+#include "Mesh.h"
 
 namespace Core
 {
 
-Model::Model(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex)
+Mesh::Mesh(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex)
     : m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Textures(tex),
       m_VAO(0)
 {
     SetupMesh();
 }
 
-Model::~Model()
+Mesh::~Mesh()
 {
 }
 
-void Model::SetupMesh()
+void Mesh::SetupMesh()
 {
     // Vertex Array Object
     unsigned int m_VAO;

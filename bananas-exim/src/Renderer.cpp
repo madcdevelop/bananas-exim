@@ -30,8 +30,8 @@ const float g_Quadratic = 0.032f;
 namespace Core
 {
 
-Renderer::Renderer(Window* window, Model* model)
-    : m_Model(model), m_Camera(glm::vec3(1.0f, 1.0f, 3.0f)), m_Window(window),
+Renderer::Renderer(Window* window, Mesh* mesh)
+    : m_Mesh(mesh), m_Camera(glm::vec3(1.0f, 1.0f, 3.0f)), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
       m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
@@ -53,8 +53,8 @@ void Renderer::Init()
     GLCALL(glDepthFunc(GL_LESS));
 
     // Load Textures
-    m_Model->m_Textures[0].m_RenderId = m_Model->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
-    m_Model->m_Textures[1].m_RenderId = m_Model->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container_specular.bmp");
+    m_Mesh->m_Textures[0].m_RenderId = m_Mesh->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
+    m_Mesh->m_Textures[1].m_RenderId = m_Mesh->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container_specular.bmp");
 }
 
 void Renderer::Draw(float timestep)
@@ -108,10 +108,10 @@ void Renderer::Draw(float timestep)
     glm::mat4 model = glm::mat4(1.0f);
 
     // Bind buffers
-    m_Model->m_VertexBuffer.Bind();
-    m_Model->m_IndexBuffer.Bind();
-    m_Model->m_Textures[0].Bind(0);
-    m_Model->m_Textures[1].Bind(1);
+    m_Mesh->m_VertexBuffer.Bind();
+    m_Mesh->m_IndexBuffer.Bind();
+    m_Mesh->m_Textures[0].Bind(0);
+    m_Mesh->m_Textures[1].Bind(1);
 
     // Textured Cubes Transform
     for(unsigned int i = 0; i < 10; i++)

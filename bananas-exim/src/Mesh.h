@@ -8,7 +8,7 @@
 namespace Core
 {
 
-class Model 
+class Mesh 
 {
 public:
     VertexBuffer m_VertexBuffer;
@@ -17,8 +17,8 @@ public:
     unsigned int m_VAO;
 
 public:
-    Model(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
-    ~Model();
+    Mesh(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
+    ~Mesh();
 
 private:
     void SetupMesh();
