@@ -20,6 +20,8 @@ public:
     Model(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
     ~Model();
 
+private:
+    void SetupMesh();
 };
 
 }
