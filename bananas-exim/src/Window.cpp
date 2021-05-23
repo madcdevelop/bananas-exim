@@ -12,7 +12,7 @@ namespace
     Core::IndexBuffer* g_ibo = nullptr;
     Core::Texture* g_tex = nullptr;
     std::vector<Core::Texture>* g_textures = nullptr;
-    Core::Model* g_Model = nullptr;
+    Core::Mesh* g_Mesh = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
 }
@@ -139,13 +139,30 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
-    g_vbo = new Core::VertexBuffer{ vertices, sizeof(vertices) };
-    g_ibo = new Core::IndexBuffer{ indices, sizeof(indices) };
+
+    // Convert to Vertex and Index buffer to vectors
+    std::vector<Vertex> outVertices;
+    int verticesLength = sizeof(vertices)/sizeof(*vertices);
+
+    for(int i = 0; i < verticesLength; (i+=8))
+    {
+        Vertex vertex;
+        vertex.Position   = glm::vec3(vertices[i], vertices[i+1], vertices[i+2]);
+        vertex.Normal     = glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]);
+        vertex.TextureUV  = glm::vec2(vertices[i+6], vertices[i+7]);
+        outVertices.push_back(vertex);
+    }
+
+    std::vector<unsigned int> outIndices;
+    std::copy(std::begin(indices), std::end(indices), std::back_inserter(outIndices));
+
+    g_vbo = new Core::VertexBuffer{ outVertices };
+    g_ibo = new Core::IndexBuffer{ outIndices };
     g_textures = new std::vector<Texture>();
-    g_textures->push_back(Core::Texture()); // diffuse map
-    g_textures->push_back(Core::Texture()); // specular map
-    g_Model = new Core::Model{ *g_vbo, *g_ibo, *g_textures };
-    g_RenderOpenGL = new Core::Renderer{this, g_Model};
+    g_textures->push_back(Core::Texture("texture_diffuse"));
+    g_textures->push_back(Core::Texture("texture_specular"));
+    g_Mesh = new Core::Mesh{ *g_vbo, *g_ibo, *g_textures };
+    g_RenderOpenGL = new Core::Renderer{this, g_Mesh};
     
     return true;
 }
@@ -180,6 +197,14 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 m_FirstMouse = true;
             }
         } break;
+    case WM_SIZE:
+        {
+            // skip first call to resize window
+            if (m_FirstResize) ResizeWindowCallback();
+            else m_FirstResize = true;
+            
+            return 0;
+        } break;
     case WM_CLOSE:
         {
             DestroyWindow(hwnd);
@@ -207,7 +232,7 @@ void Window::Shutdown()
     delete g_vbo;
     delete g_ibo;
     delete g_textures;
-    delete g_Model;
+    delete g_Mesh;
     delete g_RenderOpenGL;
     delete g_Timestep;
 
@@ -243,6 +268,17 @@ void Window::CameraMouseCallback(const POINT& pos)
     m_LastY = (float)pos.y;
 
     g_RenderOpenGL->m_Camera.MouseMovement(xoffset, yoffset);
+}
+
+void Window::ResizeWindowCallback()
+{
+    RECT windowRect = {0};
+    if(GetWindowRect(m_hWnd, &windowRect))
+    {
+        m_Width  = windowRect.right - windowRect.left;
+        m_Height = windowRect.bottom - windowRect.top;
+        GLCALL(glViewport(0, 0, m_Width, m_Height));
+    }
 }
 
 }

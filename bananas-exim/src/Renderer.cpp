@@ -1,7 +1,5 @@
 #include "Renderer.h"
 
-#define NR_POINT_LIGHTS 4
-
 // Render data
 glm::vec3 g_CubePositions[] = {
     glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -15,6 +13,7 @@ glm::vec3 g_CubePositions[] = {
     glm::vec3( 1.5f,  0.2f, -1.5f),
     glm::vec3(-1.3f,  1.0f, -1.5f)
 };
+const unsigned int g_CubeCount = sizeof(g_CubePositions) / sizeof(*g_CubePositions);
 
 glm::vec3 g_PointLightPositions[] = {
     glm::vec3( 0.7f,  0.2f,  2.0f),
@@ -22,6 +21,7 @@ glm::vec3 g_PointLightPositions[] = {
     glm::vec3(-4.0f,  2.0f, -12.0f),
     glm::vec3( 0.0f,  0.0f, -3.0f)
 };
+const unsigned int g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
 
 const float g_Constant  = 1.0f;
 const float g_Linear    = 0.09f;
@@ -30,8 +30,8 @@ const float g_Quadratic = 0.032f;
 namespace Core
 {
 
-Renderer::Renderer(Window* window, Model* model)
-    : m_Model(model), m_Camera(glm::vec3(1.0f, 1.0f, 3.0f)), m_Window(window),
+Renderer::Renderer(Window* window, Mesh* mesh)
+    : m_Mesh(mesh), m_Camera(glm::vec3(1.0f, 1.0f, 3.0f)), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
       m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
@@ -53,8 +53,8 @@ void Renderer::Init()
     GLCALL(glDepthFunc(GL_LESS));
 
     // Load Textures
-    m_Model->m_Textures[0].m_RenderId = m_Model->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
-    m_Model->m_Textures[1].m_RenderId = m_Model->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container_specular.bmp");
+    m_Mesh->m_Textures[0].m_RenderId = m_Mesh->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
+    m_Mesh->m_Textures[1].m_RenderId = m_Mesh->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container_specular.bmp");
 }
 
 void Renderer::Draw(float timestep)
@@ -74,7 +74,7 @@ void Renderer::Draw(float timestep)
     m_Shader1.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
     // Point light properties
-    for(unsigned int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(unsigned int i = 0; i < g_PointLightsCount; i++)
     {
         std::string index = std::to_string(i);
         m_Shader1.SetVec3("pointLights[" + index + "].position", g_PointLightPositions[0]);
@@ -106,13 +106,11 @@ void Renderer::Draw(float timestep)
     glm::mat4 model = glm::mat4(1.0f);
 
     // Bind buffers
-    m_Model->m_VertexBuffer.Bind();
-    m_Model->m_IndexBuffer.Bind();
-    m_Model->m_Textures[0].Bind(0);
-    m_Model->m_Textures[1].Bind(1);
+    m_Mesh->m_VertexBuffer.Bind();
+    m_Mesh->m_IndexBuffer.Bind();
 
     // Textured Cubes Transform
-    for(unsigned int i = 0; i < 10; i++)
+    for(unsigned int i = 0; i < g_CubeCount; i++)
     {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, g_CubePositions[i]);
@@ -124,13 +122,13 @@ void Renderer::Draw(float timestep)
         m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
         m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
 
-        GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+        m_Mesh->Draw(m_Shader1);
     }
 
     // Light cube
     m_ShaderLight.UseProgram();
 
-    for(unsigned int i = 0; i < 4; i++)
+    for(unsigned int i = 0; i < g_PointLightsCount; i++)
     {
         glm::mat4 lightModel = glm::mat4(1.0f);
         lightModel = glm::translate(lightModel, g_PointLightPositions[i]);
@@ -138,7 +136,7 @@ void Renderer::Draw(float timestep)
         glm::mat4 lightMVP = projection * view * lightModel;
         m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
         
-        GLCALL(glDrawArrays(GL_TRIANGLES, 0, 36));
+        m_Mesh->Draw(m_ShaderLight);
     }
 
 }

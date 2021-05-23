@@ -1,12 +1,10 @@
 #include "Texture.h"
 
-#include "Common.h"
-
 namespace Core
 {
 
-    Texture::Texture()
-        : m_RenderId(0)
+    Texture::Texture(const std::string& type)
+        : m_RenderId(0), m_Type(type)
     {
     }
 

@@ -5,10 +5,12 @@
 #include "IndexBuffer.h"
 #include "Texture.h"
 
+#include "Shader.h"
+
 namespace Core
 {
 
-class Model 
+class Mesh 
 {
 public:
     VertexBuffer m_VertexBuffer;
@@ -17,9 +19,13 @@ public:
     unsigned int m_VAO;
 
 public:
-    Model(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
-    ~Model();
+    Mesh(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
+    ~Mesh();
 
+    void Draw(Shader& shader);
+
+private:
+    void SetupMesh();
 };
 
 }

@@ -34,6 +34,9 @@ private:
     float m_LastX;
     float m_LastY;
 
+    // Window Size
+    bool m_FirstResize = false;
+
 public:
     Window(HINSTANCE hInstance, HWND hwnd);
     ~Window();
@@ -54,6 +57,7 @@ protected:
 private:
     void CameraKeyboardCallback();
     void CameraMouseCallback(const POINT& pos);
+    void ResizeWindowCallback();
 
 };
 
