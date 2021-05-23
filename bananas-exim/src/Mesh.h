@@ -13,13 +13,16 @@ namespace Core
 class Mesh 
 {
 public:
+    std::string m_Name;
+
     VertexBuffer m_VertexBuffer;
     IndexBuffer  m_IndexBuffer;
     std::vector<Texture> m_Textures;
     unsigned int m_VAO;
 
+
 public:
-    Mesh(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
+    Mesh(const std::string& name, const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
     ~Mesh();
 
     void Draw(Shader& shader);

@@ -3,8 +3,8 @@
 namespace Core
 {
 
-Mesh::Mesh(const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex)
-    : m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Textures(tex),
+Mesh::Mesh(const std::string& name, const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex)
+    : m_Name(name), m_VertexBuffer(vbo), m_IndexBuffer(ibo), m_Textures(tex),
       m_VAO(0)
 {
     SetupMesh();

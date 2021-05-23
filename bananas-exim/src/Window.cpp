@@ -161,7 +161,7 @@ bool Window::InitGL()
     g_textures = new std::vector<Texture>();
     g_textures->push_back(Core::Texture("texture_diffuse"));
     g_textures->push_back(Core::Texture("texture_specular"));
-    g_Mesh = new Core::Mesh{ *g_vbo, *g_ibo, *g_textures };
+    g_Mesh = new Core::Mesh{ "Cube", *g_vbo, *g_ibo, *g_textures };
     g_RenderOpenGL = new Core::Renderer{this, g_Mesh};
     
     return true;
