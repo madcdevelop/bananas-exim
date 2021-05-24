@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Mesh.h"
+#include "Shader.h"
 
 namespace Core
 {
@@ -14,6 +15,12 @@ public:
 public:
     Model(const std::vector<Mesh> meshes);
     ~Model();
+
+    void Draw(Shader& shader);
+
+    bool Import(const char* filePath);
+
+    std::string ImportOBJ(const std::string& content);
 
 };
 

@@ -7,8 +7,8 @@ Shader::Shader(const char* vertexShaderFilePath, const char* fragmentShaderFileP
 {
     // Read Shader Files
     // @TODO: Change to relative paths ("content/file_name.glsl")
-    std::string vertexShaderStr   = ReadFile(vertexShaderFilePath);
-    std::string fragmentShaderStr = ReadFile(fragmentShaderFilePath);
+    std::string vertexShaderStr   = OpenFile(vertexShaderFilePath);
+    std::string fragmentShaderStr = OpenFile(fragmentShaderFilePath);
 
     const char* vertexShader   = vertexShaderStr.c_str();
     const char* fragmentShader = fragmentShaderStr.c_str();
@@ -66,26 +66,5 @@ void Shader::SetMatrix4(const std::string& name, const bool isTranspose, const g
 {
     GLCALL(glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, isTranspose, &matrix[0][0]));
 }
-
-std::string Shader::ReadFile(const char* filePath)
-{
-    std::ifstream fileStream(filePath, std::ios::in);
-    if(!fileStream.is_open()) {
-        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " + std::string(filePath) + ". File does not exist.\n";
-        OutputDebugStringA(errorMessage.c_str());
-        return "";
-    }
-
-    std::string line = "";
-    std::string content = "";
-    while(!fileStream.eof()) {
-        std::getline(fileStream, line);
-        content.append(line + "\n");
-    }
-
-    fileStream.close();
-    return content;
-}
-
 
 }   

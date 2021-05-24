@@ -26,3 +26,23 @@ bool glCheckError_(const char *function, const char *file, int line)
     }
     return true;
 }
+
+std::string OpenFile(const char* filePath)
+{
+    std::ifstream fileStream(filePath, std::ios::in);
+    if(!fileStream.is_open()) {
+        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " + std::string(filePath) + ". File does not exist.\n";
+        OutputDebugStringA(errorMessage.c_str());
+        return "";
+    }
+
+    std::string line = "";
+    std::string content = "";
+    while(!fileStream.eof()) {
+        std::getline(fileStream, line);
+        content.append(line + "\n");
+    }
+
+    fileStream.close();
+    return content;
+}
