@@ -147,9 +147,9 @@ bool Window::InitGL()
     for(int i = 0; i < verticesLength; (i+=8))
     {
         Vertex vertex;
-        vertex.Position   = glm::vec3(vertices[i], vertices[i+1], vertices[i+2]);
-        vertex.Normal     = glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]);
-        vertex.TextureUV  = glm::vec2(vertices[i+6], vertices[i+7]);
+        vertex.position   = glm::vec3(vertices[i], vertices[i+1], vertices[i+2]);
+        vertex.normal     = glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]);
+        vertex.textureUV  = glm::vec2(vertices[i+6], vertices[i+7]);
         outVertices.push_back(vertex);
     }
 

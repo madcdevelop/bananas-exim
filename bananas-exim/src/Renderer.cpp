@@ -1,20 +1,6 @@
 #include "Renderer.h"
 
 // Render data
-glm::vec3 g_CubePositions[] = {
-    glm::vec3( 0.0f,  0.0f,  0.0f),
-    glm::vec3( 2.0f,  5.0f, -15.0f),
-    glm::vec3(-1.5f, -2.2f, -2.5f),
-    glm::vec3(-3.8f, -2.0f, -12.3f),
-    glm::vec3( 2.4f, -0.4f, -3.5f),
-    glm::vec3(-1.7f,  3.0f, -7.5f),
-    glm::vec3( 1.3f, -2.0f, -2.5f),
-    glm::vec3( 1.5f,  2.0f, -2.5f),
-    glm::vec3( 1.5f,  0.2f, -1.5f),
-    glm::vec3(-1.3f,  1.0f, -1.5f)
-};
-const unsigned int g_CubeCount = sizeof(g_CubePositions) / sizeof(*g_CubePositions);
-
 glm::vec3 g_PointLightPositions[] = {
     glm::vec3( 0.7f,  0.2f,  2.0f),
     glm::vec3( 2.3f, -3.3f, -4.0f),
@@ -103,29 +89,23 @@ void Renderer::Draw(float timestep)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
 
     // World transformation
+    // @TODO: May not need world transform for model imported from blender. 
+    //        Vertex Coordinates are already in world space.
     glm::mat4 model = glm::mat4(1.0f);
 
     // Bind buffers
     m_Mesh->m_VertexBuffer.Bind();
     m_Mesh->m_IndexBuffer.Bind();
 
-    // Textured Cubes Transform
-    for(unsigned int i = 0; i < g_CubeCount; i++)
-    {
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, g_CubePositions[i]);
-        float angle = 20.0f * i;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-        glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
-        glm::mat4 mvp = projection * view * model;
-        m_Shader1.SetMatrix4("model", GL_FALSE, model);
-        m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
-        m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
+    // Render Model
+    glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
+    glm::mat4 mvp = projection * view * model;
+    m_Shader1.SetMatrix4("model", GL_FALSE, model);
+    m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
+    m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
+    m_Mesh->Draw(m_Shader1);
 
-        m_Mesh->Draw(m_Shader1);
-    }
-
-    // Light cube
+    // Render Lights
     m_ShaderLight.UseProgram();
 
     for(unsigned int i = 0; i < g_PointLightsCount; i++)

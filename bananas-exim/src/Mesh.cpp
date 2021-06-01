@@ -48,10 +48,10 @@ void Mesh::SetupMesh()
     GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Core::Vertex), (void*)0));
     // Normal attributes
     GLCALL(glEnableVertexAttribArray(1));
-    GLCALL(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Core::Vertex), (void*)offsetof(Core::Vertex, Core::Vertex::Normal)));
+    GLCALL(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Core::Vertex), (void*)offsetof(Core::Vertex, Core::Vertex::normal)));
     // Texture coordinates(UV) attributes
     GLCALL(glEnableVertexAttribArray(2));
-    GLCALL(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Core::Vertex), (void*)offsetof(Core::Vertex, Core::Vertex::TextureUV)));
+    GLCALL(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Core::Vertex), (void*)offsetof(Core::Vertex, Core::Vertex::textureUV)));
 }
 
 }
