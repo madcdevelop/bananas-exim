@@ -13,6 +13,7 @@ namespace
     Core::Texture* g_tex = nullptr;
     std::vector<Core::Texture>* g_textures = nullptr;
     Core::Mesh* g_Mesh = nullptr;
+    Core::Model* g_Model = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
 }
@@ -139,29 +140,21 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
-
-    // Convert to Vertex and Index buffer to vectors
+    std::string outName = "";
     std::vector<Vertex> outVertices;
-    int verticesLength = sizeof(vertices)/sizeof(*vertices);
-
-    for(int i = 0; i < verticesLength; (i+=8))
-    {
-        Vertex vertex;
-        vertex.position   = glm::vec3(vertices[i], vertices[i+1], vertices[i+2]);
-        vertex.normal     = glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]);
-        vertex.textureUV  = glm::vec2(vertices[i+6], vertices[i+7]);
-        outVertices.push_back(vertex);
-    }
-
     std::vector<unsigned int> outIndices;
-    std::copy(std::begin(indices), std::end(indices), std::back_inserter(outIndices));
 
+    // Model
+    g_Model = new Core::Model{};
+    g_Model->Import("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\cube_example_triangle.obj", outName, outVertices, outIndices);
+    
     g_vbo = new Core::VertexBuffer{ outVertices };
     g_ibo = new Core::IndexBuffer{ outIndices };
     g_textures = new std::vector<Texture>();
     g_textures->push_back(Core::Texture("texture_diffuse"));
     g_textures->push_back(Core::Texture("texture_specular"));
-    g_Mesh = new Core::Mesh{ "Cube", *g_vbo, *g_ibo, *g_textures };
+    g_Mesh = new Core::Mesh{ outName, *g_vbo, *g_ibo, *g_textures };
+    
     g_RenderOpenGL = new Core::Renderer{this, g_Mesh};
     
     return true;
@@ -233,6 +226,7 @@ void Window::Shutdown()
     delete g_ibo;
     delete g_textures;
     delete g_Mesh;
+    delete g_Model;
     delete g_RenderOpenGL;
     delete g_Timestep;
 

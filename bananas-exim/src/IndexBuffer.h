@@ -5,6 +5,16 @@
 namespace Core
 {
 
+struct Index {
+    unsigned int positionIndex;
+    unsigned int textureIndex;
+    unsigned int normalIndex;
+};
+
+struct Face {
+    Index indices[3];
+};
+
 class IndexBuffer {
 
 public:

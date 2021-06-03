@@ -13,14 +13,14 @@ public:
     std::vector<Mesh> m_Meshes;
 
 public:
-    Model(const std::vector<Mesh> meshes);
+    Model();
     ~Model();
 
     void Draw(Shader& shader);
+    
+    bool Import(const std::string& filePath, std::string& outName, std::vector<Vertex>& outVertices, std::vector<unsigned int>& outIndices);
+    void ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vector<Vertex>& outVertices, std::vector<unsigned int>& outIndices);
 
-    bool Import(const char* filePath);
-
-    std::string ImportOBJ(const std::string& content);
 
 };
 
