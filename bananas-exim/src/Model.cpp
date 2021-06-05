@@ -1,5 +1,7 @@
 #include "Model.h"
 
+#include <map>
+
 namespace Core
 {
 
@@ -39,7 +41,7 @@ bool Model::Import(const std::string& filePath, std::string& outName, std::vecto
         ImportOBJ(fileStream, outName, outVertices, outIndices);
         return true;
     }
-    
+
     return false;
 }
 
@@ -120,16 +122,33 @@ void Model::ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vect
     }
 
     // Fill vertices based on index coordinates
+    std::map<std::string, int> distinctVertices;
+    int indicesIndex = 0;
+
     for(auto &&f : faces)
     {
         for(auto &&i : f.indices)
         {
-            Vertex v;
-            v.position   = positions[i.positionIndex-1];
-            v.textureUV  = textureCoordinates[i.textureIndex-1];
-            v.normal     = normals[i.normalIndex-1];
-            outVertices.push_back(v);
-            outIndices.push_back(i.positionIndex-1);
+            // Face format: v1/vt1/vn1
+            std::string indexKey = std::to_string(i.positionIndex) + "/" + std::to_string(i.textureIndex) + "/" + std::to_string(i.normalIndex); 
+            auto found = distinctVertices.find(indexKey);
+            if(found != distinctVertices.end()) 
+            {
+                outIndices.push_back(found->second);
+            }
+            else
+            {
+                distinctVertices.insert(std::pair<std::string, int>(indexKey, indicesIndex));
+
+                Vertex v;
+                v.position   = positions[i.positionIndex-1];
+                v.textureUV  = textureCoordinates[i.textureIndex-1];
+                v.normal     = normals[i.normalIndex-1];
+
+                outVertices.push_back(v);
+                outIndices.push_back(indicesIndex);
+                indicesIndex++;
+            }
         }
     }
 }

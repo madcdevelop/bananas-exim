@@ -33,9 +33,7 @@ void Mesh::Draw(Shader& shader)
         m_Textures[texIndex].Bind(texIndex);
     }
 
-    // @TODO: Mesh indices data need to be fixed to draw with indices instead of vertices
-    //GLCALL(glDrawElements(GL_TRIANGLES, static_cast<int>(m_IndexBuffer.m_Indices.size()), GL_UNSIGNED_INT, 0));
-    GLCALL(glDrawArrays(GL_TRIANGLES, 0, static_cast<int>(m_VertexBuffer.m_Vertices.size())));
+    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<int>(m_IndexBuffer.m_Indices.size()), GL_UNSIGNED_INT, 0));
 }
 
 void Mesh::SetupMesh()
