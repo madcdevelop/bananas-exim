@@ -23,6 +23,18 @@ void Model::Draw(Shader& shader)
     }
 }
 
+void Model::LoadTextures()
+{
+    for(unsigned int meshIndex = 0; meshIndex < m_Meshes.size(); meshIndex++)
+    {
+        for(unsigned int texIndex = 0; texIndex < m_Meshes[meshIndex].m_Textures.size(); texIndex++)
+        {
+            Texture* texture = &m_Meshes[meshIndex].m_Textures[texIndex];
+            texture->m_RenderId = texture->LoadBMPCustom(texture->m_FilePath.c_str());
+        }
+    }
+}
+
 bool Model::Import(const std::string& filePath, std::string& outName, std::vector<Vertex>& outVertices, std::vector<unsigned int>& outIndices)
 {
     // Open the file

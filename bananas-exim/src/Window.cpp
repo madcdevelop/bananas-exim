@@ -151,11 +151,12 @@ bool Window::InitGL()
     g_vbo = new Core::VertexBuffer{ outVertices };
     g_ibo = new Core::IndexBuffer{ outIndices };
     g_textures = new std::vector<Texture>();
-    g_textures->push_back(Core::Texture("texture_diffuse"));
-    g_textures->push_back(Core::Texture("texture_specular"));
+    g_textures->push_back(Core::Texture("texture_diffuse", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
+    g_textures->push_back(Core::Texture("texture_specular", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
     g_Mesh = new Core::Mesh{ outName, *g_vbo, *g_ibo, *g_textures };
-    
-    g_RenderOpenGL = new Core::Renderer{this, g_Mesh};
+    g_Model->m_Meshes.push_back(*g_Mesh);
+
+    g_RenderOpenGL = new Core::Renderer{this, g_Model};
     
     return true;
 }

@@ -16,8 +16,8 @@ const float g_Quadratic = 0.032f;
 namespace Core
 {
 
-Renderer::Renderer(Window* window, Mesh* mesh)
-    : m_Mesh(mesh), m_Camera(glm::vec3(1.0f, 7.0f, 10.0f), -90.0f, -30.0f), m_Window(window),
+Renderer::Renderer(Window* window, Model* model)
+    : m_Model(model), m_Camera(glm::vec3(1.0f, 7.0f, 10.0f), -90.0f, -30.0f), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
       m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
@@ -39,8 +39,7 @@ void Renderer::Init()
     GLCALL(glDepthFunc(GL_LESS));
 
     // Load Textures
-    m_Mesh->m_Textures[0].m_RenderId = m_Mesh->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp");
-    m_Mesh->m_Textures[1].m_RenderId = m_Mesh->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp");
+    m_Model->LoadTextures();
 }
 
 void Renderer::Draw(float timestep)
@@ -94,8 +93,11 @@ void Renderer::Draw(float timestep)
     glm::mat4 model = glm::mat4(1.0f);
 
     // Bind buffers
-    m_Mesh->m_VertexBuffer.Bind();
-    m_Mesh->m_IndexBuffer.Bind();
+    for(unsigned int i = 0; i < m_Model->m_Meshes.size(); i++)
+    {
+        m_Model->m_Meshes[i].m_VertexBuffer.Bind();
+        m_Model->m_Meshes[i].m_IndexBuffer.Bind();
+    }
 
     // Render Model
     glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
@@ -103,7 +105,7 @@ void Renderer::Draw(float timestep)
     m_Shader1.SetMatrix4("model", GL_FALSE, model);
     m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
     m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
-    m_Mesh->Draw(m_Shader1);
+    m_Model->Draw(m_Shader1);
 
     // Render Lights
     m_ShaderLight.UseProgram();
@@ -115,8 +117,7 @@ void Renderer::Draw(float timestep)
         lightModel = glm::scale(lightModel, glm::vec3(0.2f));
         glm::mat4 lightMVP = projection * view * lightModel;
         m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
-        
-        m_Mesh->Draw(m_ShaderLight);
+        m_Model->Draw(m_ShaderLight);
     }
 
 }

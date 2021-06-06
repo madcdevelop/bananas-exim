@@ -12,7 +12,7 @@ namespace Core
 class Renderer {
 
 public:
-    Mesh* m_Mesh;
+    Model* m_Model;
     Camera m_Camera;
 
 private:
@@ -21,7 +21,7 @@ private:
     Shader m_ShaderLight;
 
 public:
-    Renderer(Window* window, Mesh* mesh);
+    Renderer(Window* window, Model* model);
     ~Renderer();
 
     void Init();

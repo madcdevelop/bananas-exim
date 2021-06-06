@@ -17,7 +17,8 @@ public:
     ~Model();
 
     void Draw(Shader& shader);
-    
+    void LoadTextures();
+
     bool Import(const std::string& filePath, std::string& outName, std::vector<Vertex>& outVertices, std::vector<unsigned int>& outIndices);
     void ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vector<Vertex>& outVertices, std::vector<unsigned int>& outIndices);
 
