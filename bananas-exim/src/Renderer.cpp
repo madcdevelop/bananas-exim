@@ -2,7 +2,7 @@
 
 // Render data
 glm::vec3 g_PointLightPositions[] = {
-    glm::vec3( 0.7f,  0.2f,  2.0f),
+    glm::vec3(-3.7f,  0.2f,  2.0f),
     glm::vec3( 2.3f, -3.3f, -4.0f),
     glm::vec3(-4.0f,  2.0f, -12.0f),
     glm::vec3( 0.0f,  0.0f, -3.0f)
@@ -17,7 +17,7 @@ namespace Core
 {
 
 Renderer::Renderer(Window* window, Mesh* mesh)
-    : m_Mesh(mesh), m_Camera(glm::vec3(1.0f, 1.0f, 3.0f)), m_Window(window),
+    : m_Mesh(mesh), m_Camera(glm::vec3(1.0f, 7.0f, 10.0f), -90.0f, -30.0f), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
       m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
@@ -39,8 +39,8 @@ void Renderer::Init()
     GLCALL(glDepthFunc(GL_LESS));
 
     // Load Textures
-    m_Mesh->m_Textures[0].m_RenderId = m_Mesh->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
-    m_Mesh->m_Textures[1].m_RenderId = m_Mesh->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container_specular.bmp");
+    m_Mesh->m_Textures[0].m_RenderId = m_Mesh->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp");
+    m_Mesh->m_Textures[1].m_RenderId = m_Mesh->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp");
 }
 
 void Renderer::Draw(float timestep)

@@ -31,7 +31,7 @@ namespace Core
 
 Window::Window(HINSTANCE hInstance, HWND hwnd)
     : m_hInstance(hInstance), m_hWnd(hwnd), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
-      m_Width(800), m_Height(600), m_WindowTitle(nullptr), 
+      m_Width(800), m_Height(600), m_WindowTitle(L"Bananas Export/Import"), 
       m_WindowStyle(WS_VISIBLE)
 {
     g_Window = this;
