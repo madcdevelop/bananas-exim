@@ -8,14 +8,11 @@
 namespace
 {
     Core::Window* g_Window = nullptr;
-    Core::VertexBuffer* g_vbo = nullptr;
-    Core::IndexBuffer* g_ibo = nullptr;
-    Core::Texture* g_tex = nullptr;
-    std::vector<Core::Texture>* g_textures = nullptr;
-    Core::Mesh* g_Mesh = nullptr;
-    Core::Model* g_Model = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
+
+    std::vector<Core::Texture>* g_textures = nullptr;
+    Core::Model* g_Model = nullptr;
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -140,21 +137,24 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
-    std::string outName = "";
-    std::vector<Vertex> outVertices;
-    std::vector<unsigned int> outIndices;
+    std::vector<std::string> outNames;
+    std::vector<std::vector<Vertex>> outVertices;
+    std::vector<std::vector<unsigned int>> outIndices;
+    std::vector<unsigned int> outMeshSizes;
 
     // Model
     g_Model = new Core::Model{};
-    g_Model->Import("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\cube_example_triangle.obj", outName, outVertices, outIndices);
+    g_Model->Import("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\cube_example_triangle_multiple.obj", outNames, outVertices, outIndices, outMeshSizes);
     
-    g_vbo = new Core::VertexBuffer{ outVertices };
-    g_ibo = new Core::IndexBuffer{ outIndices };
     g_textures = new std::vector<Texture>();
     g_textures->push_back(Core::Texture("texture_diffuse", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
     g_textures->push_back(Core::Texture("texture_specular", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
-    g_Mesh = new Core::Mesh{ outName, *g_vbo, *g_ibo, *g_textures };
-    g_Model->m_Meshes.push_back(*g_Mesh);
+    
+    for(unsigned int i = 0; i < outMeshSizes.size(); i++)
+    {
+        Mesh mesh{ outNames[i], outVertices[i], outIndices[i], *g_textures };
+        g_Model->m_Meshes.push_back(mesh);
+    }
 
     g_RenderOpenGL = new Core::Renderer{this, g_Model};
     
@@ -223,10 +223,7 @@ void Window::Render()
 void Window::Shutdown()
 {
     // Delete Rendering objects
-    delete g_vbo;
-    delete g_ibo;
     delete g_textures;
-    delete g_Mesh;
     delete g_Model;
     delete g_RenderOpenGL;
     delete g_Timestep;

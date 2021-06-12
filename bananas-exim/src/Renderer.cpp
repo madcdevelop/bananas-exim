@@ -92,13 +92,6 @@ void Renderer::Draw(float timestep)
     //        Vertex Coordinates are already in world space.
     glm::mat4 model = glm::mat4(1.0f);
 
-    // Bind buffers
-    for(unsigned int i = 0; i < m_Model->m_Meshes.size(); i++)
-    {
-        m_Model->m_Meshes[i].m_VertexBuffer.Bind();
-        m_Model->m_Meshes[i].m_IndexBuffer.Bind();
-    }
-
     // Render Model
     glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
     glm::mat4 mvp = projection * view * model;
@@ -117,7 +110,7 @@ void Renderer::Draw(float timestep)
         lightModel = glm::scale(lightModel, glm::vec3(0.2f));
         glm::mat4 lightMVP = projection * view * lightModel;
         m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
-        m_Model->Draw(m_ShaderLight);
+        m_Model->m_Meshes[0].Draw(m_ShaderLight);
     }
 
 }

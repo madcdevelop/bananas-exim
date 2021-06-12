@@ -14,15 +14,17 @@ class Mesh
 {
 public:
     std::string m_Name;
-
-    VertexBuffer m_VertexBuffer;
-    IndexBuffer  m_IndexBuffer;
+    std::vector<Vertex> m_Vertices;
+    std::vector<unsigned int> m_Indices;
     std::vector<Texture> m_Textures;
-    unsigned int m_VAO;
 
+private:
+    unsigned int m_VAO;
+    unsigned int m_VBO;
+    unsigned int m_IBO;
 
 public:
-    Mesh(const std::string& name, const VertexBuffer& vbo, const IndexBuffer& ibo, std::vector<Texture>& tex);
+    Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, std::vector<Texture>& tex);
     ~Mesh();
 
     void Draw(Shader& shader);

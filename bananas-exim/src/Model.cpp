@@ -35,7 +35,7 @@ void Model::LoadTextures()
     }
 }
 
-bool Model::Import(const std::string& filePath, std::string& outName, std::vector<Vertex>& outVertices, std::vector<unsigned int>& outIndices)
+bool Model::Import(const std::string& filePath, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<unsigned int>>& outIndices, std::vector<unsigned int>& outMeshSizes)
 {
     // Open the file
     std::string fileType = filePath.substr(filePath.find_last_of(".")+1);
@@ -50,19 +50,21 @@ bool Model::Import(const std::string& filePath, std::string& outName, std::vecto
 
     // Import based on file type
     if (fileType == "obj") {
-        ImportOBJ(fileStream, outName, outVertices, outIndices);
+        ImportOBJ(fileStream, outNames, outVertices, outIndices, outMeshSizes);
         return true;
     }
 
     return false;
 }
 
-void Model::ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vector<Vertex>& outVertices, std::vector<unsigned int>& outIndices)
+void Model::ImportOBJ(std::ifstream& fileStream, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<unsigned int>>& outIndices, std::vector<unsigned int>& outMeshSizes)
 {
-    std::vector<Face> faces;
     std::vector<glm::vec3> positions;
     std::vector<glm::vec2> textureCoordinates;
     std::vector<glm::vec3> normals;
+    std::vector<Face> faces;
+    unsigned int meshCount = 0;
+    unsigned int meshSize = 0;
 
     // @TODO: currently only parses 1 object. Needs to be updated to parse more than 1 object.
     while(!fileStream.eof())
@@ -80,7 +82,11 @@ void Model::ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vect
         }
         
         // Skip Empty line
-        if(tokens.size() == 0) break; 
+        if(tokens.size() == 0) 
+        {
+            outMeshSizes.push_back(meshSize);
+            break;   
+        } 
 
         std::string start = tokens[0];
         // Texture coordinates
@@ -112,6 +118,7 @@ void Model::ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vect
                 index.normalIndex   = std::stoul(faceTokens[2]);
                 face.indices[faceIndex] = index;
                 faceIndex++;
+                meshSize++;
             }
 
             faces.push_back(face);
@@ -130,23 +137,38 @@ void Model::ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vect
         }
         // Object name
         else if(start == "o") 
-            outName = tokens[1];
+        {
+            outNames.push_back(tokens[1]);
+            // Skip first mesh
+            if(meshCount > 0)
+            {
+                outMeshSizes.push_back(meshSize);
+                // reset meshSize for new object
+                meshSize = 0; 
+            }
+            meshCount++;
+        }
     }
 
     // Fill vertices based on index coordinates
     std::map<std::string, int> distinctVertices;
-    int indicesIndex = 0;
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
 
+    int indicesIndex = 0;
+    int meshProcessedSize = 0;
+    int meshProcessedIndex = 0;
     for(auto &&f : faces)
     {
         for(auto &&i : f.indices)
         {
             // Face format: v1/vt1/vn1
+            // Only add keys that are unique. Re-use vertex data that already exists
             std::string indexKey = std::to_string(i.positionIndex) + "/" + std::to_string(i.textureIndex) + "/" + std::to_string(i.normalIndex); 
             auto found = distinctVertices.find(indexKey);
             if(found != distinctVertices.end()) 
             {
-                outIndices.push_back(found->second);
+                indices.push_back(found->second);
             }
             else
             {
@@ -157,10 +179,23 @@ void Model::ImportOBJ(std::ifstream& fileStream, std::string& outName, std::vect
                 v.textureUV  = textureCoordinates[i.textureIndex-1];
                 v.normal     = normals[i.normalIndex-1];
 
-                outVertices.push_back(v);
-                outIndices.push_back(indicesIndex);
+                vertices.push_back(v);
+                indices.push_back(indicesIndex);
                 indicesIndex++;
             }
+            meshProcessedSize++;
+        }
+        if(meshProcessedSize == outMeshSizes[meshProcessedIndex])
+        {
+            outVertices.push_back(vertices);
+            outIndices.push_back(indices);
+
+            // Clear for processing next mesh
+            indicesIndex = 0;
+            meshProcessedSize = 0;
+            meshProcessedIndex++;
+            vertices.clear();
+            indices.clear();
         }
     }
 }
