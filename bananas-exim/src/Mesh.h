@@ -20,8 +20,10 @@ public:
 
 private:
     unsigned int m_VAO;
-    unsigned int m_VBO;
-    unsigned int m_IBO;
+
+    // @TODO: Switch to unique_ptr
+    VertexBuffer* m_VertexBuffer;
+    IndexBuffer* m_IndexBuffer;
 
 public:
     Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, std::vector<Texture>& tex);
