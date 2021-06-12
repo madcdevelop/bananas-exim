@@ -17,7 +17,7 @@ namespace Core
 {
 
 Renderer::Renderer(Window* window, Model* model)
-    : m_Model(model), m_Camera(glm::vec3(1.0f, 7.0f, 10.0f), -90.0f, -30.0f), m_Window(window),
+    : m_Model(model), m_Camera(glm::vec3(5.0f, 10.0f, 10.0f), -120.0f, -30.0f), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
       m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
