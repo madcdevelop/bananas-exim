@@ -14,13 +14,13 @@ struct Vertex {
 class VertexBuffer {
 
 public:
-    std::vector<Vertex> m_Vertices;
+    unsigned int m_Count;
 
 private:
     unsigned int m_RenderId;
 
 public:
-    VertexBuffer(const std::vector<Vertex>& vertices);
+    VertexBuffer(const std::vector<Vertex>& vertices, unsigned int count);
     ~VertexBuffer();
 
     void Bind() const;

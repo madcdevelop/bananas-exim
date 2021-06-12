@@ -36,7 +36,7 @@ void Mesh::Draw(Shader& shader)
     m_VertexBuffer->Bind();
     m_IndexBuffer->Bind();
     GLCALL(glBindVertexArray(m_VAO));
-    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_IndexBuffer->m_Indices.size()), GL_UNSIGNED_INT, 0));
+    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(m_IndexBuffer->m_Count), GL_UNSIGNED_INT, 0));
     GLCALL(glBindVertexArray(0));
 }
 
@@ -46,8 +46,8 @@ void Mesh::SetupMesh()
     GLCALL(glGenVertexArrays(1, &m_VAO));
     GLCALL(glBindVertexArray(m_VAO));
 
-    m_VertexBuffer = new VertexBuffer{m_Vertices};
-    m_IndexBuffer = new IndexBuffer{m_Indices};
+    m_VertexBuffer = new VertexBuffer{m_Vertices, static_cast<unsigned int>(m_Vertices.size())};
+    m_IndexBuffer = new IndexBuffer{m_Indices, static_cast<unsigned int>(m_Indices.size())};
 
     // Vertex attributes
     GLCALL(glEnableVertexAttribArray(0));
