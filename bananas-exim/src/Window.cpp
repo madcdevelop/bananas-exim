@@ -144,7 +144,7 @@ bool Window::InitGL()
 
     // Model
     g_Model = new Core::Model{};
-    g_Model->Import("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\cube_example_triangle_multiple.obj", outNames, outVertices, outIndices, outMeshSizes);
+    g_Model->Import("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\minecraft_hill.obj", outNames, outVertices, outIndices, outMeshSizes);
     
     g_textures = new std::vector<Texture>();
     g_textures->push_back(Core::Texture("texture_diffuse", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));

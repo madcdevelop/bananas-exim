@@ -2,10 +2,10 @@
 
 // Render data
 glm::vec3 g_PointLightPositions[] = {
-    glm::vec3(-3.7f,  0.2f,  2.0f),
-    glm::vec3( 2.3f, -3.3f, -4.0f),
-    glm::vec3(-4.0f,  2.0f, -12.0f),
-    glm::vec3( 0.0f,  0.0f, -3.0f)
+    glm::vec3(0.0f, 5.0f, 0.0f),
+    glm::vec3(-5.0f, 5.0f, -5.0f),
+    glm::vec3(-5.0f, 5.0f, 0.0f),
+    glm::vec3(0.0f, 5.0f, -5.0f)
 };
 const unsigned int g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
 
@@ -44,7 +44,7 @@ void Renderer::Init()
 
 void Renderer::Draw(float timestep)
 {
-    GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
+    GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
     // Textured cube
