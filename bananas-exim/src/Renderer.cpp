@@ -1,25 +1,11 @@
 #include "Renderer.h"
 
 // Render data
-glm::vec3 g_CubePositions[] = {
-    glm::vec3( 0.0f,  0.0f,  0.0f),
-    glm::vec3( 2.0f,  5.0f, -15.0f),
-    glm::vec3(-1.5f, -2.2f, -2.5f),
-    glm::vec3(-3.8f, -2.0f, -12.3f),
-    glm::vec3( 2.4f, -0.4f, -3.5f),
-    glm::vec3(-1.7f,  3.0f, -7.5f),
-    glm::vec3( 1.3f, -2.0f, -2.5f),
-    glm::vec3( 1.5f,  2.0f, -2.5f),
-    glm::vec3( 1.5f,  0.2f, -1.5f),
-    glm::vec3(-1.3f,  1.0f, -1.5f)
-};
-const unsigned int g_CubeCount = sizeof(g_CubePositions) / sizeof(*g_CubePositions);
-
 glm::vec3 g_PointLightPositions[] = {
-    glm::vec3( 0.7f,  0.2f,  2.0f),
-    glm::vec3( 2.3f, -3.3f, -4.0f),
-    glm::vec3(-4.0f,  2.0f, -12.0f),
-    glm::vec3( 0.0f,  0.0f, -3.0f)
+    glm::vec3(0.0f, 5.0f, 0.0f),
+    glm::vec3(-5.0f, 5.0f, -5.0f),
+    glm::vec3(-5.0f, 5.0f, 0.0f),
+    glm::vec3(0.0f, 5.0f, -5.0f)
 };
 const unsigned int g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
 
@@ -30,8 +16,8 @@ const float g_Quadratic = 0.032f;
 namespace Core
 {
 
-Renderer::Renderer(Window* window, Mesh* mesh)
-    : m_Mesh(mesh), m_Camera(glm::vec3(1.0f, 1.0f, 3.0f)), m_Window(window),
+Renderer::Renderer(Window* window, Model* model)
+    : m_Model(model), m_Camera(glm::vec3(5.0f, 10.0f, 10.0f), -120.0f, -30.0f), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
       m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
@@ -53,13 +39,12 @@ void Renderer::Init()
     GLCALL(glDepthFunc(GL_LESS));
 
     // Load Textures
-    m_Mesh->m_Textures[0].m_RenderId = m_Mesh->m_Textures[0].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container.bmp");
-    m_Mesh->m_Textures[1].m_RenderId = m_Mesh->m_Textures[1].LoadBMPCustom("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\container_specular.bmp");
+    m_Model->LoadTextures();
 }
 
 void Renderer::Draw(float timestep)
 {
-    GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
+    GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
     // Textured cube
@@ -103,29 +88,19 @@ void Renderer::Draw(float timestep)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
 
     // World transformation
+    // @TODO: May not need world transform for model imported from blender. 
+    //        Vertex Coordinates are already in world space.
     glm::mat4 model = glm::mat4(1.0f);
 
-    // Bind buffers
-    m_Mesh->m_VertexBuffer.Bind();
-    m_Mesh->m_IndexBuffer.Bind();
+    // Render Model
+    glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
+    glm::mat4 mvp = projection * view * model;
+    m_Shader1.SetMatrix4("model", GL_FALSE, model);
+    m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
+    m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
+    m_Model->Draw(m_Shader1);
 
-    // Textured Cubes Transform
-    for(unsigned int i = 0; i < g_CubeCount; i++)
-    {
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, g_CubePositions[i]);
-        float angle = 20.0f * i;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-        glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
-        glm::mat4 mvp = projection * view * model;
-        m_Shader1.SetMatrix4("model", GL_FALSE, model);
-        m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
-        m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
-
-        m_Mesh->Draw(m_Shader1);
-    }
-
-    // Light cube
+    // Render Lights
     m_ShaderLight.UseProgram();
 
     for(unsigned int i = 0; i < g_PointLightsCount; i++)
@@ -135,8 +110,7 @@ void Renderer::Draw(float timestep)
         lightModel = glm::scale(lightModel, glm::vec3(0.2f));
         glm::mat4 lightMVP = projection * view * lightModel;
         m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
-        
-        m_Mesh->Draw(m_ShaderLight);
+        m_Model->m_Meshes[0].Draw(m_ShaderLight);
     }
 
 }

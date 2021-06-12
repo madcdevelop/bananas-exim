@@ -3,9 +3,10 @@
 namespace Core
 {
 
-    Texture::Texture(const std::string& type)
-        : m_RenderId(0), m_Type(type)
+    Texture::Texture(const std::string& type, const std::string& filePath)
+        : m_RenderId(0), m_Type(type), m_FilePath(filePath)
     {
+        
     }
 
     Texture::~Texture()

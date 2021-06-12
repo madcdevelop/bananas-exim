@@ -29,7 +29,7 @@ private:
     float m_Sensitivity;
 
 public:
-    Camera(glm::vec3 position);
+    Camera(glm::vec3 position, float yaw, float pitch);
     ~Camera();
 
     void KeyboardMovement(CameraMovement direction, float deltaTime);

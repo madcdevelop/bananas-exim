@@ -29,9 +29,6 @@ public:
 
     void SetMatrix4(const std::string& name, const bool isTranspose, const glm::mat4& matrix) const;
 
-private:
-    std::string ReadFile(const char* filePath);
-
 };
 
 

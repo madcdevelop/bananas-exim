@@ -22,3 +22,5 @@
 
 void glClearError_();
 bool glCheckError_(const char *function, const char *file, int line);
+
+std::string OpenFile(const char* filePath);

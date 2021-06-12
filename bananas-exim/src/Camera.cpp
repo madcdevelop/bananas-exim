@@ -3,9 +3,9 @@
 namespace Core 
 {
 
-Camera::Camera(glm::vec3 position)
+Camera::Camera(glm::vec3 position, float yaw, float pitch)
     : m_Position(position), m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
-      m_Up(glm::vec3(0.0f, 1.0f, 0.0f)), m_Yaw(-90.0f), m_Pitch(0.0f),
+      m_Up(glm::vec3(0.0f, 1.0f, 0.0f)), m_Yaw(yaw), m_Pitch(pitch),
       m_Fov(45.0f), m_MovementSpeed(75.0f), m_Sensitivity(0.1f)
 {
     UpdateCameraVectors();

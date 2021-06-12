@@ -6,21 +6,21 @@ namespace Core
 {
 
 struct Vertex {
-    glm::vec3 Position;
-    glm::vec3 Normal;
-    glm::vec2 TextureUV;
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 textureUV;
 };
 
 class VertexBuffer {
 
 public:
-    std::vector<Vertex> m_Vertices;
+    unsigned int m_Count;
 
 private:
     unsigned int m_RenderId;
 
 public:
-    VertexBuffer(const std::vector<Vertex>& vertices);
+    VertexBuffer(const std::vector<Vertex>& vertices, unsigned int count);
     ~VertexBuffer();
 
     void Bind() const;
