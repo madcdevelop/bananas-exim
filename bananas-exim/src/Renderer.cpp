@@ -30,6 +30,7 @@ Renderer::~Renderer()
 {
     GLCALL(glDisableVertexAttribArray(0));
     GLCALL(glDisableVertexAttribArray(1));
+    GLCALL(glDisableVertexAttribArray(2));
 }
 
 void Renderer::Init()
@@ -50,6 +51,10 @@ void Renderer::Draw(float timestep)
     // Textured cube
     m_Shader1.UseProgram();
     m_Shader1.SetVec3("viewPos", m_Camera.m_Position);
+    // @TODO: replace later with material object
+    m_Shader1.SetVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+    m_Shader1.SetVec3("material.diffuse", 0.8f, 0.8f, 0.8f);
+    m_Shader1.SetVec3("material.specular", 0.1f, 0.1f, 0.1f);
     m_Shader1.SetFloat("material.shininess", 32.0f);
 
     // Directional light properties
