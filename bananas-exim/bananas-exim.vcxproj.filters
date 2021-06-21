@@ -20,6 +20,8 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\Material.h" />
+    <ClInclude Include="src\Importer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\VertexBuffer.cpp" />
@@ -34,5 +36,7 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\Importer.cpp" />
   </ItemGroup>
 </Project>

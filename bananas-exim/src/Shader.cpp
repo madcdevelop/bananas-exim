@@ -3,6 +3,10 @@
 namespace Core
 {
 
+Shader::Shader()
+{
+}
+
 Shader::Shader(const char* vertexShaderFilePath, const char* fragmentShaderFilePath)
 {
     // Read Shader Files

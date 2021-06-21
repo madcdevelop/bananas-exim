@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Renderer.h"
-#include "RendererTestData.h"
+#include "Importer.h"
 
 namespace
 {
@@ -141,18 +141,16 @@ bool Window::InitGL()
     std::vector<std::vector<Vertex>> outVertices;
     std::vector<std::vector<unsigned int>> outIndices;
     std::vector<unsigned int> outMeshSizes;
+    std::vector<Material> outMaterials;
 
     // Model
+    Importer import;
+    import.LoadModel("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\minecraft_hill.obj", outNames, outVertices, outIndices, outMeshSizes, outMaterials);
+
     g_Model = new Core::Model{};
-    g_Model->Import("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\minecraft_hill.obj", outNames, outVertices, outIndices, outMeshSizes);
-    
-    g_textures = new std::vector<Texture>();
-    g_textures->push_back(Core::Texture("texture_diffuse", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
-    g_textures->push_back(Core::Texture("texture_specular", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
-    
     for(unsigned int i = 0; i < outMeshSizes.size(); i++)
     {
-        Mesh mesh{ outNames[i], outVertices[i], outIndices[i], *g_textures };
+        Mesh mesh{outNames[i], outVertices[i], outIndices[i], outMaterials[i]};
         g_Model->m_Meshes.push_back(mesh);
     }
 
