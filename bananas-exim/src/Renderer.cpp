@@ -51,11 +51,6 @@ void Renderer::Draw(float timestep)
     // Textured cube
     m_Shader1.UseProgram();
     m_Shader1.SetVec3("viewPos", m_Camera.m_Position);
-    // @TODO: replace later with material object
-    m_Shader1.SetVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-    m_Shader1.SetVec3("material.diffuse", 0.8f, 0.8f, 0.8f);
-    m_Shader1.SetVec3("material.specular", 0.1f, 0.1f, 0.1f);
-    m_Shader1.SetFloat("material.shininess", 32.0f);
 
     // Directional light properties
     m_Shader1.SetVec3("dirLight.direction",  m_Camera.m_Front);
@@ -93,8 +88,8 @@ void Renderer::Draw(float timestep)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_Window->m_Width/(float)m_Window->m_Height, 0.1f, 100.0f);
 
     // World transformation
-    // @TODO: May not need world transform for model imported from blender. 
-    //        Vertex Coordinates are already in world space.
+    // TODO: May not need world transform for model imported from blender. 
+    //       Vertex Coordinates are already in world space.
     glm::mat4 model = glm::mat4(1.0f);
 
     // Render Model

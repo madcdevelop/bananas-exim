@@ -10,7 +10,7 @@ Shader::Shader()
 Shader::Shader(const char* vertexShaderFilePath, const char* fragmentShaderFilePath)
 {
     // Read Shader Files
-    // @TODO: Change to relative paths ("content/file_name.glsl")
+    // TODO: Change to relative paths ("content/file_name.glsl")
     std::string vertexShaderStr   = OpenFile(vertexShaderFilePath);
     std::string fragmentShaderStr = OpenFile(fragmentShaderFilePath);
 

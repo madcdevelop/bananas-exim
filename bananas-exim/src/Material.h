@@ -22,13 +22,11 @@ public:
 
     float m_Shininess;
 
-    Shader m_Shader;
-
     std::vector<Texture> m_Textures;
 
 public:
     Material();
-    Material(const std::string& name, glm::vec3& ambient, glm::vec3& diffuse, glm::vec3& specular, glm::vec3& emissive, float shininess, Shader& shader, std::vector<Texture>& textures);
+    Material(const std::string& name, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& emissive, const float shininess, const std::vector<Texture>& textures);
     ~Material();
 };
 

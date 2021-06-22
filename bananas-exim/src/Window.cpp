@@ -137,17 +137,19 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
+    
+    // Model
     std::vector<std::string> outNames;
     std::vector<std::vector<Vertex>> outVertices;
     std::vector<std::vector<unsigned int>> outIndices;
     std::vector<unsigned int> outMeshSizes;
     std::vector<Material> outMaterials;
-
-    // Model
     Importer import;
     import.LoadModel("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\minecraft_hill.obj", outNames, outVertices, outIndices, outMeshSizes, outMaterials);
 
     g_Model = new Core::Model{};
+    // TODO: Handle using same Material for multiple meshes. 
+    // Currently each mesh has it's own material in export from blender.
     for(unsigned int i = 0; i < outMeshSizes.size(); i++)
     {
         Mesh mesh{outNames[i], outVertices[i], outIndices[i], outMaterials[i]};

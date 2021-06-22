@@ -33,6 +33,11 @@ void Mesh::Draw(Shader& shader)
         m_Material.m_Textures[texIndex].Bind(texIndex);
     }
 
+    shader.SetVec3("material.ambient", m_Material.m_Ambient);
+    shader.SetVec3("material.diffuse", m_Material.m_Diffuse);
+    shader.SetVec3("material.specular", m_Material.m_Specular);
+    shader.SetFloat("material.shininess", m_Material.m_Shininess);
+
     m_VertexBuffer->Bind();
     m_IndexBuffer->Bind();
     GLCALL(glBindVertexArray(m_VAO));

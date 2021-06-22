@@ -22,7 +22,7 @@ public:
 private:
     unsigned int m_VAO;
 
-    // @TODO: Switch to unique_ptr
+    // TODO: Switch to unique_ptr
     VertexBuffer* m_VertexBuffer;
     IndexBuffer* m_IndexBuffer;
 

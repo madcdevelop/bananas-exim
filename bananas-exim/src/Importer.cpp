@@ -48,7 +48,6 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
     std::string mtllib;
     std::string usemtl;
 
-    // @TODO: currently only parses 1 object. Needs to be updated to parse more than 1 object.
     while(!fileStream.eof())
     {
         std::string line = "";
@@ -258,7 +257,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::string& usemtl, std::vec
         // Specular Highlights
         else if(start == "Ns")
         {
-            // @TODO: Rounds up number from 323.999994 to 324.000000
+            // TODO: Rounds up number from 323.999994 to 324.000000
             shininess.push_back(std::stof(tokens[1]));
         }
         // Ambient Color
@@ -285,14 +284,24 @@ bool Importer::LoadModelMTL(std::string& filePath, std::string& usemtl, std::vec
         else if(start == "map_Kd")
         {
             std::string textureFileName = tokens[1].substr(tokens[1].find_last_of("\\")+1);
+            // TODO: Change to relative file path
             textures.push_back(Texture("texture_diffuse", std::string("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\" + textureFileName)));
+        }
+        // Specular Texture File Path
+        else if(start == "map_Ks")
+        {
+            std::string textureFileName = tokens[1].substr(tokens[1].find_last_of("\\")+1);
+            // TODO: Change to relative file path
+            textures.push_back(Texture("texture_specular", std::string("C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\" + textureFileName)));
             texturesPerMesh.push_back(textures);
+            // Last texture file to load. Clear for next material.
+            textures.clear();
         }
     }
 
     for(unsigned int i = 0; i < materialCount; i++)
     {
-        Material material(name[i], ambient[i], diffuse[i], specular[i], emissive[i], shininess[i], thisShaderIsTempAndHasNoData, texturesPerMesh[i]);
+        Material material(name[i], ambient[i], diffuse[i], specular[i], emissive[i], shininess[i], texturesPerMesh[i]);
         outMaterials.push_back(material);
     }
 
