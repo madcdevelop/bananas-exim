@@ -46,7 +46,7 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
     unsigned int meshSize = 0;
 
     std::string mtllib;
-    std::string usemtl;
+    std::vector<std::string> usemtl;
 
     while(!fileStream.eof())
     {
@@ -141,7 +141,7 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
         }
         else if(start == "usemtl")
         {
-            usemtl = tokens[1];
+            usemtl.push_back(tokens[1]);
         }
     }
 
@@ -200,7 +200,7 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
     
 }
 
-bool Importer::LoadModelMTL(std::string& filePath, std::string& usemtl, std::vector<Material>& outMaterials)
+bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& usemtl, std::vector<Material>& outMaterials)
 {
     std::ifstream fileStream(filePath, std::ios::in);
     if(!fileStream.is_open())
@@ -210,13 +210,12 @@ bool Importer::LoadModelMTL(std::string& filePath, std::string& usemtl, std::vec
         return false;
     }
 
-    std::vector<std::string> name;
+    std::map<std::string, int> names;
     std::vector<glm::vec3> ambient;
     std::vector<glm::vec3> diffuse;
     std::vector<glm::vec3> specular;
     std::vector<glm::vec3> emissive;
     std::vector<float> shininess;
-    Shader thisShaderIsTempAndHasNoData;
     std::vector<Texture> textures;
     std::vector<std::vector<Texture>> texturesPerMesh;
 
@@ -251,7 +250,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::string& usemtl, std::vec
         // Name of material
         else if(start == "newmtl")
         {
-            name.push_back(tokens[1]);
+            names.insert(std::pair<std::string, int>(tokens[1], materialCount));
             materialCount++;
         }
         // Specular Highlights
@@ -299,9 +298,19 @@ bool Importer::LoadModelMTL(std::string& filePath, std::string& usemtl, std::vec
         }
     }
 
-    for(unsigned int i = 0; i < materialCount; i++)
+    std::vector<int> materialIndices;
+
+    // Go through usemtl array. Create an index array to lookup which material to add to outMaterials
+    for(unsigned int matIndex = 0; matIndex < usemtl.size(); matIndex++)
     {
-        Material material(name[i], ambient[i], diffuse[i], specular[i], emissive[i], shininess[i], texturesPerMesh[i]);
+        auto it = names.find(usemtl[matIndex]);
+        materialIndices.push_back(it->second);
+    }
+
+    // TODO: update to match material index
+    for(unsigned int i = 0; i < materialIndices.size(); i++)
+    {
+        Material material(usemtl[i], ambient[materialIndices[i]], diffuse[materialIndices[i]], specular[materialIndices[i]], emissive[materialIndices[i]], shininess[materialIndices[i]], texturesPerMesh[materialIndices[i]]);
         outMaterials.push_back(material);
     }
 
