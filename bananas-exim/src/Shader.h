@@ -11,6 +11,7 @@ private:
     unsigned int m_ProgramId;
 
 public:
+    Shader();
     Shader(const char* vertexShaderFilePath, const char* fragmentShaderFilePath);
     ~Shader();
 

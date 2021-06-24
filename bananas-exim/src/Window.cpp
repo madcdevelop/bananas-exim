@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Renderer.h"
-#include "RendererTestData.h"
+#include "Importer.h"
 
 namespace
 {
@@ -137,22 +137,22 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
+    
+    // Model
     std::vector<std::string> outNames;
     std::vector<std::vector<Vertex>> outVertices;
     std::vector<std::vector<unsigned int>> outIndices;
     std::vector<unsigned int> outMeshSizes;
+    std::vector<Material> outMaterials;
+    Importer import;
+    import.LoadModel("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\minecraft_hill.obj", outNames, outVertices, outIndices, outMeshSizes, outMaterials);
 
-    // Model
     g_Model = new Core::Model{};
-    g_Model->Import("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\minecraft_hill.obj", outNames, outVertices, outIndices, outMeshSizes);
-    
-    g_textures = new std::vector<Texture>();
-    g_textures->push_back(Core::Texture("texture_diffuse", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
-    g_textures->push_back(Core::Texture("texture_specular", "C:\\Code\\bananas-exim\\bananas-exim\\content\\textures\\minecraft_cube_texture.bmp"));
-    
+    // TODO: Optimize to use same material for each mesh instead 
+    // of creating new ones per mesh if they are the same material.
     for(unsigned int i = 0; i < outMeshSizes.size(); i++)
     {
-        Mesh mesh{ outNames[i], outVertices[i], outIndices[i], *g_textures };
+        Mesh mesh{outNames[i], outVertices[i], outIndices[i], outMaterials[i]};
         g_Model->m_Meshes.push_back(mesh);
     }
 

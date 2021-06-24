@@ -3,8 +3,8 @@
 namespace Core
 {
 
-Mesh::Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, std::vector<Texture>& tex)
-    : m_Name(name), m_Vertices(vertices), m_Indices(indices), m_Textures(tex),
+Mesh::Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Material& material)
+    : m_Name(name), m_Vertices(vertices), m_Indices(indices), m_Material(material),
       m_VAO(0)
 {
     SetupMesh();
@@ -19,9 +19,9 @@ void Mesh::Draw(Shader& shader)
     unsigned int textureDiffuseN  = 1;
     unsigned int textureSpecularN = 1;
 
-    for(unsigned int texIndex = 0; texIndex < m_Textures.size(); texIndex++)
+    for(unsigned int texIndex = 0; texIndex < m_Material.m_Textures.size(); texIndex++)
     {
-        std::string type = m_Textures[texIndex].m_Type;
+        std::string type = m_Material.m_Textures[texIndex].m_Type;
         std::string number;
         if(type == "texture_diffuse")
             number = std::to_string(textureDiffuseN++);
@@ -30,8 +30,13 @@ void Mesh::Draw(Shader& shader)
 
         shader.SetInt(("material." + type + number), texIndex);
 
-        m_Textures[texIndex].Bind(texIndex);
+        m_Material.m_Textures[texIndex].Bind(texIndex);
     }
+
+    shader.SetVec3("material.ambient", m_Material.m_Ambient);
+    shader.SetVec3("material.diffuse", m_Material.m_Diffuse);
+    shader.SetVec3("material.specular", m_Material.m_Specular);
+    shader.SetFloat("material.shininess", m_Material.m_Shininess);
 
     m_VertexBuffer->Bind();
     m_IndexBuffer->Bind();
