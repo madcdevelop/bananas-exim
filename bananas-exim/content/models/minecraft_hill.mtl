@@ -11,6 +11,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.001
 Ns 323.999994
@@ -22,6 +23,19 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
+
+newmtl Grass.007
+Ns 323.999994
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.100000 0.100000 0.100000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.008
 Ns 323.999994
@@ -33,6 +47,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.009
 Ns 323.999994
@@ -44,6 +59,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.010
 Ns 323.999994
@@ -55,6 +71,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.011
 Ns 323.999994
@@ -66,6 +83,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.012
 Ns 323.999994
@@ -77,6 +95,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.013
 Ns 323.999994
@@ -88,17 +107,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
-
-newmtl Grass.014
-Ns 323.999994
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.100000 0.100000 0.100000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.015
 Ns 323.999994
@@ -110,6 +119,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.016
 Ns 323.999994
@@ -121,6 +131,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp
 
 newmtl Grass.017
 Ns 323.999994
@@ -132,3 +143,4 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:\\Modeling\\minecraft_cube_texture.bmp
+map_Ks C:\\Modeling\\minecraft_cube_texture.bmp

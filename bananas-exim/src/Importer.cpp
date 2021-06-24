@@ -303,14 +303,15 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
     // Go through usemtl array. Create an index array to lookup which material to add to outMaterials
     for(unsigned int matIndex = 0; matIndex < usemtl.size(); matIndex++)
     {
-        auto it = names.find(usemtl[matIndex]);
-        materialIndices.push_back(it->second);
+        auto found = names.find(usemtl[matIndex]);
+        materialIndices.push_back(found->second);
     }
 
     // TODO: update to match material index
     for(unsigned int i = 0; i < materialIndices.size(); i++)
     {
-        Material material(usemtl[i], ambient[materialIndices[i]], diffuse[materialIndices[i]], specular[materialIndices[i]], emissive[materialIndices[i]], shininess[materialIndices[i]], texturesPerMesh[materialIndices[i]]);
+        unsigned int materialIndex = materialIndices[i];
+        Material material(usemtl[i], ambient[materialIndex], diffuse[materialIndex], specular[materialIndex], emissive[materialIndex], shininess[materialIndex], texturesPerMesh[materialIndex]);
         outMaterials.push_back(material);
     }
 
