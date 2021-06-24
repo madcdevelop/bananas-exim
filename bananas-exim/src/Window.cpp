@@ -1,18 +1,12 @@
 #include "Window.h"
 
-#include <vector>
-
 #include "Renderer.h"
-#include "Importer.h"
 
 namespace
 {
     Core::Window* g_Window = nullptr;
     Core::Renderer* g_RenderOpenGL = nullptr;
     Core::Timestep* g_Timestep = nullptr;
-
-    std::vector<Core::Texture>* g_textures = nullptr;
-    Core::Model* g_Model = nullptr;
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -137,26 +131,7 @@ bool Window::InitGL()
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
     // Init Rendering
-    
-    // Model
-    std::vector<std::string> outNames;
-    std::vector<std::vector<Vertex>> outVertices;
-    std::vector<std::vector<unsigned int>> outIndices;
-    std::vector<unsigned int> outMeshSizes;
-    std::vector<Material> outMaterials;
-    Importer import;
-    import.LoadModel("C:\\Code\\bananas-exim\\bananas-exim\\content\\models\\minecraft_hill.obj", outNames, outVertices, outIndices, outMeshSizes, outMaterials);
-
-    g_Model = new Core::Model{};
-    // TODO: Optimize to use same material for each mesh instead 
-    // of creating new ones per mesh if they are the same material.
-    for(unsigned int i = 0; i < outMeshSizes.size(); i++)
-    {
-        Mesh mesh{outNames[i], outVertices[i], outIndices[i], outMaterials[i]};
-        g_Model->m_Meshes.push_back(mesh);
-    }
-
-    g_RenderOpenGL = new Core::Renderer{this, g_Model};
+    g_RenderOpenGL = new Core::Renderer{this};
     
     return true;
 }
@@ -222,9 +197,6 @@ void Window::Render()
 
 void Window::Shutdown()
 {
-    // Delete Rendering objects
-    delete g_textures;
-    delete g_Model;
     delete g_RenderOpenGL;
     delete g_Timestep;
 
