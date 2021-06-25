@@ -17,6 +17,7 @@ public:
     ~Model();
 
     void Draw(Shader& shader);
+    void LoadModel(const char* filePath);
     void LoadTextures();
 };
 

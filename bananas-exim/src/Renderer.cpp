@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Importer.h"
 
 // Render data
 glm::vec3 g_PointLightPositions[] = {
@@ -16,8 +17,8 @@ const float g_Quadratic = 0.032f;
 namespace Core
 {
 
-Renderer::Renderer(Window* window, Model* model)
-    : m_Model(model), m_Camera(glm::vec3(5.0f, 10.0f, 10.0f), -120.0f, -30.0f), m_Window(window),
+Renderer::Renderer(Window* window)
+    : m_Camera(glm::vec3(5.0f, 10.0f, 10.0f), -120.0f, -30.0f), m_Window(window),
       m_Shader1("C:\\Code\\bananas-exim\\bananas-exim\\content\\test_vs.glsl", 
                 "C:\\Code\\bananas-exim\\bananas-exim\\content\\test_fs.glsl"),
       m_ShaderLight("C:\\Code\\bananas-exim\\bananas-exim\\content\\lighting_vs.glsl", 
@@ -31,6 +32,7 @@ Renderer::~Renderer()
     GLCALL(glDisableVertexAttribArray(0));
     GLCALL(glDisableVertexAttribArray(1));
     GLCALL(glDisableVertexAttribArray(2));
+    delete m_Scene;
 }
 
 void Renderer::Init()
@@ -39,8 +41,9 @@ void Renderer::Init()
     GLCALL(glEnable(GL_DEPTH_TEST));
     GLCALL(glDepthFunc(GL_LESS));
 
-    // Load Textures
-    m_Model->LoadTextures();
+    // Load Scene
+    m_Scene = new Core::Scene{};
+    m_Scene->LoadModels();
 }
 
 void Renderer::Draw(float timestep)
@@ -98,7 +101,8 @@ void Renderer::Draw(float timestep)
     m_Shader1.SetMatrix4("model", GL_FALSE, model);
     m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
     m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
-    m_Model->Draw(m_Shader1);
+    // TODO: replace with function to draw multiple models from scene
+    m_Scene->m_Models[0].Draw(m_Shader1);
 
     // Render Lights
     m_ShaderLight.UseProgram();
@@ -110,7 +114,8 @@ void Renderer::Draw(float timestep)
         lightModel = glm::scale(lightModel, glm::vec3(0.2f));
         glm::mat4 lightMVP = projection * view * lightModel;
         m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
-        m_Model->m_Meshes[0].Draw(m_ShaderLight);
+        // TODO: replace with function to draw multiple models from scene
+        m_Scene->m_Models[1].Draw(m_ShaderLight);
     }
 
 }

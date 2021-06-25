@@ -22,6 +22,7 @@
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Importer.h" />
+    <ClInclude Include="src\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\VertexBuffer.cpp" />
@@ -38,5 +39,6 @@
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Importer.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
   </ItemGroup>
 </Project>
