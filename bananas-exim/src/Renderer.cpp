@@ -42,6 +42,7 @@ void Renderer::Init()
 
     // Load Scene
     m_Scene = new Core::Scene{};
+    m_Scene->LoadModels();
 }
 
 void Renderer::Draw(float timestep)

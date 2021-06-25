@@ -15,7 +15,6 @@ public:
     Scene();
     ~Scene();
 
-private:
     void LoadModels();
 
 };
