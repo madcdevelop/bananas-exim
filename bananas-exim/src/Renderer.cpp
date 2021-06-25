@@ -32,6 +32,7 @@ Renderer::~Renderer()
     GLCALL(glDisableVertexAttribArray(0));
     GLCALL(glDisableVertexAttribArray(1));
     GLCALL(glDisableVertexAttribArray(2));
+    delete m_Scene;
 }
 
 void Renderer::Init()
@@ -114,7 +115,7 @@ void Renderer::Draw(float timestep)
         glm::mat4 lightMVP = projection * view * lightModel;
         m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
         // TODO: replace with function to draw multiple models from scene
-        m_Scene->m_Models[0].m_Meshes[0].Draw(m_ShaderLight);
+        m_Scene->m_Models[1].Draw(m_ShaderLight);
     }
 
 }

@@ -32,6 +32,9 @@ bool Importer::LoadModel(const std::string& filePath, std::vector<std::string>& 
         return true;
     }
 
+    std::string errorMessage = "ERROR\t\tFile Type\t\tPossibly incorrect filetype: " + std::string(filePath) + ".Currently only loads .obj files\n";
+    OutputDebugStringA(errorMessage.c_str());
+
     return false;
 }
 
