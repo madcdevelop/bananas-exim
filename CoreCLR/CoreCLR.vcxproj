@@ -74,23 +74,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\bin\CoreCLR\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\CoreCLR\Intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\Win32\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\Intermediates\Win32\$(Configuration)\CoreCLR\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\bin\CoreCLR\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\CoreCLR\Intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\Win32\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\Intermediates\Win32\$(Configuration)\CoreCLR\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\bin\CoreCLR\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\CoreCLR\Intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\Win64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\Intermediates\Win64\$(Configuration)\CoreCLR\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\bin\CoreCLR\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\CoreCLR\Intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\Win64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\Intermediates\Win64\$(Configuration)\CoreCLR\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -102,7 +102,7 @@
     <Link>
       <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib;Core.lib</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\Core\x64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\Win64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -112,7 +112,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)bananas-exim\src;$(SolutionDir)bananas-exim\src\extern;$(SolutionDir)extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib;Core.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -122,7 +122,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)bananas-exim\src;$(SolutionDir)bananas-exim\src\extern;$(SolutionDir)extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib;Core.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,7 +134,7 @@
     <Link>
       <AdditionalDependencies>Gdi32.lib;user32.lib;opengl32.lib;Core.lib</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\Core\x64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\Win64\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
