@@ -41,7 +41,26 @@ namespace Editor
             windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
             ControlHostElement.Child = windowHost;
             // @TODO: Closing window does not close program.
-            windowHost.Run();
+            //windowHost.Run();
+        }
+
+        private void menuImportWavefrontOBJ_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Nullable<bool> result = openFileDlg.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = openFileDlg.FileName;
+                // Pass file name to importing model
+                MessageBox.Show(filename);
+            }
+
+        }
+
+        private void menuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
     }
