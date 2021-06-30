@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <StartupObject>Editor.App</StartupObject>
     <Platforms>AnyCPU;x64</Platforms>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -20,6 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreCLR\CoreCLR.vcxproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
   </ItemGroup>
 
 </Project>
