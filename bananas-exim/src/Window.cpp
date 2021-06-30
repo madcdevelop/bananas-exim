@@ -208,13 +208,13 @@ void Window::Shutdown()
 void Window::CameraKeyboardCallback()
 {
     if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::FORWARD, (float)m_DeltaTime);
+        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(Core::CameraMovement::FORWARD, (float)m_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::BACKWARD, (float)m_DeltaTime);
+        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(Core::CameraMovement::BACKWARD, (float)m_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::LEFT, (float)m_DeltaTime);
+        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(Core::CameraMovement::LEFT, (float)m_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-        g_RenderOpenGL->m_Camera.KeyboardMovement(Core::CameraMovement::RIGHT, (float)m_DeltaTime);
+        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(Core::CameraMovement::RIGHT, (float)m_DeltaTime);
 }
 
 void Window::CameraMouseCallback(const POINT& pos)
@@ -231,7 +231,7 @@ void Window::CameraMouseCallback(const POINT& pos)
     m_LastX = (float)pos.x;
     m_LastY = (float)pos.y;
 
-    g_RenderOpenGL->m_Camera.MouseMovement(xoffset, yoffset);
+    g_RenderOpenGL->m_Scene->m_Camera.MouseMovement(xoffset, yoffset);
 }
 
 void Window::ResizeWindowCallback()
