@@ -6,5 +6,6 @@
 bananas-exim.code-workspace
 
 # Binaries
+Build/
 bin/
 obj/
