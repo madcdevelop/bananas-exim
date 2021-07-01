@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_RENDERER_H
+#define GRAPHICS_ENGINE_RENDERER_H
 
 #include "Scene.h"
 #include "Window.h"
@@ -24,3 +25,5 @@ public:
 };
 
 }
+
+#endif

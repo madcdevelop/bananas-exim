@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_MODEL_H
+#define GRAPHICS_ENGINE_MODEL_H
 
 #include "../Core/Common.h"
 #include "Mesh.h"
@@ -22,3 +23,5 @@ public:
 };
 
 }
+
+#endif

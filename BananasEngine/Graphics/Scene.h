@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_SCENE_H
+#define GRAPHICS_ENGINE_SCENE_H
 
 #include "../Core/Common.h"
 #include "Camera.h"
@@ -29,3 +30,5 @@ public:
 };
 
 }
+
+#endif

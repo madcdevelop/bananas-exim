@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_VERTEX_BUFFER_H
+#define GRAPHICS_ENGINE_VERTEX_BUFFER_H
 
 #include "../Core/Common.h"
 
@@ -29,3 +30,5 @@ public:
 };
 
 }
+
+#endif

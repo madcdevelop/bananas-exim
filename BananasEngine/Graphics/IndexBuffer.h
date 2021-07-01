@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_INDEX_BUFFER_H
+#define GRAPHICS_ENGINE_INDEX_BUFFER_H
 
 #include "../Core/Common.h"
 
@@ -33,3 +34,5 @@ public:
 };
 
 }
+
+#endif

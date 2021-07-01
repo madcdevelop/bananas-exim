@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_IMPORTER_H
+#define GRAPHICS_ENGINE_IMPORTER_H
 
 #include "../Core/Common.h"
 #include "Mesh.h"
@@ -23,3 +24,5 @@ private:
 };
 
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CORE_ENGINE_TIMESTEP_H
+#define CORE_ENGINE_TIMESTEP_H
 
 #include "Common.h"
 
@@ -26,3 +27,5 @@ public:
 };
 
 }
+
+#endif

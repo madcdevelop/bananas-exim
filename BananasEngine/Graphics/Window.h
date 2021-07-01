@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_WINDOW_H
+#define GRAPHICS_ENGINE_WINDOW_H
 
 #include "../Core/Common.h"
 
@@ -62,3 +63,5 @@ private:
 };
 
 }
+
+#endif

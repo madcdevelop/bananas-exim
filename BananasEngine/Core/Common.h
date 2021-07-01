@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CORE_ENGINE_COMMON_H
+#define CORE_ENGINE_COMMON_H
 
 #include "Timestep.h"
 
@@ -24,3 +25,5 @@ void glClearError_();
 bool glCheckError_(const char *function, const char *file, int line);
 
 std::string OpenFile(const char* filePath);
+
+#endif

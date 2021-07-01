@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_ENGINE_MATERIAL_H
+#define GRAPHICS_ENGINE_MATERIAL_H
 
 #include "../Core/Common.h"
 #include "Shader.h"
@@ -31,3 +32,5 @@ public:
 };
 
 }
+
+#endif
