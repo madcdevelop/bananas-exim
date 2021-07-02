@@ -6,7 +6,7 @@
 using namespace System;
 using namespace System::Runtime::InteropServices;
 
-namespace CLI
+namespace BananasEngineDll
 {
     public ref class Window : public ManagedObject<GraphicsEngine::Window>
     {

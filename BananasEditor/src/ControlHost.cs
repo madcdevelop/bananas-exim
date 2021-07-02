@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
 
-namespace Editor
+namespace BananasEditor
 {
     public class ControlHost : HwndHost
     {
@@ -28,7 +28,7 @@ namespace Editor
         private readonly int m_hostWidth;
         IntPtr m_hwndChild = IntPtr.Zero;
 
-        CLI.Window hostWindow;
+        BananasEngineDll.Window hostWindow;
 
         public ControlHost(double height, double width)
         {
@@ -47,7 +47,7 @@ namespace Editor
 
             if(m_hwndChild == IntPtr.Zero)
             {
-                hostWindow = new CLI.Window(IntPtr.Zero, hwndParent.Handle);
+                hostWindow = new BananasEngineDll.Window(IntPtr.Zero, hwndParent.Handle);
                 if(!hostWindow.Init())
                     return href;
                 m_hwndChild = hostWindow.WindowHandle;

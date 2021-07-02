@@ -90,7 +90,6 @@ WinMain(HINSTANCE hInstance,
     // Renderer startup (program startup) init renderer and device
     ProgramStartup();
 
-    MSG message = { 0 };
     g_Timestep = new CoreEngine::Timestep;
     g_Timestep->StartCounter();
     
@@ -101,6 +100,7 @@ WinMain(HINSTANCE hInstance,
         g_DeltaTime = time - g_LastFrameTime;
         g_LastFrameTime = time;
 
+        MSG message;
         while(PeekMessage(&message, NULL, NULL, NULL, PM_REMOVE))
         {
             if(message.message == WM_QUIT)

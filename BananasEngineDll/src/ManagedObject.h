@@ -6,7 +6,7 @@
 using namespace System;
 using namespace System::Runtime::InteropServices;
 
-namespace CLI 
+namespace BananasEngineDll 
 {
     template<class T>
     public ref class ManagedObject

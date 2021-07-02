@@ -1,6 +1,6 @@
 #include "Window.h"
 
-namespace CLI
+namespace BananasEngineDll
 {
     Window::Window(IntPtr hInstance, IntPtr hwnd)
         : ManagedObject(new GraphicsEngine::Window((HINSTANCE)hInstance.ToPointer(), (HWND)hwnd.ToPointer()))

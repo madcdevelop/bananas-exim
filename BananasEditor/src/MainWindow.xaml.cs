@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
-namespace Editor
+namespace BananasEditor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
