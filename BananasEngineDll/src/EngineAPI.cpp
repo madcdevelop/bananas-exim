@@ -7,6 +7,7 @@
 
 // Graphics
 GraphicsEngine::PlatformWin32* g_Window;
+GraphicsEngine::Scene* g_Scene;
 
 namespace BananasEngineDll
 {
@@ -28,6 +29,31 @@ EDITOR_INTERFACE
 HWND Win32GetWindowHandle()
 {
     return g_Window->m_hWnd;
+}
+
+EDITOR_INTERFACE
+int Win32Run()
+{
+    return g_Window->Run();
+}
+
+EDITOR_INTERFACE
+void CreateScene()
+{
+    g_Scene = new GraphicsEngine::Scene();
+    g_Window->m_RenderDevice->m_Scene = g_Scene;
+}
+
+EDITOR_INTERFACE
+GraphicsEngine::Scene* GetScene()
+{
+    return g_Scene;
+} 
+
+EDITOR_INTERFACE
+void SceneLoadModels(const char* fileName)
+{
+    g_Window->m_RenderDevice->m_Scene->LoadModels(std::string(fileName));
 }
 
 }

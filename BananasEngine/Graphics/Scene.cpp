@@ -32,11 +32,16 @@ Scene::~Scene()
 
 }
 
-void Scene::LoadModels()
+void Scene::LoadModels(const std::string& fileName)
 {
-    // TODO: Loop to add more than 1 model
+    // Clear Scene for next import
+    if(!m_Models.empty())
+    {
+        m_Models.clear();
+    }
+
     Model model1;
-    model1.LoadModel("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill.obj");
+    model1.LoadModel(fileName.c_str());
     m_Models.push_back(model1);
 
     Model lightCube;

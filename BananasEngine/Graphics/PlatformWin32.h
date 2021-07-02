@@ -2,6 +2,11 @@
 #define GRAPHICS_ENGINE_PLATFORM_WIN32_H
 
 #include "../Core/Common.h"
+#include "Renderer.h"
+
+static bool g_Win32Running = false;
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace GraphicsEngine
 {
@@ -19,12 +24,18 @@ public:
     DWORD           m_WindowStyle;
     const wchar_t*  m_WindowTitle;
 
+    Renderer*               m_Renderer;
+    RenderDeviceOpenGL*     m_RenderDevice;
+
+
 public:
     PlatformWin32(HINSTANCE hInstance, HWND hwnd);
     ~PlatformWin32();
 
     bool Win32CreateWindow();
     bool Init();
+
+    int Run();
 
 };
 

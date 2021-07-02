@@ -1,7 +1,5 @@
 #include "PlatformWin32.h"
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch(msg)
@@ -18,11 +16,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         } break;
     case WM_CLOSE:
         {
+            g_Win32Running = false;
             DestroyWindow(hwnd);
             return 0;
         } break;
     case WM_DESTROY:
         {
+            g_Win32Running = false;
             PostQuitMessage(0);
             return 0;
         } break;
@@ -38,7 +38,7 @@ namespace GraphicsEngine
 PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
     : m_hInstance(hInstance), m_hWnd(hwnd), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
       m_Width(800), m_Height(600), m_WindowTitle(L"Bananas Export/Import"), 
-      m_WindowStyle(WS_VISIBLE)
+      m_WindowStyle(WS_VISIBLE), m_Renderer(NULL), m_RenderDevice(NULL)
 {
 }
 
@@ -48,10 +48,21 @@ PlatformWin32::~PlatformWin32()
 
 bool PlatformWin32::Win32CreateWindow()
 {
-    // Init PlatformWin32
+    // Initialize PlatformWin32
     Init();
-    // Init RenderDevice
-    
+
+    // TODO(neil): Move this section out of function and into EngineDll.
+    // Initialize Renderer
+    m_Renderer = new Renderer{m_hInstance};
+    m_Renderer->CreateRenderDevice(m_RenderDevice);
+
+    // Initialize RenderDevice
+    m_RenderDevice = m_Renderer->m_Device;
+    m_RenderDevice->m_hWnd    = m_hWnd;
+    m_RenderDevice->m_Width   = m_Width;
+    m_RenderDevice->m_Height  = m_Height;
+    m_RenderDevice->m_Running = true;
+    m_RenderDevice->Init();
 
     return true;    
 }
@@ -93,6 +104,38 @@ bool PlatformWin32::Init()
     }
 
     return true;
+}
+
+int PlatformWin32::Run()
+{
+    g_Win32Running = true;
+    while(m_RenderDevice->m_Running)
+    {
+        MSG message;
+        while(PeekMessage(&message, NULL, NULL, NULL, PM_REMOVE))
+        {
+            if(message.message == WM_QUIT)
+            {
+                g_Win32Running = false;
+            }
+
+            TranslateMessage(&message);
+            DispatchMessage(&message);
+            m_RenderDevice->m_Running = g_Win32Running;
+
+        }
+
+        if(m_RenderDevice)
+        {
+            if(m_RenderDevice->m_Running)
+            {
+                m_RenderDevice->Render();
+            }
+            
+        }
+    }
+
+    return 0;
 }
 
 }

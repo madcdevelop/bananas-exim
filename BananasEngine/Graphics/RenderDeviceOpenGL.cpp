@@ -21,9 +21,12 @@ void RenderDeviceOpenGL::Render()
     GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-    if(m_Scene->m_Models.size() > 0)
+    if(m_Scene)
     {
-        m_Scene->Draw((float)m_Width, (float)m_Height);
+        if(m_Scene->m_Models.size() > 0)
+        {
+            m_Scene->Draw((float)m_Width, (float)m_Height);
+        }
     }
     
     SwapBuffers(m_hDeviceContext);

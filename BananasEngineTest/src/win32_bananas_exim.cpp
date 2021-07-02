@@ -219,7 +219,7 @@ HRESULT ProgramStartup()
     // Initialize Scene
     g_Scene = new GraphicsEngine::Scene();
     g_RenderDevice->m_Scene = g_Scene;
-    g_Scene->LoadModels();
+    g_Scene->LoadModels("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill.obj");
     
     return S_OK;
 }

@@ -24,6 +24,7 @@ namespace BananasEditor
         Application mainApp;
         Window parentWindow;
         ControlHost windowHost;
+        Scene renderScene;
 
         public MainWindow()
         {
@@ -40,6 +41,8 @@ namespace BananasEditor
             // Host win32 Window inside WPF
             windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
             ControlHostElement.Child = windowHost;
+            renderScene = new Scene();
+            windowHost.Run();
         }
 
         private void menuImportWavefrontOBJ_Click(object sender, RoutedEventArgs e)
@@ -47,11 +50,19 @@ namespace BananasEditor
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
             Nullable<bool> result = openFileDlg.ShowDialog();
 
-            if (result == true)
+            if(result == true)
             {
                 string filename = openFileDlg.FileName;
-                // Pass file name to importing model
-                MessageBox.Show(filename);
+                string[] tokens = filename.Split('.');
+                if(tokens[1] == "obj")
+                {
+                    renderScene.LoadModels(filename);
+                }
+                else
+                {
+                    MessageBox.Show("File select is not an .obj file.");
+                }
+                
             }
 
         }

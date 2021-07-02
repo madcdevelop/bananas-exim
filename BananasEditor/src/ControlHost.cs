@@ -15,6 +15,9 @@ namespace BananasEditor
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr Win32GetWindowHandle();
 
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int Win32Run();
+
         [DllImport("user32.dll")]
         internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
@@ -38,6 +41,11 @@ namespace BananasEditor
         {
             m_hostHeight = (int)height;
             m_hostWidth  = (int)width;
+        }
+
+        public int Run()
+        {
+            return Win32Run();
         }
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
