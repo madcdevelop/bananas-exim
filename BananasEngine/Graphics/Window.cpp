@@ -130,8 +130,12 @@ bool Window::InitGL()
         return MessageBoxA(NULL, "Failed to load Glad.", "Error", 0);
     GLCALL(glViewport(0, 0, m_Width, m_Height));
 
+    // Z Buffer Init
+    GLCALL(glEnable(GL_DEPTH_TEST));
+    GLCALL(glDepthFunc(GL_LESS));
+
     // Init Rendering
-    g_RenderOpenGL = new GraphicsEngine::Renderer{this};
+    //g_RenderOpenGL = new GraphicsEngine::Renderer{this};
     
     return true;
 }
@@ -207,14 +211,14 @@ void Window::Shutdown()
 
 void Window::CameraKeyboardCallback()
 {
-    if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (float)m_DeltaTime);
-    if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (float)m_DeltaTime);
-    if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (float)m_DeltaTime);
-    if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-        g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (float)m_DeltaTime);
+    // if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
+    //     g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (float)m_DeltaTime);
+    // if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
+    //     g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (float)m_DeltaTime);
+    // if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
+    //     g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (float)m_DeltaTime);
+    // if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
+    //     g_RenderOpenGL->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (float)m_DeltaTime);
 }
 
 void Window::CameraMouseCallback(const POINT& pos)
@@ -231,7 +235,7 @@ void Window::CameraMouseCallback(const POINT& pos)
     m_LastX = (float)pos.x;
     m_LastY = (float)pos.y;
 
-    g_RenderOpenGL->m_Scene->m_Camera.MouseMovement(xoffset, yoffset);
+    // g_RenderOpenGL->m_Scene->m_Camera.MouseMovement(xoffset, yoffset);
 }
 
 void Window::ResizeWindowCallback()

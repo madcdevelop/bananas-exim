@@ -27,6 +27,7 @@
     <ClInclude Include="Graphics\Material.h" />
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\Model.h" />
+    <ClInclude Include="Graphics\RenderDeviceOpenGL.h" />
     <ClInclude Include="Graphics\Renderer.h" />
     <ClInclude Include="Graphics\RendererTestData.h" />
     <ClInclude Include="Graphics\Scene.h" />
@@ -45,6 +46,7 @@
     <ClCompile Include="Extern\glad\glad.c" />
     <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\Model.cpp" />
+    <ClCompile Include="Graphics\RenderDeviceOpenGL.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />
     <ClCompile Include="Graphics\Scene.cpp" />
     <ClCompile Include="Graphics\Shader.cpp" />
