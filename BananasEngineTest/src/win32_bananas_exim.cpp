@@ -123,7 +123,7 @@ WinMain(HINSTANCE hInstance,
 
     ProgramShutdown();
 
-    return (int)message.wParam;
+    return 0;
 }
 
 LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
