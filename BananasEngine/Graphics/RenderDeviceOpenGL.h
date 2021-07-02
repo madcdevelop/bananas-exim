@@ -2,6 +2,7 @@
 #define GRAPHICS_ENGINE_RENDER_DEVICE_OPEN_GL_H
 
 #include "../Core/Common.h"
+#include "Scene.h"
 
 namespace GraphicsEngine
 {
@@ -16,10 +17,11 @@ public:
     UINT    m_Height;
     bool    m_Running;
 
+    Scene*  m_Scene;
+
 public:
     RenderDeviceOpenGL();
     ~RenderDeviceOpenGL();
-
 
     void Render();
     bool Init();

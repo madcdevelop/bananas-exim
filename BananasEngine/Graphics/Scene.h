@@ -25,7 +25,7 @@ public:
     ~Scene();
 
     void LoadModels();
-    void Draw(float timestep, Window* window);
+    void Draw(float screenWidth, float screenHeight);
 
 };
 

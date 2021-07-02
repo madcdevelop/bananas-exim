@@ -12,9 +12,6 @@ Renderer::Renderer(HINSTANCE hInstance)
 
 Renderer::~Renderer()
 {
-    GLCALL(glDisableVertexAttribArray(0));
-    GLCALL(glDisableVertexAttribArray(1));
-    GLCALL(glDisableVertexAttribArray(2));
 }
 
 void Renderer::CreateRenderDevice(RenderDeviceOpenGL* renderDevice)

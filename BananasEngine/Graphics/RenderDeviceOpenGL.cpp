@@ -11,13 +11,20 @@ RenderDeviceOpenGL::RenderDeviceOpenGL()
 
 RenderDeviceOpenGL::~RenderDeviceOpenGL()
 {
-
+    GLCALL(glDisableVertexAttribArray(0));
+    GLCALL(glDisableVertexAttribArray(1));
+    GLCALL(glDisableVertexAttribArray(2));
 }
 
 void RenderDeviceOpenGL::Render()
 {
     GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+    if(m_Scene->m_Models.size() > 0)
+    {
+        m_Scene->Draw((float)m_Width, (float)m_Height);
+    }
     
     SwapBuffers(m_hDeviceContext);
 }
@@ -25,6 +32,7 @@ void RenderDeviceOpenGL::Render()
 bool RenderDeviceOpenGL::Init()
 {
     // Get Device Context and Set Pixel Format
+    ASSERT(m_hWnd != nullptr)
     m_hDeviceContext = GetDC(m_hWnd);
 
     PIXELFORMATDESCRIPTOR pfd;

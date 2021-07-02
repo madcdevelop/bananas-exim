@@ -29,6 +29,7 @@ double g_LastFrameTime = 0.0;
 GraphicsEngine::Renderer* g_Renderer = NULL;
 // TODO(neil): replace with interface RenderDevice
 GraphicsEngine::RenderDeviceOpenGL* g_RenderDevice = NULL;
+GraphicsEngine::Scene* g_Scene = NULL;
 
 // Core
 CoreEngine::Timestep* g_Timestep = NULL;
@@ -38,6 +39,7 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM 
 void CameraKeyboardCallback();
 void CameraMouseCallback(const POINT& pos);
 HRESULT ProgramStartup();
+HRESULT ProgramShutdown();
 
 // Entry point to program
 int APIENTRY 
@@ -88,7 +90,6 @@ WinMain(HINSTANCE hInstance,
     // Renderer startup (program startup) init renderer and device
     ProgramStartup();
 
-
     MSG message = { 0 };
     g_Timestep = new CoreEngine::Timestep;
     g_Timestep->StartCounter();
@@ -120,8 +121,9 @@ WinMain(HINSTANCE hInstance,
         }
     }
 
-    return (int)message.wParam;
+    ProgramShutdown();
 
+    return (int)message.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
@@ -149,8 +151,8 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM 
     case WM_SIZE:
         {
             // skip first call to resize window
-            //if (g_FirstResize) ResizeWindowCallback();
-            //else g_FirstResize = true;
+            if (g_FirstResize) g_RenderDevice->Resize();
+            else g_FirstResize = true;
             
             return 0;
         } break;
@@ -173,14 +175,14 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM 
 
 void CameraKeyboardCallback()
 {
-    // if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-    //     g_Renderer->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (float)g_DeltaTime);
-    // if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-    //     g_Renderer->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (float)g_DeltaTime);
-    // if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-    //     g_Renderer->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (float)g_DeltaTime);
-    // if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-    //     g_Renderer->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (float)g_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (float)g_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (float)g_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (float)g_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (float)g_DeltaTime);
 }
 
 void CameraMouseCallback(const POINT& pos)
@@ -197,24 +199,49 @@ void CameraMouseCallback(const POINT& pos)
     g_LastX = (float)pos.x;
     g_LastY = (float)pos.y;
 
-    // g_Renderer->m_Scene->m_Camera.MouseMovement(xoffset, yoffset);
+    g_Scene->m_Camera.MouseMovement(xoffset, yoffset);
 }
 
 HRESULT ProgramStartup()
 {
-    // init renderer and renderdevice
     // Initialize Renderer
     g_Renderer = new GraphicsEngine::Renderer{g_hInstance};
     g_Renderer->CreateRenderDevice(g_RenderDevice);
     
     // Initialize RenderDevice
     g_RenderDevice = g_Renderer->m_Device;
-    g_RenderDevice->m_hWnd = g_windowHandle;
-    g_RenderDevice->m_Width = g_Width;
-    g_RenderDevice->m_Height = g_Height;
+    g_RenderDevice->m_hWnd    = g_windowHandle;
+    g_RenderDevice->m_Width   = g_Width;
+    g_RenderDevice->m_Height  = g_Height;
     g_RenderDevice->m_Running = true;
     g_RenderDevice->Init();
+
+    // Initialize Scene
+    g_Scene = new GraphicsEngine::Scene();
+    g_RenderDevice->m_Scene = g_Scene;
+    g_Scene->LoadModels();
     
+    return S_OK;
+}
+
+HRESULT ProgramShutdown()
+{
+    if (g_Timestep)
+    {
+        delete g_Timestep;
+        g_Timestep = NULL;
+    }
+
+    if(g_RenderDevice)
+    {
+        g_RenderDevice->Shutdown();
+    }
+
+    if (g_Renderer)
+    {
+        delete g_Renderer;
+        g_Renderer = NULL;
+    }
 
     return S_OK;
 }
