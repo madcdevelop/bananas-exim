@@ -2,6 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\EngineAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ManagedObject.h" />

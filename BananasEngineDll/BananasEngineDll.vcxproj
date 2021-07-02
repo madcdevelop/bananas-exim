@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\EngineAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ManagedObject.h" />

@@ -9,6 +9,12 @@ namespace BananasEditor
     {
         #region PInvoke
         //PInvoke declarations
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool Win32CreateWindow(IntPtr hInstance, IntPtr hwnd);
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr Win32GetWindowHandle();
+
         [DllImport("user32.dll")]
         internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
@@ -28,17 +34,10 @@ namespace BananasEditor
         private readonly int m_hostWidth;
         IntPtr m_hwndChild = IntPtr.Zero;
 
-        BananasEngineDll.Window hostWindow;
-
         public ControlHost(double height, double width)
         {
             m_hostHeight = (int)height;
             m_hostWidth  = (int)width;
-        }
-
-        public int Run()
-        {
-            return hostWindow.Run();
         }
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
@@ -47,10 +46,9 @@ namespace BananasEditor
 
             if(m_hwndChild == IntPtr.Zero)
             {
-                hostWindow = new BananasEngineDll.Window(IntPtr.Zero, hwndParent.Handle);
-                if(!hostWindow.Init())
+                if(!Win32CreateWindow(IntPtr.Zero, hwndParent.Handle))
                     return href;
-                m_hwndChild = hostWindow.WindowHandle;
+                m_hwndChild = Win32GetWindowHandle();
                 Debug.Assert(m_hwndChild != IntPtr.Zero);
 
                 SetWindowLong(m_hwndChild, GWL_STYLE, WS_CHILD | WS_VISIBLE);
