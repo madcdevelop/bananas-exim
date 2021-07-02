@@ -36,7 +36,6 @@
     <ClInclude Include="Graphics\Texture.h" />
     <ClInclude Include="Core\Timestep.h" />
     <ClInclude Include="Graphics\VertexBuffer.h" />
-    <ClInclude Include="Graphics\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\Importer.cpp" />
@@ -55,7 +54,6 @@
     <ClCompile Include="Graphics\Texture.cpp" />
     <ClCompile Include="Core\Timestep.cpp" />
     <ClCompile Include="Graphics\VertexBuffer.cpp" />
-    <ClCompile Include="Graphics\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
