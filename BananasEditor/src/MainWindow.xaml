@@ -21,6 +21,9 @@
                 <MenuItem Header="_Import">
                     <MenuItem Header="_Wavefront(.obj)" Click="menuImportWavefrontOBJ_Click"/>
                 </MenuItem>
+                <MenuItem Header="_Export">
+                    <MenuItem Header="_Wavefront(.obj)" Click="menuExportWavefrontOBJ_Click"/>
+                </MenuItem>
                 <MenuItem Header="_Exit" Click="menuExit_Click"/>
             </MenuItem>
             

@@ -67,6 +67,18 @@ namespace BananasEditor
 
         }
 
+        private void menuExportWavefrontOBJ_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog();
+            Nullable<bool> result = saveFileDlg.ShowDialog();
+
+            if(result == true)
+            {
+                string filename = saveFileDlg.FileName;
+                MessageBox.Show(filename);
+            }
+        }
+
         private void menuExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
