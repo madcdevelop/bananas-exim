@@ -1,5 +1,6 @@
 # Visual Studio
 .vs/
+*.vcxproj.user
 
 # Visual Studio Code
 .vscode/
