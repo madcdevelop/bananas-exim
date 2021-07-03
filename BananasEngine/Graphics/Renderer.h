@@ -1,8 +1,8 @@
 #ifndef GRAPHICS_ENGINE_RENDERER_H
 #define GRAPHICS_ENGINE_RENDERER_H
 
-#include "Scene.h"
-#include "Window.h"
+// TODO(neil): replace with interface RenderDevice
+#include "RenderDeviceOpenGL.h"
 
 namespace GraphicsEngine
 {
@@ -10,16 +10,14 @@ namespace GraphicsEngine
 class Renderer {
 
 public:
-    Scene* m_Scene;
-
-private:
-    Window* m_Window;
+    RenderDeviceOpenGL* m_Device;
+    HINSTANCE m_hInstance;
 
 public:
-    Renderer(Window* window);
+    Renderer(HINSTANCE hInstance);
     ~Renderer();
 
-    void Init();
+    void CreateRenderDevice(RenderDeviceOpenGL* renderDevice);
     void Draw(float timestep);
 
 };

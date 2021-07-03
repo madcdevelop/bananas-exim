@@ -5,7 +5,6 @@
 #include "Camera.h"
 #include "Model.h"
 #include "Shader.h"
-#include "Window.h"
 
 namespace GraphicsEngine
 {
@@ -24,8 +23,8 @@ public:
     Scene();
     ~Scene();
 
-    void LoadModels();
-    void Draw(float timestep, Window* window);
+    void LoadModels(const std::string& fileName);
+    void Draw(float screenWidth, float screenHeight);
 
 };
 

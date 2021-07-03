@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
-namespace Editor
+namespace BananasEditor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,6 +24,7 @@ namespace Editor
         Application mainApp;
         Window parentWindow;
         ControlHost windowHost;
+        Scene renderScene;
 
         public MainWindow()
         {
@@ -40,7 +41,7 @@ namespace Editor
             // Host win32 Window inside WPF
             windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
             ControlHostElement.Child = windowHost;
-            // @TODO: Closing window does not close program.
+            renderScene = new Scene();
             windowHost.Run();
         }
 
@@ -49,11 +50,19 @@ namespace Editor
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
             Nullable<bool> result = openFileDlg.ShowDialog();
 
-            if (result == true)
+            if(result == true)
             {
                 string filename = openFileDlg.FileName;
-                // Pass file name to importing model
-                MessageBox.Show(filename);
+                string[] tokens = filename.Split('.');
+                if(tokens[1] == "obj")
+                {
+                    renderScene.LoadModels(filename);
+                }
+                else
+                {
+                    MessageBox.Show("File select is not an .obj file.");
+                }
+                
             }
 
         }

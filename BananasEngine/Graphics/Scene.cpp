@@ -32,11 +32,16 @@ Scene::~Scene()
 
 }
 
-void Scene::LoadModels()
+void Scene::LoadModels(const std::string& fileName)
 {
-    // TODO: Loop to add more than 1 model
+    // Clear Scene for next import
+    if(!m_Models.empty())
+    {
+        m_Models.clear();
+    }
+
     Model model1;
-    model1.LoadModel("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill.obj");
+    model1.LoadModel(fileName.c_str());
     m_Models.push_back(model1);
 
     Model lightCube;
@@ -49,7 +54,7 @@ void Scene::LoadModels()
     }
 }
 
-void Scene::Draw(float timestep, Window* window)
+void Scene::Draw(float screenWidth, float screenHeight)
 {
     // Textured cube
     m_Shader1.UseProgram();
@@ -88,7 +93,7 @@ void Scene::Draw(float timestep, Window* window)
 
     // Camera
     glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)window->m_Width/(float)window->m_Height, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), screenWidth/screenHeight, 0.1f, 100.0f);
 
     // World transformation
     // TODO: May not need world transform for model imported from blender. 

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BananasEditor": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
