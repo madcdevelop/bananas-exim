@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "Importer.h"
+#include "Exporter.h"
 
 // Render data
 glm::vec3 g_PointLightPositions[] = {
@@ -53,6 +54,13 @@ void Scene::LoadModels(const std::string& fileName)
         model.LoadTextures();
     }
 }
+
+void Scene::ExportModels(const std::string& fileName)
+{
+    Exporter exporter;
+    exporter.ExportModel(fileName, m_Models);
+}
+
 
 void Scene::Draw(float screenWidth, float screenHeight)
 {

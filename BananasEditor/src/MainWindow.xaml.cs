@@ -75,7 +75,15 @@ namespace BananasEditor
             if(result == true)
             {
                 string filename = saveFileDlg.FileName;
-                MessageBox.Show(filename);
+                string[] tokens = filename.Split('.');
+                if(tokens.Length > 1 || tokens[1] == "obj")
+                {
+                    renderScene.ExportModels(filename);
+                }
+                else
+                {
+                    MessageBox.Show("File type is not an .obj file.");
+                }
             }
         }
 

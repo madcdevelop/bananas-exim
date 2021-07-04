@@ -57,3 +57,9 @@ void SceneLoadModels(const char* fileName)
 }
 
 }
+
+EDITOR_INTERFACE
+void SceneExportModels(const char* fileName)
+{
+    g_Window->m_RenderDevice->m_Scene->ExportModels(std::string(fileName));
+}
