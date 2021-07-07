@@ -1,6 +1,6 @@
 #include "Exporter.h"
 
-#include <set>
+#include <map>
 
 namespace GraphicsEngine
 {
@@ -47,7 +47,8 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
 
     // TODO(neil): order matters. Possibly use index to output vertices in order
     // v reverse the index and only output unique vertex positions
-    std::set<std::string> distinctPositions;
+    std::map<std::string, int> distinctPositions;
+    int positionIndex = 1;
     for(int meshIndex = 0; meshIndex < models[0].m_Meshes[0].m_Vertices.size(); meshIndex++)
     {
         Vertex* vertex;
@@ -58,7 +59,8 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
         const std::string positionKey = std::to_string(vertex->position[0]) + " " + std::to_string(vertex->position[1]) + " " + std::to_string(vertex->position[2]);
         if(distinctPositions.find(positionKey) == distinctPositions.end())
         {
-            distinctPositions.insert(positionKey);
+            distinctPositions.insert(std::pair<std::string, int>(positionKey, positionIndex));
+            ++positionIndex;
         }
         else
         {
@@ -76,7 +78,8 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
 
     // TODO(neil): order matters. Possibly use index to output vertices in order
     // vt reverse the index and only output unique texture coordinates
-    std::set<std::string> distinctTexturesUV;
+    std::map<std::string, int> distinctTexturesUV;
+    int textureUVIndex = 1;
     for(int meshIndex = 0; meshIndex < models[0].m_Meshes[0].m_Vertices.size(); meshIndex++)
     {
         Vertex* vertex;
@@ -85,7 +88,8 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
         const std::string textureCoordKey = std::to_string(vertex->textureUV[0]) + " " + std::to_string(vertex->textureUV[1]);
         if(distinctTexturesUV.find(textureCoordKey) == distinctTexturesUV.end())
         {
-            distinctTexturesUV.insert(textureCoordKey);
+            distinctTexturesUV.insert(std::pair<std::string, int>(textureCoordKey, textureUVIndex));
+            ++textureUVIndex;
         }
         else
         {
@@ -102,16 +106,18 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
     }
 
     // vn reverse the index and only output unique vertex normals
-    std::set<std::string> distinctNormals;
+    std::map<std::string, int> distinctNormals;
+    int normalIndex = 1;
     for(int meshIndex = 0; meshIndex < models[0].m_Meshes[0].m_Vertices.size(); meshIndex++)
     {
         Vertex* vertex;
         vertex = &models[0].m_Meshes[0].m_Vertices[meshIndex];
 
-        const std::string normalsKey = std::to_string(vertex->normal[0]) + " " + std::to_string(vertex->normal[1]) + " " + std::to_string(vertex->normal[2]);
-        if(distinctNormals.find(normalsKey) == distinctNormals.end())
+        const std::string normalKey = std::to_string(vertex->normal[0]) + " " + std::to_string(vertex->normal[1]) + " " + std::to_string(vertex->normal[2]);
+        if(distinctNormals.find(normalKey) == distinctNormals.end())
         {
-            distinctNormals.insert(normalsKey);
+            distinctNormals.insert(std::pair<std::string, int>(normalKey, normalIndex));
+            ++normalIndex;
         }
         else
         {
@@ -135,6 +141,43 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
     fileOut << "s" << " " << "off" << std::endl;
 
     // f output with / in between to get face indices
+    fileOut << "f" << " ";
+    for(unsigned int i = 0; i < models[0].m_Meshes[0].m_Indices.size(); i++)     
+    {
+        unsigned int vertexIndex = models[0].m_Meshes[0].m_Indices[i];
+        Vertex* vertex;
+        vertex = &models[0].m_Meshes[0].m_Vertices[vertexIndex];
+
+        // Position
+        std::string positionKey = std::to_string(vertex->position[0]) + " " + std::to_string(vertex->position[1]) + " " + std::to_string(vertex->position[2]);   
+        std::map<std::string, int>::iterator positionIter;
+        positionIter = distinctPositions.find(positionKey);
+
+        // Texture UV
+        std::string textureCoordKey = std::to_string(vertex->textureUV[0]) + " " + std::to_string(vertex->textureUV[1]);
+        std::map<std::string, int>::iterator textureUVIter;
+        textureUVIter = distinctTexturesUV.find(textureCoordKey);
+
+        // Normal
+        std::string normalKey = std::to_string(vertex->normal[0]) + " " + std::to_string(vertex->normal[1]) + " " + std::to_string(vertex->normal[2]);
+        std::map<std::string, int>::iterator normalKeyIter;
+        normalKeyIter = distinctNormals.find(normalKey);
+
+        fileOut << positionIter->second << "/" << textureUVIter->second << "/" << normalKeyIter->second << " ";
+        // Output new line every 3 vertices
+        if((i+1) % 3 == 0)
+        {
+            fileOut << std::endl;
+            if(i+1 == models[0].m_Meshes[0].m_Indices.size())
+            {
+                break;
+            }
+            else
+            {
+                fileOut << "f" << " ";
+            }
+        }
+    }
 
     return true;
 }
