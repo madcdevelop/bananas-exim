@@ -15,6 +15,7 @@ public:
     ~Exporter();
 
     bool ExportModel(const std::string& filePath, std::vector<Model>& models);
+    bool ExportModelMTL(const std::string& filePath, std::vector<Model>& models);
 
 };
 
