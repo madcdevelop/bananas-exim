@@ -5,7 +5,7 @@
 namespace GraphicsEngine
 {
 
-VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, unsigned int count)
+VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, uint32 count)
     : m_Count(count)
 {
     GLCALL(glGenBuffers(1, &m_RenderId));

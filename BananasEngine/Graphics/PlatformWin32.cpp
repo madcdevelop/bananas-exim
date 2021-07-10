@@ -87,10 +87,10 @@ bool PlatformWin32::Init()
     // Adjust Window Rect for Client Size
     RECT windowRect = {0, 0, (LONG)m_Width, (LONG)m_Height};
     AdjustWindowRect((LPRECT)&wc, m_WindowStyle, FALSE);
-    int width  = windowRect.right - windowRect.left;
-    int height = windowRect.bottom - windowRect.top;
-    int x = GetSystemMetrics(SM_CXSCREEN)/2 - width/2;
-    int y = GetSystemMetrics(SM_CYSCREEN)/2 - height/2;
+    int32 width  = windowRect.right - windowRect.left;
+    int32 height = windowRect.bottom - windowRect.top;
+    int32 x = GetSystemMetrics(SM_CXSCREEN)/2 - width/2;
+    int32 y = GetSystemMetrics(SM_CYSCREEN)/2 - height/2;
 
     // Create Window
     m_WindowStyle |=  m_hWnd ? WS_CHILD : WS_OVERLAPPEDWINDOW;
@@ -106,7 +106,7 @@ bool PlatformWin32::Init()
     return true;
 }
 
-int PlatformWin32::Run()
+int32 PlatformWin32::Run()
 {
     g_Win32Running = true;
     while(m_RenderDevice->m_Running)

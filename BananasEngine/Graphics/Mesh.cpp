@@ -3,7 +3,7 @@
 namespace GraphicsEngine
 {
 
-Mesh::Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Material& material)
+Mesh::Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32>& indices, Material& material)
     : m_Name(name), m_Vertices(vertices), m_Indices(indices), m_Material(material),
       m_VAO(0)
 {
@@ -16,10 +16,10 @@ Mesh::~Mesh()
 
 void Mesh::Draw(Shader& shader)
 {
-    unsigned int textureDiffuseN  = 1;
-    unsigned int textureSpecularN = 1;
+    uint32 textureDiffuseN  = 1;
+    uint32 textureSpecularN = 1;
 
-    for(unsigned int texIndex = 0; texIndex < m_Material.m_Textures.size(); texIndex++)
+    for(uint32 texIndex = 0; texIndex < m_Material.m_Textures.size(); texIndex++)
     {
         std::string type = m_Material.m_Textures[texIndex].m_Type;
         std::string number;
@@ -41,7 +41,7 @@ void Mesh::Draw(Shader& shader)
     m_VertexBuffer->Bind();
     m_IndexBuffer->Bind();
     GLCALL(glBindVertexArray(m_VAO));
-    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(m_IndexBuffer->m_Count), GL_UNSIGNED_INT, 0));
+    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<uint32>(m_IndexBuffer->m_Count), GL_UNSIGNED_INT, 0));
     GLCALL(glBindVertexArray(0));
 }
 
@@ -51,8 +51,8 @@ void Mesh::SetupMesh()
     GLCALL(glGenVertexArrays(1, &m_VAO));
     GLCALL(glBindVertexArray(m_VAO));
 
-    m_VertexBuffer = new VertexBuffer{m_Vertices, static_cast<unsigned int>(m_Vertices.size())};
-    m_IndexBuffer = new IndexBuffer{m_Indices, static_cast<unsigned int>(m_Indices.size())};
+    m_VertexBuffer = new VertexBuffer{m_Vertices, static_cast<uint32>(m_Vertices.size())};
+    m_IndexBuffer = new IndexBuffer{m_Indices, static_cast<uint32>(m_Indices.size())};
 
     // Vertex attributes
     GLCALL(glEnableVertexAttribArray(0));

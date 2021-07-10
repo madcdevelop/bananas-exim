@@ -5,14 +5,14 @@
 namespace GraphicsEngine
 {
     
-IndexBuffer::IndexBuffer(const std::vector<unsigned int>& indices, unsigned int count)
+IndexBuffer::IndexBuffer(const std::vector<uint32>& indices, uint32 count)
     : m_Count(count)
 {
-    ASSERT(sizeof(unsigned int) == sizeof(GLuint));
+    ASSERT(sizeof(uint32) == sizeof(GLuint));
 
     GLCALL(glGenBuffers(1, &m_RenderId));
     Bind();
-    GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW));
+    GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(uint32), &indices[0], GL_STATIC_DRAW));
 }
 
 IndexBuffer::~IndexBuffer()

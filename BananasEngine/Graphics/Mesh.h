@@ -17,18 +17,18 @@ class Mesh
 public:
     std::string m_Name;
     std::vector<Vertex> m_Vertices;
-    std::vector<unsigned int> m_Indices;
+    std::vector<uint32> m_Indices;
     Material m_Material;
 
 private:
-    unsigned int m_VAO;
+    uint32 m_VAO;
 
     // TODO: Switch to unique_ptr
     VertexBuffer* m_VertexBuffer;
     IndexBuffer* m_IndexBuffer;
 
 public:
-    Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Material& material);
+    Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32>& indices, Material& material);
     ~Mesh();
 
     void Draw(Shader& shader);

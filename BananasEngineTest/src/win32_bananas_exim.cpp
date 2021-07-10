@@ -12,8 +12,8 @@ HINSTANCE       g_hInstance    = NULL;
 const wchar_t*  g_WindowTitle  = TEXT("Bananas Engine Test");
 DWORD           g_WindowStyle  = WS_VISIBLE;
 bool            g_Running      = false;
-int             g_Width        = 800;
-int             g_Height       = 600;
+int32             g_Width        = 800;
+int32             g_Height       = 600;
 
 // Movement
 bool  g_FirstResize = false;
@@ -42,11 +42,11 @@ HRESULT ProgramStartup();
 HRESULT ProgramShutdown();
 
 // Entry point to program
-int APIENTRY 
+int32 APIENTRY 
 WinMain(HINSTANCE hInstance,
         HINSTANCE hPrevInstance,
         LPSTR     lpCmdLine,
-        int       nShowCmd)
+        int32       nShowCmd)
 {
     HWND windowHandle = NULL;
     
@@ -69,10 +69,10 @@ WinMain(HINSTANCE hInstance,
     // Adjust Window Rect for Client Size
     RECT windowRect = {0, 0, (LONG)g_Width, (LONG)g_Height};
     AdjustWindowRect((LPRECT)&wc, g_WindowStyle, FALSE);
-    int width  = windowRect.right - windowRect.left;
-    int height = windowRect.bottom - windowRect.top;
-    int x = GetSystemMetrics(SM_CXSCREEN)/2 - width/2;
-    int y = GetSystemMetrics(SM_CYSCREEN)/2 - height/2;
+    int32 width  = windowRect.right - windowRect.left;
+    int32 height = windowRect.bottom - windowRect.top;
+    int32 x = GetSystemMetrics(SM_CXSCREEN)/2 - width/2;
+    int32 y = GetSystemMetrics(SM_CYSCREEN)/2 - height/2;
 
     // Create Window
     g_WindowStyle |= windowHandle ? WS_CHILD : WS_OVERLAPPEDWINDOW;

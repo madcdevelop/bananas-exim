@@ -13,7 +13,7 @@ Importer::~Importer()
 
 }
 
-bool Importer::LoadModel(const std::string& filePath, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<unsigned int>>& outIndices, std::vector<unsigned int>& outMeshSizes, std::vector<Material>& outMaterials)
+bool Importer::LoadModel(const std::string& filePath, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::vector<Material>& outMaterials)
 {
     // Open the file
     std::ifstream fileStream(filePath, std::ios::in);
@@ -38,15 +38,15 @@ bool Importer::LoadModel(const std::string& filePath, std::vector<std::string>& 
     return false;
 }
 
-void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<unsigned int>>& outIndices, std::vector<unsigned int>& outMeshSizes, std::string& path, std::vector<Material>& outMaterials)
+void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::string& path, std::vector<Material>& outMaterials)
 {
     std::vector<glm::vec3> positions;
     std::vector<glm::vec2> textureCoordinates;
     std::vector<glm::vec3> normals;
     std::vector<Face> faces;
     
-    unsigned int meshCount = 0;
-    unsigned int meshSize = 0;
+    uint32 meshCount = 0;
+    uint32 meshSize = 0;
 
     std::string mtllib;
     std::vector<std::string> usemtl;
@@ -89,7 +89,7 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
         {
             Face face;
             
-            int faceIndex = 0;
+            int32 faceIndex = 0;
             for (const auto& innerToken : tokens)
             {
                 if(innerToken == start) continue;
@@ -149,13 +149,13 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
     }
 
     // Fill vertices based on index coordinates
-    std::map<std::string, int> distinctVertices;
+    std::map<std::string, int32> distinctVertices;
     std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
+    std::vector<uint32> indices;
 
-    int indicesIndex = 0;
-    int meshProcessedSize = 0;
-    int meshProcessedIndex = 0;
+    int32 indicesIndex = 0;
+    int32 meshProcessedSize = 0;
+    int32 meshProcessedIndex = 0;
     for(auto &&f : faces)
     {
         for(auto &&i : f.indices)
@@ -170,7 +170,7 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
             }
             else
             {
-                distinctVertices.insert(std::pair<std::string, int>(indexKey, indicesIndex));
+                distinctVertices.insert(std::pair<std::string, int32>(indexKey, indicesIndex));
 
                 Vertex v;
                 v.position   = positions[i.positionIndex-1];
@@ -213,7 +213,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         return false;
     }
 
-    std::map<std::string, int> names;
+    std::map<std::string, int32> names;
     std::vector<glm::vec3> ambient;
     std::vector<glm::vec3> diffuse;
     std::vector<glm::vec3> specular;
@@ -222,7 +222,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
     std::vector<Texture> textures;
     std::vector<std::vector<Texture>> texturesPerMesh;
 
-    unsigned int materialCount = 0;
+    uint32 materialCount = 0;
 
     while(!fileStream.eof())
     {
@@ -253,7 +253,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         // Name of material
         else if(start == "newmtl")
         {
-            names.insert(std::pair<std::string, int>(tokens[1], materialCount));
+            names.insert(std::pair<std::string, int32>(tokens[1], materialCount));
             materialCount++;
         }
         // Specular Highlights
@@ -301,19 +301,19 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         }
     }
 
-    std::vector<int> materialIndices;
+    std::vector<int32> materialIndices;
 
     // Go through usemtl array. Create an index array to lookup which material to add to outMaterials
-    for(unsigned int matIndex = 0; matIndex < usemtl.size(); matIndex++)
+    for(uint32 matIndex = 0; matIndex < usemtl.size(); matIndex++)
     {
         auto found = names.find(usemtl[matIndex]);
         materialIndices.push_back(found->second);
     }
 
     // TODO: update to match material index
-    for(unsigned int i = 0; i < materialIndices.size(); i++)
+    for(uint32 i = 0; i < materialIndices.size(); i++)
     {
-        unsigned int materialIndex = materialIndices[i];
+        uint32 materialIndex = materialIndices[i];
         Material material(usemtl[i], ambient[materialIndex], diffuse[materialIndex], specular[materialIndex], emissive[materialIndex], shininess[materialIndex], texturesPerMesh[materialIndex]);
         outMaterials.push_back(material);
     }

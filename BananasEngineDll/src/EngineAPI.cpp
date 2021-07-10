@@ -32,7 +32,7 @@ HWND Win32GetWindowHandle()
 }
 
 EDITOR_INTERFACE
-int Win32Run()
+int32 Win32Run()
 {
     return g_Window->Run();
 }

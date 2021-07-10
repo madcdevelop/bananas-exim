@@ -10,7 +10,7 @@ glm::vec3 g_PointLightPositions[] = {
     glm::vec3(-5.0f, 5.0f, 0.0f),
     glm::vec3(0.0f, 5.0f, -5.0f)
 };
-const unsigned int g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
+const uint32 g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
 
 const float g_Constant  = 1.0f;
 const float g_Linear    = 0.09f;
@@ -75,7 +75,7 @@ void Scene::Draw(float screenWidth, float screenHeight)
     m_Shader1.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
     // Point light properties
-    for(unsigned int i = 0; i < g_PointLightsCount; i++)
+    for(uint32 i = 0; i < g_PointLightsCount; i++)
     {
         std::string index = std::to_string(i);
         m_Shader1.SetVec3("pointLights[" + index + "].position", g_PointLightPositions[0]);
@@ -120,7 +120,7 @@ void Scene::Draw(float screenWidth, float screenHeight)
     // Render Lights
     m_ShaderLight.UseProgram();
 
-    for(unsigned int i = 0; i < g_PointLightsCount; i++)
+    for(uint32 i = 0; i < g_PointLightsCount; i++)
     {
         glm::mat4 lightModel = glm::mat4(1.0f);
         lightModel = glm::translate(lightModel, g_PointLightPositions[i]);

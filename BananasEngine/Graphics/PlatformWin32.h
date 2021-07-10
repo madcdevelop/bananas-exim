@@ -35,7 +35,7 @@ public:
     bool Win32CreateWindow();
     bool Init();
 
-    int Run();
+    int32 Run();
 
 };
 

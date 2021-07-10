@@ -9,7 +9,7 @@ namespace GraphicsEngine
 class Shader 
 {
 private:
-    unsigned int m_ProgramId;
+    uint32 m_ProgramId;
 
 public:
     Shader();
@@ -21,7 +21,7 @@ public:
     // Uniforms
     void SetFloat(const std::string& name, float v0);
 
-    void SetInt(const std::string& name, int v0);
+    void SetInt(const std::string& name, int32 v0);
 
     void SetVec3(const std::string& name, float v0, float v1, float v2);
 

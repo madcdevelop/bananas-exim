@@ -7,9 +7,9 @@ namespace GraphicsEngine
 {
 
 struct Index {
-    unsigned int positionIndex;
-    unsigned int textureIndex;
-    unsigned int normalIndex;
+    uint32 positionIndex;
+    uint32 textureIndex;
+    uint32 normalIndex;
 };
 
 struct Face {
@@ -19,13 +19,13 @@ struct Face {
 class IndexBuffer {
 
 public:
-    unsigned int m_Count;
+    uint32 m_Count;
 
 private:
-    unsigned int m_RenderId;
+    uint32 m_RenderId;
 
 public:
-    IndexBuffer(const std::vector<unsigned int>& indices, unsigned int count);
+    IndexBuffer(const std::vector<uint32>& indices, uint32 count);
     ~IndexBuffer();
 
     void Bind() const;

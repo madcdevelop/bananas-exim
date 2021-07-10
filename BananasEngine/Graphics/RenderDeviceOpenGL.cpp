@@ -47,7 +47,7 @@ bool RenderDeviceOpenGL::Init()
     pfd.cColorBits = 32;
     pfd.cDepthBits = 24;
     pfd.cStencilBits = 8;
-    int format = ChoosePixelFormat(m_hDeviceContext, &pfd);
+    int32 format = ChoosePixelFormat(m_hDeviceContext, &pfd);
     if(!SetPixelFormat(m_hDeviceContext, format, &pfd))
         return MessageBoxA(NULL, "Failed to set pixel format.", "Error", 0);
 

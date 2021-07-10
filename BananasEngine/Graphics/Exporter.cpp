@@ -67,18 +67,18 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
     fileName = fileName.substr(0, fileName.find_last_of("."));
     fileOut << "mtllib" << " " << fileName << ".mtl" << std::endl;
 
-    unsigned int positionFaceIndex  = 0;
-    unsigned int textureUVFaceIndex = 0;
-    unsigned int normalFaceIndex    = 0;
-    for(unsigned int meshIndex = 0; meshIndex < models[0].m_Meshes.size(); meshIndex++)
+    uint32 positionFaceIndex  = 0;
+    uint32 textureUVFaceIndex = 0;
+    uint32 normalFaceIndex    = 0;
+    for(uint32 meshIndex = 0; meshIndex < models[0].m_Meshes.size(); meshIndex++)
     {
         // o name_of_object
         fileOut << "o" << " " << models[0].m_Meshes[meshIndex].m_Name << std::endl;
 
         // v reverse the index and only output unique vertex positions
-        std::map<std::string, int> distinctPositions;
-        int positionCount = 1;
-        for(unsigned int positionIndex = 0; 
+        std::map<std::string, int32> distinctPositions;
+        int32 positionCount = 1;
+        for(uint32 positionIndex = 0; 
             positionIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
             positionIndex++)
         {
@@ -92,7 +92,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
                                             std::to_string(vertex->position[2]);
             if(distinctPositions.find(positionKey) == distinctPositions.end())
             {
-                distinctPositions.insert(std::pair<std::string, int>(positionKey, positionCount));
+                distinctPositions.insert(std::pair<std::string, int32>(positionKey, positionCount));
                 ++positionCount;
             }
             else
@@ -102,7 +102,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
 
             // output to file
             fileOut << "v";
-            for(int i = 0; i < vertex->position.length(); i++)
+            for(int32 i = 0; i < vertex->position.length(); i++)
             {
                 fileOut << " " << std::to_string(vertex->position[i]);
             }
@@ -110,9 +110,9 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
         }
 
         // vt reverse the index and only output unique texture coordinates
-        std::map<std::string, int> distinctTexturesUV;
-        int textureUVCount = 1;
-        for(unsigned int textureUVIndex = 0; 
+        std::map<std::string, int32> distinctTexturesUV;
+        int32 textureUVCount = 1;
+        for(uint32 textureUVIndex = 0; 
             textureUVIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
             textureUVIndex++)
         {
@@ -123,7 +123,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
                                                 std::to_string(vertex->textureUV[1]);
             if(distinctTexturesUV.find(textureCoordKey) == distinctTexturesUV.end())
             {
-                distinctTexturesUV.insert(std::pair<std::string, int>(textureCoordKey, textureUVCount));
+                distinctTexturesUV.insert(std::pair<std::string, int32>(textureCoordKey, textureUVCount));
                 ++textureUVCount;
             }
             else
@@ -133,7 +133,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
 
             // outout to file
             fileOut << "vt";
-            for(int i = 0; i < vertex->textureUV.length(); i++)
+            for(int32 i = 0; i < vertex->textureUV.length(); i++)
             {
                 fileOut << " " << std::to_string(vertex->textureUV[i]);
             }
@@ -141,9 +141,9 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
         }
 
         // vn reverse the index and only output unique vertex normals
-        std::map<std::string, int> distinctNormals;
-        int normalCount = 1;
-        for(unsigned int normalIndex = 0; 
+        std::map<std::string, int32> distinctNormals;
+        int32 normalCount = 1;
+        for(uint32 normalIndex = 0; 
             normalIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
             normalIndex++)
         {
@@ -155,7 +155,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
                                           std::to_string(vertex->normal[2]);
             if(distinctNormals.find(normalKey) == distinctNormals.end())
             {
-                distinctNormals.insert(std::pair<std::string, int>(normalKey, normalCount));
+                distinctNormals.insert(std::pair<std::string, int32>(normalKey, normalCount));
                 ++normalCount;
             }
             else
@@ -165,7 +165,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
 
             // outout to file
             fileOut << "vn";
-            for(int i = 0; i < vertex->normal.length(); i++)
+            for(int32 i = 0; i < vertex->normal.length(); i++)
             {
                 fileOut << " " << std::to_string(vertex->normal[i]);
             }
@@ -180,11 +180,11 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
 
         // f output with / in between to get face indices
         fileOut << "f" << " ";
-        for(unsigned int indicesIndex = 0; 
+        for(uint32 indicesIndex = 0; 
             indicesIndex < models[0].m_Meshes[meshIndex].m_Indices.size(); 
             indicesIndex++)     
         {
-            unsigned int vertexIndex = models[0].m_Meshes[meshIndex].m_Indices[indicesIndex];
+            uint32 vertexIndex = models[0].m_Meshes[meshIndex].m_Indices[indicesIndex];
             Vertex* vertex;
             vertex = &models[0].m_Meshes[meshIndex].m_Vertices[vertexIndex];
 
@@ -192,20 +192,20 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
             std::string positionKey = std::to_string(vertex->position[0]) + " " + 
                                       std::to_string(vertex->position[1]) + " " + 
                                       std::to_string(vertex->position[2]);   
-            std::map<std::string, int>::iterator positionIter;
+            std::map<std::string, int32>::iterator positionIter;
             positionIter = distinctPositions.find(positionKey);
 
             // Texture UV
             std::string textureCoordKey = std::to_string(vertex->textureUV[0]) + " " + 
                                           std::to_string(vertex->textureUV[1]);
-            std::map<std::string, int>::iterator textureUVIter;
+            std::map<std::string, int32>::iterator textureUVIter;
             textureUVIter = distinctTexturesUV.find(textureCoordKey);
 
             // Normal
             std::string normalKey = std::to_string(vertex->normal[0]) + " " + 
                                     std::to_string(vertex->normal[1]) + " " + 
                                     std::to_string(vertex->normal[2]);
-            std::map<std::string, int>::iterator normalKeyIter;
+            std::map<std::string, int32>::iterator normalKeyIter;
             normalKeyIter = distinctNormals.find(normalKey);
 
             fileOut << (positionIter->second + positionFaceIndex) << "/" << 
@@ -225,9 +225,9 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
                 }
             }
         }
-        positionFaceIndex  += static_cast<unsigned int>(distinctPositions.size());
-        textureUVFaceIndex += static_cast<unsigned int>(distinctTexturesUV.size());
-        normalFaceIndex    += static_cast<unsigned int>(distinctNormals.size());
+        positionFaceIndex  += static_cast<uint32>(distinctPositions.size());
+        textureUVFaceIndex += static_cast<uint32>(distinctTexturesUV.size());
+        normalFaceIndex    += static_cast<uint32>(distinctNormals.size());
     }
     fileOut.close();
 
@@ -252,7 +252,7 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
     fileOut << "# Material Count: " << "1" << std::endl;
     fileOut << std::endl;
     
-    for(unsigned int meshIndex = 0; 
+    for(uint32 meshIndex = 0; 
         meshIndex < models[0].m_Meshes.size(); 
         meshIndex++)
     {
@@ -289,7 +289,7 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
         fileOut << "d" << " " << "1.000000" << std::endl;
         fileOut << "illum" << " " << "2" << std::endl;
 
-        for(unsigned int textureIndex = 0; 
+        for(uint32 textureIndex = 0; 
             textureIndex < models[0].m_Meshes[meshIndex].m_Material.m_Textures.size(); 
             textureIndex++)
         {

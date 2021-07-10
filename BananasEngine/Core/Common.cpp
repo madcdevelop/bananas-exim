@@ -5,7 +5,7 @@ void glClearError_()
     while(glGetError() != GL_NO_ERROR);
 }
 
-bool glCheckError_(const char *function, const char *file, int line)
+bool glCheckError_(const char *function, const char *file, int32 line)
 {
     while(GLenum errorCode = glGetError())
     {
