@@ -24,7 +24,8 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
     fileOut.open(filePath, std::ios_base::out);
     if(!fileOut.is_open())
     {
-        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " + std::string(filePath) + ".\n";
+        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " 
+                                   + std::string(filePath) + ".\n";
         OutputDebugStringA(errorMessage.c_str());
         return false;
     }
@@ -53,13 +54,15 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
         // v reverse the index and only output unique vertex positions
         std::map<std::string, int> distinctPositions;
         int positionCount = 1;
-        for(unsigned int positionIndex = 0; positionIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); positionIndex++)
+        for(unsigned int positionIndex = 0; 
+            positionIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
+            positionIndex++)
         {
             Vertex* vertex;
             vertex = &models[0].m_Meshes[meshIndex].m_Vertices[positionIndex];
 
-            // check for duplicates (if duplicate then continue)
-            // TODO(neil): write a compare function specific for struct. So no conversion to string has to happen.
+            // TODO(neil): write a compare function specific for struct. 
+            // So no conversion to string has to happen.
             const std::string positionKey = std::to_string(vertex->position[0]) + " " + 
                                             std::to_string(vertex->position[1]) + " " + 
                                             std::to_string(vertex->position[2]);
@@ -85,7 +88,9 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
         // vt reverse the index and only output unique texture coordinates
         std::map<std::string, int> distinctTexturesUV;
         int textureUVCount = 1;
-        for(unsigned int textureUVIndex = 0; textureUVIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); textureUVIndex++)
+        for(unsigned int textureUVIndex = 0; 
+            textureUVIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
+            textureUVIndex++)
         {
             Vertex* vertex;
             vertex = &models[0].m_Meshes[meshIndex].m_Vertices[textureUVIndex];
@@ -114,7 +119,9 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
         // vn reverse the index and only output unique vertex normals
         std::map<std::string, int> distinctNormals;
         int normalCount = 1;
-        for(unsigned int normalIndex = 0; normalIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); normalIndex++)
+        for(unsigned int normalIndex = 0; 
+            normalIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
+            normalIndex++)
         {
             Vertex* vertex;
             vertex = &models[0].m_Meshes[meshIndex].m_Vertices[normalIndex];
@@ -149,7 +156,9 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
 
         // f output with / in between to get face indices
         fileOut << "f" << " ";
-        for(unsigned int indicesIndex = 0; indicesIndex < models[0].m_Meshes[meshIndex].m_Indices.size(); indicesIndex++)     
+        for(unsigned int indicesIndex = 0; 
+            indicesIndex < models[0].m_Meshes[meshIndex].m_Indices.size(); 
+            indicesIndex++)     
         {
             unsigned int vertexIndex = models[0].m_Meshes[meshIndex].m_Indices[indicesIndex];
             Vertex* vertex;
@@ -213,37 +222,45 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
     fileOut.open(filePath, std::ios_base::out);
     if(!fileOut.is_open())
     {
-        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " + std::string(filePath) + ".\n";
+        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " 
+                                   + std::string(filePath) + ".\n";
         OutputDebugStringA(errorMessage.c_str());
         return false;
     }
 
     fileOut << "# Bananas Import Export Tool MTL File" << std::endl;
+    // TODO(neil): Change static Material Count to dynamic
     fileOut << "# Material Count: " << "1" << std::endl;
     fileOut << std::endl;
     
-    for(unsigned int meshIndex = 0; meshIndex < models[0].m_Meshes.size(); meshIndex++)
+    for(unsigned int meshIndex = 0; 
+        meshIndex < models[0].m_Meshes.size(); 
+        meshIndex++)
     {
         fileOut << "newmtl" << " " << models[0].m_Meshes[meshIndex].m_Material.m_Name << std::endl;
 
         fileOut << "Ns" << " " << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Shininess) << std::endl;
 
-        fileOut << "Ka" << " " << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Ambient[0]) << " ";
+        fileOut << "Ka" << " ";
+        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Ambient[0]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Ambient[1]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Ambient[2]);
         fileOut << std::endl;
 
-        fileOut << "Kd" << " " << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Diffuse[0]) << " ";
+        fileOut << "Kd" << " "; 
+        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Diffuse[0]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Diffuse[1]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Diffuse[2]);
         fileOut << std::endl;
 
-        fileOut << "Ks" << " " << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Specular[0]) << " ";
+        fileOut << "Ks" << " "; 
+        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Specular[0]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Specular[1]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Specular[2]);
         fileOut << std::endl;
 
-        fileOut << "Ke" << " " << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Emissive[0]) << " ";
+        fileOut << "Ke" << " "; 
+        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Emissive[0]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Emissive[1]) << " ";
         fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Emissive[2]);
         fileOut << std::endl;
@@ -253,14 +270,20 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
         fileOut << "d" << " " << "1.000000" << std::endl;
         fileOut << "illum" << " " << "2" << std::endl;
 
-        for(unsigned int textureIndex = 0; textureIndex < models[0].m_Meshes[meshIndex].m_Material.m_Textures.size(); textureIndex++)
+        for(unsigned int textureIndex = 0; 
+            textureIndex < models[0].m_Meshes[meshIndex].m_Material.m_Textures.size(); 
+            textureIndex++)
         {
-            if(models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_Type == "texture_diffuse")
-                fileOut << "map_Kd" << " " << models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath << std::endl;    
-            else if(models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_Type == "texture_specular")
-                fileOut << "map_Ks" << " " << models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath << std::endl;
+            std::string materialType = models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_Type;
+            if(materialType == "texture_diffuse")
+                fileOut << "map_Kd" << " " 
+                        << models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath 
+                        << std::endl;    
+            else if(materialType == "texture_specular")
+                fileOut << "map_Ks" << " " 
+                        << models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath 
+                        << std::endl;
         }
-
         fileOut << std::endl;
 
     }
