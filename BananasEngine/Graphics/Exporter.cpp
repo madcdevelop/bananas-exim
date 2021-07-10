@@ -19,6 +19,29 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
 {
     ASSERT(models.size() != 0)
 
+    std::string fileType = filePath.substr(filePath.find_last_of(".")+1);
+
+    // Export based on file type
+    if(fileType == "obj")
+    {
+        if(!ExportModelOBJ(filePath, models)) return false;
+
+        std::string fileName = filePath.substr(filePath.find_last_of("\\")+1);
+        std::string mtlFilePath = filePath.substr(0, filePath.find_last_of("\\")) + "\\" + fileName + ".mtl";
+        if(!ExportModelMTL(mtlFilePath, models)) return false;
+
+        return true;
+    }
+
+    std::string errorMessage = "ERROR\t\tFile Type\t\tPossibly incorrect filetype: " 
+                               + std::string(filePath) + ".Currently only exports .obj files\n";
+    OutputDebugStringA(errorMessage.c_str());
+
+    return false;
+}
+
+bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& models)
+{
     std::fstream fileOut;
 
     fileOut.open(filePath, std::ios_base::out);
@@ -205,18 +228,13 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
         textureUVFaceIndex += static_cast<unsigned int>(distinctTexturesUV.size());
         normalFaceIndex    += static_cast<unsigned int>(distinctNormals.size());
     }
-
-    // Export MTL file
-    std::string mtlFilePath = filePath.substr(0, filePath.find_last_of("\\")) + "\\" + fileName + ".mtl";
-    ExportModelMTL(mtlFilePath, models);
+    fileOut.close();
 
     return true;
 }
 
 bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& models)
 {
-    ASSERT(models.size() != 0)
-
     std::fstream fileOut;
 
     fileOut.open(filePath, std::ios_base::out);
@@ -287,6 +305,7 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
         fileOut << std::endl;
 
     }
+    fileOut.close();
 
     return true;
 }
