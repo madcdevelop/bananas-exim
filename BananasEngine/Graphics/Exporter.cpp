@@ -27,6 +27,7 @@ bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& mode
         if(!ExportModelOBJ(filePath, models)) return false;
 
         std::string fileName = filePath.substr(filePath.find_last_of("\\")+1);
+        fileName = fileName.substr(0, fileName.find_last_of("."));
         std::string mtlFilePath = filePath.substr(0, filePath.find_last_of("\\")) + "\\" + fileName + ".mtl";
         if(!ExportModelMTL(mtlFilePath, models)) return false;
 
