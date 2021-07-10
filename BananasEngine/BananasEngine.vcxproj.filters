@@ -18,6 +18,7 @@
     <ClInclude Include="Graphics\Scene.h" />
     <ClInclude Include="Graphics\PlatformWin32.h" />
     <ClInclude Include="Graphics\RenderDeviceOpenGL.h" />
+    <ClInclude Include="Graphics\Exporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\VertexBuffer.cpp" />
@@ -36,5 +37,6 @@
     <ClCompile Include="Graphics\Importer.cpp" />
     <ClCompile Include="Graphics\Scene.cpp" />
     <ClCompile Include="Graphics\PlatformWin32.cpp" />
+    <ClCompile Include="Graphics\Exporter.cpp" />
   </ItemGroup>
 </Project>

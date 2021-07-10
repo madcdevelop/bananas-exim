@@ -22,6 +22,7 @@
     <ClInclude Include="Graphics\Camera.h" />
     <ClInclude Include="Core\Common.h" />
     <ClInclude Include="Core\Core.h" />
+    <ClInclude Include="Graphics\Exporter.h" />
     <ClInclude Include="Graphics\Importer.h" />
     <ClInclude Include="Graphics\IndexBuffer.h" />
     <ClInclude Include="Graphics\Material.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="Graphics\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics\Exporter.cpp" />
     <ClCompile Include="Graphics\Importer.cpp" />
     <ClCompile Include="Graphics\Material.cpp" />
     <ClCompile Include="Graphics\Mesh.cpp" />

@@ -24,6 +24,7 @@ public:
     ~Scene();
 
     void LoadModels(const std::string& fileName);
+    void ExportModels(const std::string& fileName);
     void Draw(float screenWidth, float screenHeight);
 
 };

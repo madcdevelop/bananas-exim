@@ -219,8 +219,11 @@ HRESULT ProgramStartup()
     // Initialize Scene
     g_Scene = new GraphicsEngine::Scene();
     g_RenderDevice->m_Scene = g_Scene;
+
+    // Import and Export
     g_Scene->LoadModels("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill.obj");
-    
+    g_Scene->ExportModels("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill_export.obj");
+
     return S_OK;
 }
 
