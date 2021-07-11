@@ -12,8 +12,8 @@ HINSTANCE       g_hInstance    = NULL;
 const wchar_t*  g_WindowTitle  = TEXT("Bananas Engine Test");
 DWORD           g_WindowStyle  = WS_VISIBLE;
 bool            g_Running      = false;
-int32             g_Width        = 800;
-int32             g_Height       = 600;
+int32           g_Width        = 800;
+int32           g_Height       = 600;
 
 // Movement
 bool  g_FirstResize = false;
