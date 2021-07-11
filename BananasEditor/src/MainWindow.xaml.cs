@@ -42,6 +42,11 @@ namespace BananasEditor
             windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
             ControlHostElement.Child = windowHost;
             renderScene = new Scene();
+            CompositionTarget.Rendering += new EventHandler(Render);
+        }
+
+        private void Render(object sender, EventArgs e)
+        {
             windowHost.Run();
         }
 

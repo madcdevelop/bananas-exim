@@ -16,13 +16,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         } break;
     case WM_CLOSE:
         {
-            g_Win32Running = false;
             DestroyWindow(hwnd);
             return 0;
         } break;
     case WM_DESTROY:
         {
-            g_Win32Running = false;
             PostQuitMessage(0);
             return 0;
         } break;
@@ -37,7 +35,7 @@ namespace GraphicsEngine
 
 PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
     : m_hInstance(hInstance), m_hWnd(hwnd), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
-      m_Width(800), m_Height(600), m_WindowTitle(L"Bananas Export/Import"), 
+      m_Width(1920), m_Height(1080), m_WindowTitle(L"Bananas Export/Import"), 
       m_WindowStyle(WS_VISIBLE), m_Renderer(NULL), m_RenderDevice(NULL)
 {
 }
@@ -108,33 +106,16 @@ bool PlatformWin32::Init()
 
 int32 PlatformWin32::Run()
 {
-    g_Win32Running = true;
-    while(m_RenderDevice->m_Running)
+    MSG message;
+    while(PeekMessage(&message, NULL, NULL, NULL, PM_REMOVE))
     {
-        MSG message;
-        while(PeekMessage(&message, NULL, NULL, NULL, PM_REMOVE))
-        {
-            if(message.message == WM_QUIT)
-            {
-                g_Win32Running = false;
-            }
-
-            TranslateMessage(&message);
-            DispatchMessage(&message);
-            m_RenderDevice->m_Running = g_Win32Running;
-
-        }
-
-        if(m_RenderDevice)
-        {
-            if(m_RenderDevice->m_Running)
-            {
-                m_RenderDevice->Render();
-            }
-            
-        }
+        TranslateMessage(&message);
+        DispatchMessage(&message);
     }
-
+    if(m_RenderDevice)
+    {
+        m_RenderDevice->Render();
+    }
     return 0;
 }
 

@@ -4,8 +4,6 @@
 #include "../Core/Common.h"
 #include "Renderer.h"
 
-static bool g_Win32Running = false;
-
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace GraphicsEngine
