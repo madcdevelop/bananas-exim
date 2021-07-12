@@ -1,33 +1,16 @@
 #include "PlatformWin32.h"
 
+namespace
+{
+    GraphicsEngine::PlatformWin32 *g_PlatformWin32;
+}
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    switch(msg)
-    {
-    case WM_KEYDOWN:
-        {
-        } break;
-    case WM_MOUSEMOVE:
-        {
-        } break;
-    case WM_SIZE:
-        {            
-            return 0;
-        } break;
-    case WM_CLOSE:
-        {
-            DestroyWindow(hwnd);
-            return 0;
-        } break;
-    case WM_DESTROY:
-        {
-            PostQuitMessage(0);
-            return 0;
-        } break;
-    default:
+    if(g_PlatformWin32)
+        return g_PlatformWin32->MsgProc(hwnd, msg, wParam, lParam);
+    else
         return DefWindowProc(hwnd, msg, wParam, lParam);
-    }
-    return 0;
 }
 
 namespace GraphicsEngine
@@ -38,6 +21,7 @@ PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
       m_Width(1920), m_Height(1080), m_WindowTitle(L"Bananas Export/Import"), 
       m_WindowStyle(WS_VISIBLE), m_Renderer(NULL), m_RenderDevice(NULL)
 {
+    g_PlatformWin32 = this;
 }
 
 PlatformWin32::~PlatformWin32()
@@ -117,6 +101,64 @@ int32 PlatformWin32::Run()
         m_RenderDevice->Render();
     }
     return 0;
+}
+
+LRESULT PlatformWin32::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch(msg)
+    {
+    case WM_KEYDOWN:
+        {
+        } break;
+    case WM_MOUSEMOVE:
+        {
+            if(GetAsyncKeyState(VK_MBUTTON) & 0x8000)
+            {
+                POINT pos{ 0, 0 };
+                if (GetCursorPos(&pos))
+                {
+                    CameraMouseCallback(pos);
+                }
+            }
+            else {
+                m_FirstMouse = true;
+            }
+        } break;
+    case WM_SIZE:
+        {            
+            return 0;
+        } break;
+    case WM_CLOSE:
+        {
+            DestroyWindow(hwnd);
+            return 0;
+        } break;
+    case WM_DESTROY:
+        {
+            PostQuitMessage(0);
+            return 0;
+        } break;
+    default:
+        return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
+void PlatformWin32::CameraMouseCallback(const POINT& pos)
+{
+    if(m_FirstMouse)
+    {
+        m_LastX = (float)pos.x;
+        m_LastY = (float)pos.y;
+        m_FirstMouse = false;
+    }
+
+    float xoffset = (float)pos.x - m_LastX;
+    float yoffset = m_LastY - (float)pos.y;
+    m_LastX = (float)pos.x;
+    m_LastY = (float)pos.y;
+
+    m_RenderDevice->m_Scene->m_Camera.MouseMovement(xoffset, yoffset);
 }
 
 }

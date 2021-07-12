@@ -25,6 +25,11 @@ public:
     Renderer*               m_Renderer;
     RenderDeviceOpenGL*     m_RenderDevice;
 
+private:
+    // Camera Movement
+    bool  m_FirstMouse = false;
+    float m_LastX = 0.0f;
+    float m_LastY = 0.0f;
 
 public:
     PlatformWin32(HINSTANCE hInstance, HWND hwnd);
@@ -34,7 +39,10 @@ public:
     bool Init();
 
     int32 Run();
+    LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+private:
+    void CameraMouseCallback(const POINT& pos);
 };
 
 }
