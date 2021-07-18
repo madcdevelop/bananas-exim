@@ -22,6 +22,8 @@ PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
       m_WindowStyle(WS_VISIBLE), m_Renderer(NULL), m_RenderDevice(NULL)
 {
     g_PlatformWin32 = this;
+    m_Timestep = new CoreEngine::Timestep();
+    m_Timestep->StartCounter();
 }
 
 PlatformWin32::~PlatformWin32()
@@ -90,6 +92,11 @@ bool PlatformWin32::Init()
 
 int32 PlatformWin32::Run()
 {
+    // Timestep
+    double time = m_Timestep->GetTime();
+    m_DeltaTime = time - m_LastFrameTime;
+    m_LastFrameTime = time;
+
     MSG message;
     while(PeekMessage(&message, NULL, NULL, NULL, PM_REMOVE))
     {
@@ -142,6 +149,18 @@ LRESULT PlatformWin32::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }
     return 0;
+}
+
+void PlatformWin32::CameraKeyboardCallback()
+{
+    if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
+        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (float)m_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
+        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (float)m_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
+        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (float)m_DeltaTime);
+    if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
+        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (float)m_DeltaTime);
 }
 
 void PlatformWin32::CameraMouseCallback(const POINT& pos)

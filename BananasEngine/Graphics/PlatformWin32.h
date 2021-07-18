@@ -24,6 +24,7 @@ public:
 
     Renderer*               m_Renderer;
     RenderDeviceOpenGL*     m_RenderDevice;
+    CoreEngine::Timestep*   m_Timestep;
 
 private:
     // Camera Movement
@@ -31,6 +32,10 @@ private:
     float m_LastX = 0.0f;
     float m_LastY = 0.0f;
 
+    // Timestep
+    double m_DeltaTime;
+    double m_LastFrameTime;
+    
 public:
     PlatformWin32(HINSTANCE hInstance, HWND hwnd);
     ~PlatformWin32();
@@ -40,6 +45,8 @@ public:
 
     int32 Run();
     LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+    void CameraKeyboardCallback();
 
 private:
     void CameraMouseCallback(const POINT& pos);

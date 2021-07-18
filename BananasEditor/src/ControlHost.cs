@@ -18,6 +18,9 @@ namespace BananasEditor
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int Win32Run();
 
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void Win32KeyboardCameraMove();
+
         [DllImport("user32.dll")]
         internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
@@ -46,6 +49,11 @@ namespace BananasEditor
         public int Run()
         {
             return Win32Run();
+        }
+
+        public void KeyboardCameraMove()
+        {
+            Win32KeyboardCameraMove();
         }
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)

@@ -38,6 +38,12 @@ int32 Win32Run()
 }
 
 EDITOR_INTERFACE
+void Win32KeyboardCameraMove()
+{
+    return g_Window->CameraKeyboardCallback();
+}
+
+EDITOR_INTERFACE
 void CreateScene()
 {
     g_Scene = new GraphicsEngine::Scene();
@@ -63,3 +69,4 @@ void SceneExportModels(const char* fileName)
 {
     g_Window->m_RenderDevice->m_Scene->ExportModels(std::string(fileName));
 }
+

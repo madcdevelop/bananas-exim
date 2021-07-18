@@ -67,9 +67,7 @@ namespace BananasEditor
                 {
                     MessageBox.Show("File select is not an .obj file.");
                 }
-                
             }
-
         }
 
         private void menuExportWavefrontOBJ_Click(object sender, RoutedEventArgs e)
@@ -97,5 +95,17 @@ namespace BananasEditor
             Application.Current.Shutdown();
         }
 
+        private void window_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Camera Movement
+            if(e.Key == Key.W || 
+               e.Key == Key.S ||
+               e.Key == Key.A ||
+               e.Key == Key.D)
+            {
+                e.Handled = true;
+                windowHost.KeyboardCameraMove();
+            }
+        }
     }
 }
