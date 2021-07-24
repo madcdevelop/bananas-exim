@@ -17,7 +17,11 @@ Exporter::~Exporter()
 
 bool Exporter::ExportModel(const std::string& filePath, std::vector<Model>& models)
 {
-    ASSERT(models.size() != 0)
+    if(models.size() == 0)
+    {
+        MessageBoxA(NULL, "The scene is empty. No models to export.", "Error", 0);
+        return false;
+    }
 
     std::string fileType = filePath.substr(filePath.find_last_of(".")+1);
 
