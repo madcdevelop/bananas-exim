@@ -65,7 +65,7 @@ namespace BananasEditor
                 }
                 else
                 {
-                    MessageBox.Show("File select is not an .obj file.");
+                    MessageBox.Show("File selected is not a Wavefront (.obj) file.");
                 }
             }
         }
@@ -79,13 +79,13 @@ namespace BananasEditor
             {
                 string filename = saveFileDlg.FileName;
                 string[] tokens = filename.Split('.');
-                if(tokens.Length > 1 || tokens[1] == "obj")
+                if(tokens.Length > 1 && tokens[1] == "obj")
                 {
                     renderScene.ExportModels(filename);
                 }
                 else
                 {
-                    MessageBox.Show("File type is not an .obj file.");
+                    MessageBox.Show("File type is not a Wavefront (.obj) file.");
                 }
             }
         }
