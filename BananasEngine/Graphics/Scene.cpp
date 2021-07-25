@@ -33,8 +33,19 @@ Scene::~Scene()
 
 }
 
-void Scene::LoadModels(const std::string& fileName)
+void Scene::CreateImportThread(const std::string& fileName)
 {
+    OutputDebugString(L"INFO\t\tThread Started!\n");
+    m_ImportThread = std::thread(&Scene::LoadModels, this, fileName);
+    OutputDebugString(L"INFO\t\tThread Detached!\n");
+    m_ImportThread.detach();
+}
+
+void Scene::LoadModels(const std::string fileName)
+{
+    if(m_IsModelLoaded == ModelLoadState::DATA_LOADED)
+        m_IsModelLoaded = ModelLoadState::NOT_LOADED;
+
     // Clear Scene for next import
     if(!m_Models.empty())
     {
@@ -42,17 +53,16 @@ void Scene::LoadModels(const std::string& fileName)
     }
 
     Model model1;
-    model1.LoadModel(fileName.c_str());
+    model1.LoadModel(fileName);
     m_Models.push_back(model1);
 
     Model lightCube;
     lightCube.LoadModel("C:\\Code\\bananas-exim\\Content\\Models\\cube_example_triangle.obj");
     m_Models.push_back(lightCube);
 
-    for(auto& model : m_Models)
-    {
-        model.LoadTextures();
-    }
+    m_IsModelLoaded = ModelLoadState::FILE_LOADED;
+
+    OutputDebugString(L"INFO\t\tThread Ended!\n");
 }
 
 void Scene::ExportModels(const std::string& fileName)

@@ -33,7 +33,6 @@ public:
 
     void Draw(Shader& shader);
 
-private:
     void SetupMesh();
 };
 

@@ -18,7 +18,7 @@ namespace GraphicsEngine
 
 PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
     : m_hInstance(hInstance), m_hWnd(hwnd), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
-      m_Width(800), m_Height(600), m_WindowTitle(L"Bananas Export/Import"), 
+      m_Width(1280), m_Height(720), m_WindowTitle(L"Bananas Export/Import"), 
       m_WindowStyle(WS_VISIBLE), m_Renderer(NULL), m_RenderDevice(NULL)
 {
     g_PlatformWin32 = this;
@@ -106,6 +106,17 @@ int32 PlatformWin32::Run()
     if(m_RenderDevice)
     {
         m_RenderDevice->Render();
+    }
+    // Loading data for Rendering
+    if(m_RenderDevice->m_Scene->m_IsModelLoaded == ModelLoadState::FILE_LOADED)
+    {
+        OutputDebugString(L"INFO\t\tFile Loaded! Loading data for Rendering.\n");
+        for(auto& model : m_RenderDevice->m_Scene->m_Models)
+        {
+            model.LoadMeshes();
+            model.LoadTextures();
+        }
+        m_RenderDevice->m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADED;
     }
     return 0;
 }

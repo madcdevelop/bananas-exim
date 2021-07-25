@@ -7,7 +7,6 @@ Mesh::Mesh(const std::string& name, const std::vector<Vertex>& vertices, const s
     : m_Name(name), m_Vertices(vertices), m_Indices(indices), m_Material(material),
       m_VAO(0)
 {
-    SetupMesh();
 }
 
 Mesh::~Mesh()

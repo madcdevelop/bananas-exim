@@ -1,6 +1,8 @@
 #include "Common.h"
 #include "PlatformWin32.h"
 
+#include <thread>
+
 #ifndef EDITOR_INTERFACE
 #define EDITOR_INTERFACE extern "C" __declspec(dllexport)
 #endif
@@ -59,7 +61,7 @@ GraphicsEngine::Scene* GetScene()
 EDITOR_INTERFACE
 void SceneLoadModels(const char* fileName)
 {
-    g_Window->m_RenderDevice->m_Scene->LoadModels(std::string(fileName));
+    g_Window->m_RenderDevice->m_Scene->CreateImportThread(std::string(fileName));
 }
 
 }

@@ -18,7 +18,8 @@ public:
     ~Model();
 
     void Draw(Shader& shader);
-    void LoadModel(const char* filePath);
+    void LoadModel(const std::string& filePath);
+    void LoadMeshes();
     void LoadTextures();
 };
 

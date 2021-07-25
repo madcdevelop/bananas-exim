@@ -11,7 +11,6 @@ Texture::Texture(const std::string& type, const std::string& filePath)
 
 Texture::~Texture()
 {
-    GLCALL(glDeleteTextures(1, &m_RenderId));
 }
 
 void Texture::Bind(uint32 textureIndex) const
@@ -23,6 +22,7 @@ void Texture::Bind(uint32 textureIndex) const
 void Texture::UnBind() const
 {
     GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
+    GLCALL(glDeleteTextures(1, &m_RenderId));
 }
 
 uint32 Texture::LoadBMPCustom(const char* imagepath)

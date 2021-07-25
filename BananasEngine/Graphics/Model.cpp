@@ -23,7 +23,7 @@ void Model::Draw(Shader& shader)
     }
 }
 
-void Model::LoadModel(const char* filePath)
+void Model::LoadModel(const std::string& filePath)
 {
     std::vector<std::string> outNames;
     std::vector<std::vector<Vertex>> outVertices;
@@ -40,6 +40,14 @@ void Model::LoadModel(const char* filePath)
     {
         Mesh mesh{outNames[i], outVertices[i], outIndices[i], outMaterials[i]};
         m_Meshes.push_back(mesh);
+    }
+}
+
+void Model::LoadMeshes()
+{
+    for(uint32 meshIndex = 0; meshIndex < m_Meshes.size(); meshIndex++)
+    {
+        m_Meshes[meshIndex].SetupMesh();
     }
 }
 
