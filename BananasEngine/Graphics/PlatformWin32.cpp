@@ -18,7 +18,7 @@ namespace GraphicsEngine
 
 PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
     : m_hInstance(hInstance), m_hWnd(hwnd), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
-      m_Width(1920), m_Height(1080), m_WindowTitle(L"Bananas Export/Import"), 
+      m_Width(800), m_Height(600), m_WindowTitle(L"Bananas Export/Import"), 
       m_WindowStyle(WS_VISIBLE), m_Renderer(NULL), m_RenderDevice(NULL)
 {
     g_PlatformWin32 = this;
