@@ -20,7 +20,7 @@ void RenderDeviceOpenGL::Render()
     // Loading data for Rendering
     if(m_Scene->m_IsModelLoaded == ModelLoadState::FILE_LOADED)
     {
-        #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FLAG
+        #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
             // TODO(neil): sometimes not all meshes are rendered. Data is intact.
             OutputDebugString(L"INFO\t\tFile Loaded! Loading data for Rendering.\n");
             // Make current thread opengl context null
@@ -64,7 +64,7 @@ int32 RenderDeviceOpenGL::InitMeshesTextures()
 {
     m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADING;
     
-    #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FLAG
+    #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
         if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
             return MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
     #endif
@@ -76,7 +76,7 @@ int32 RenderDeviceOpenGL::InitMeshesTextures()
     }
     m_MeshTexturesLoaded = 1;
     
-    #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FLAG
+    #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
         wglMakeCurrent(NULL, NULL);
     #endif
     
