@@ -14,3 +14,15 @@ Camera Movement:
 - (Hold) S Key - Move backward
 - (Hold) A Key - Pan left
 - (Hold) D Key - Pan right
+
+## Import
+
+<p align="center">
+    <img src="misc/import_tool.gif" alt="Import Gif">
+</p>
+
+## Export
+
+<p align="center">
+    <img src="misc/export_tool.gif" alt="Import Gif">
+</p>
