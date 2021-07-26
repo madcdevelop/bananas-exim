@@ -107,17 +107,7 @@ int32 PlatformWin32::Run()
     {
         m_RenderDevice->Render();
     }
-    // Loading data for Rendering
-    if(m_RenderDevice->m_Scene->m_IsModelLoaded == ModelLoadState::FILE_LOADED)
-    {
-        OutputDebugString(L"INFO\t\tFile Loaded! Loading data for Rendering.\n");
-        for(auto& model : m_RenderDevice->m_Scene->m_Models)
-        {
-            model.LoadMeshes();
-            model.LoadTextures();
-        }
-        m_RenderDevice->m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADED;
-    }
+    
     return 0;
 }
 

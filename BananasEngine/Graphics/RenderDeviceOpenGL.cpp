@@ -18,19 +18,59 @@ RenderDeviceOpenGL::~RenderDeviceOpenGL()
 
 void RenderDeviceOpenGL::Render()
 {
-    GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
-    GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-
-    if(m_Scene)
+    // Loading data for Rendering
+    if(m_Scene->m_IsModelLoaded == ModelLoadState::FILE_LOADED)
     {
-        if(m_Scene->m_Models.size() > 0 &&
-            m_Scene->m_IsModelLoaded == ModelLoadState::DATA_LOADED)
+        OutputDebugString(L"INFO\t\tFile Loaded! Loading data for Rendering.\n");
+        // Make current thread opengl context null
+        wglMakeCurrent(NULL, NULL);
+        m_LoadDataModelThread = std::thread(&RenderDeviceOpenGL::InitMeshesTextures, this);
+        m_LoadDataModelThread.detach();
+    }
+
+    if(m_MeshTexturesLoaded == 1)
+    {
+        if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
+            MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
+        m_MeshTexturesLoaded = 0;
+        m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADED;
+    }
+    // OpenGL context is checked after the models are loaded so parts of the models are not missing
+    else if (wglGetCurrentContext())
+    {
+        GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
+        GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+        if (m_Scene)
         {
-            m_Scene->Draw((float)m_Width, (float)m_Height);
+            if (m_Scene->m_IsModelLoaded == ModelLoadState::DATA_LOADED)
+            {
+                if (m_Scene->m_Models.size() > 0)
+                {
+                    // TODO(neil): sometimes not all meshes are rendered.
+                    m_Scene->Draw((float)m_Width, (float)m_Height);
+                }
+            }
         }
     }
     
     SwapBuffers(m_hDeviceContext);
+}
+
+int32 RenderDeviceOpenGL::InitMeshesTextures()
+{
+    m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADING;
+    if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
+        return MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
+
+    for(auto& model : m_Scene->m_Models)
+    {
+        model.LoadMeshes();
+        model.LoadTextures();
+    }
+    m_MeshTexturesLoaded = 1;
+    wglMakeCurrent(NULL, NULL);
+    return 1;
 }
 
 bool RenderDeviceOpenGL::Init()

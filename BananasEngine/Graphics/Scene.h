@@ -14,7 +14,8 @@ namespace GraphicsEngine
 enum ModelLoadState {
     NOT_LOADED  = 0,
     FILE_LOADED = 1,
-    DATA_LOADED = 2
+    DATA_LOADING = 2,
+    DATA_LOADED = 3
 };
 
 class Scene

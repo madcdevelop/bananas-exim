@@ -4,6 +4,8 @@
 #include "../Core/Common.h"
 #include "Scene.h"
 
+#include <thread>
+
 namespace GraphicsEngine
 {
 
@@ -18,12 +20,16 @@ public:
     bool    m_Running;
 
     Scene*  m_Scene;
+    std::thread m_LoadDataModelThread;
+    int32 m_MeshTexturesLoaded = 0;
 
 public:
     RenderDeviceOpenGL();
     ~RenderDeviceOpenGL();
 
     void Render();
+
+    int32 InitMeshesTextures();
     bool Init();
     void Shutdown();
     void Resize();
