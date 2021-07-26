@@ -1,6 +1,5 @@
 #include "RenderDeviceOpenGL.h"
 
-
 namespace GraphicsEngine
 {
 
@@ -21,11 +20,16 @@ void RenderDeviceOpenGL::Render()
     // Loading data for Rendering
     if(m_Scene->m_IsModelLoaded == ModelLoadState::FILE_LOADED)
     {
-        OutputDebugString(L"INFO\t\tFile Loaded! Loading data for Rendering.\n");
-        // Make current thread opengl context null
-        wglMakeCurrent(NULL, NULL);
-        m_LoadDataModelThread = std::thread(&RenderDeviceOpenGL::InitMeshesTextures, this);
-        m_LoadDataModelThread.detach();
+        #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FLAG
+            // TODO(neil): sometimes not all meshes are rendered. Data is intact.
+            OutputDebugString(L"INFO\t\tFile Loaded! Loading data for Rendering.\n");
+            // Make current thread opengl context null
+            wglMakeCurrent(NULL, NULL);
+            m_LoadDataModelThread = std::thread(&RenderDeviceOpenGL::InitMeshesTextures, this);
+            m_LoadDataModelThread.detach();
+        #else
+            InitMeshesTextures();
+        #endif
     }
 
     if(m_MeshTexturesLoaded == 1)
@@ -47,7 +51,6 @@ void RenderDeviceOpenGL::Render()
             {
                 if (m_Scene->m_Models.size() > 0)
                 {
-                    // TODO(neil): sometimes not all meshes are rendered.
                     m_Scene->Draw((float)m_Width, (float)m_Height);
                 }
             }
@@ -60,8 +63,11 @@ void RenderDeviceOpenGL::Render()
 int32 RenderDeviceOpenGL::InitMeshesTextures()
 {
     m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADING;
-    if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
-        return MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
+    
+    #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FLAG
+        if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
+            return MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
+    #endif
 
     for(auto& model : m_Scene->m_Models)
     {
@@ -69,7 +75,11 @@ int32 RenderDeviceOpenGL::InitMeshesTextures()
         model.LoadTextures();
     }
     m_MeshTexturesLoaded = 1;
-    wglMakeCurrent(NULL, NULL);
+    
+    #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FLAG
+        wglMakeCurrent(NULL, NULL);
+    #endif
+    
     return 1;
 }
 

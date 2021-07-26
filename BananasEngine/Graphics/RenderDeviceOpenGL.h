@@ -6,8 +6,12 @@
 
 #include <thread>
 
+// Flag to change between using Main thread vs creating new thread 
+#define USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG 0
+
 namespace GraphicsEngine
 {
+
 
 class RenderDeviceOpenGL
 {
