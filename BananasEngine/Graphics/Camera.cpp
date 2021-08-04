@@ -3,7 +3,7 @@
 namespace GraphicsEngine 
 {
 
-Camera::Camera(glm::vec3 position, float yaw, float pitch)
+Camera::Camera(glm::vec3 position, real32 yaw, real32 pitch)
     : m_Position(position), m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
       m_Up(glm::vec3(0.0f, 1.0f, 0.0f)), m_Yaw(yaw), m_Pitch(pitch),
       m_Fov(45.0f), m_MovementSpeed(0.02f), m_Sensitivity(0.1f)
@@ -15,9 +15,9 @@ Camera::~Camera()
 {
 }
 
-void Camera::KeyboardMovement(CameraMovement direction, float deltaTime)
+void Camera::KeyboardMovement(CameraMovement direction, real32 deltaTime)
 {
-    float velocity = m_MovementSpeed * deltaTime;
+    real32 velocity = m_MovementSpeed * deltaTime;
     if(direction == FORWARD)
         m_Position += velocity * m_Front;
     if(direction == BACKWARD)
@@ -28,7 +28,7 @@ void Camera::KeyboardMovement(CameraMovement direction, float deltaTime)
         m_Position += velocity * m_Right;
 }
 
-void Camera::MouseMovement(float xoffset, float yoffset)
+void Camera::MouseMovement(real32 xoffset, real32 yoffset)
 {
     xoffset *= m_Sensitivity;
     yoffset *= m_Sensitivity;

@@ -18,7 +18,7 @@ public:
     ~Renderer();
 
     void CreateRenderDevice(RenderDeviceOpenGL* renderDevice);
-    void Draw(float timestep);
+    void Draw(real32 timestep);
 
 };
 

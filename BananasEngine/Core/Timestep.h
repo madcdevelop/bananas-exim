@@ -22,7 +22,7 @@ public:
 
     void Print(real32 msPerFrame, real32 fps, real32 megaCyclesPerFrame);
     void StartCounter();
-    float GetTime();
+    real32 GetTime();
 };
 
 }

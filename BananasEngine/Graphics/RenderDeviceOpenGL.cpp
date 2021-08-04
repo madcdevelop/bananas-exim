@@ -51,7 +51,7 @@ void RenderDeviceOpenGL::Render()
             {
                 if (m_Scene->m_Models.size() > 0)
                 {
-                    m_Scene->Draw((float)m_Width, (float)m_Height);
+                    m_Scene->Draw((real32)m_Width, (real32)m_Height);
                 }
             }
         }

@@ -23,18 +23,18 @@ public:
 
 
 private:
-    float m_Yaw;
-    float m_Pitch;
-    float m_Fov;
-    float m_MovementSpeed;
-    float m_Sensitivity;
+    real32 m_Yaw;
+    real32 m_Pitch;
+    real32 m_Fov;
+    real32 m_MovementSpeed;
+    real32 m_Sensitivity;
 
 public:
-    Camera(glm::vec3 position, float yaw, float pitch);
+    Camera(glm::vec3 position, real32 yaw, real32 pitch);
     ~Camera();
 
-    void KeyboardMovement(CameraMovement direction, float deltaTime);
-    void MouseMovement(float xoffset, float yoffset);
+    void KeyboardMovement(CameraMovement direction, real32 deltaTime);
+    void MouseMovement(real32 xoffset, real32 yoffset);
 
 private:
     void UpdateCameraVectors();

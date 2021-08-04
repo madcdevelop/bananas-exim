@@ -41,7 +41,7 @@ void Shader::UseProgram()
     GLCALL(glUseProgram(m_ProgramId));
 }
 
-void Shader::SetFloat(const std::string& name, float v0)
+void Shader::SetFloat(const std::string& name, real32 v0)
 {
     GLCALL(glUniform1f(glGetUniformLocation(m_ProgramId, name.c_str()), v0));
 }
@@ -51,7 +51,7 @@ void Shader::SetInt(const std::string& name, int32 v0)
     GLCALL(glUniform1i(glGetUniformLocation(m_ProgramId, name.c_str()), v0));
 }
 
-void Shader::SetVec3(const std::string& name, float v0, float v1, float v2)
+void Shader::SetVec3(const std::string& name, real32 v0, real32 v1, real32 v2)
 {
     GLCALL(glUniform3f(glGetUniformLocation(m_ProgramId, name.c_str()), v0, v1, v2));
 }

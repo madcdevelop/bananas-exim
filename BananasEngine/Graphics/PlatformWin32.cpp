@@ -165,15 +165,15 @@ void PlatformWin32::CameraMouseCallback(const POINT& pos)
 {
     if(m_FirstMouse)
     {
-        m_LastX = (float)pos.x;
-        m_LastY = (float)pos.y;
+        m_LastX = (real32)pos.x;
+        m_LastY = (real32)pos.y;
         m_FirstMouse = false;
     }
 
-    float xoffset = (float)pos.x - m_LastX;
-    float yoffset = m_LastY - (float)pos.y;
-    m_LastX = (float)pos.x;
-    m_LastY = (float)pos.y;
+    real32 xoffset = (real32)pos.x - m_LastX;
+    real32 yoffset = m_LastY - (real32)pos.y;
+    m_LastX = (real32)pos.x;
+    m_LastY = (real32)pos.y;
 
     m_RenderDevice->m_Scene->m_Camera.MouseMovement(xoffset, yoffset);
 }

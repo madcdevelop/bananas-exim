@@ -218,7 +218,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
     std::vector<glm::vec3> diffuse;
     std::vector<glm::vec3> specular;
     std::vector<glm::vec3> emissive;
-    std::vector<float> shininess;
+    std::vector<real32> shininess;
     std::vector<Texture> textures;
     std::vector<std::vector<Texture>> texturesPerMesh;
 

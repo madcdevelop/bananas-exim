@@ -19,11 +19,11 @@ public:
     void UseProgram();
 
     // Uniforms
-    void SetFloat(const std::string& name, float v0);
+    void SetFloat(const std::string& name, real32 v0);
 
     void SetInt(const std::string& name, int32 v0);
 
-    void SetVec3(const std::string& name, float v0, float v1, float v2);
+    void SetVec3(const std::string& name, real32 v0, real32 v1, real32 v2);
 
     void SetVec3(const std::string& name, const glm::vec3& vec) const;
 

@@ -31,7 +31,7 @@ void Timestep::StartCounter()
 /* 
     Get time since timer started in seconds.
 */
-float Timestep::GetTime()
+real32 Timestep::GetTime()
 {
     m_EndCycleCount = __rdtsc();
     QueryPerformanceCounter(&m_EndCounter);

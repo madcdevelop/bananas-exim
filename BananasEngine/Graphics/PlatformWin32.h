@@ -30,8 +30,8 @@ public:
 private:
     // Camera Movement
     bool  m_FirstMouse = false;
-    float m_LastX = 0.0f;
-    float m_LastY = 0.0f;
+    real32 m_LastX = 0.0f;
+    real32 m_LastY = 0.0f;
 
     // Timestep
     real32 m_DeltaTime;

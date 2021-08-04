@@ -12,9 +12,9 @@ glm::vec3 g_PointLightPositions[] = {
 };
 const uint32 g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
 
-const float g_Constant  = 1.0f;
-const float g_Linear    = 0.09f;
-const float g_Quadratic = 0.032f;
+const real32 g_Constant  = 1.0f;
+const real32 g_Linear    = 0.09f;
+const real32 g_Quadratic = 0.032f;
 
 namespace GraphicsEngine
 {
@@ -72,7 +72,7 @@ void Scene::ExportModels(const std::string& fileName)
 }
 
 
-void Scene::Draw(float screenWidth, float screenHeight)
+void Scene::Draw(real32 screenWidth, real32 screenHeight)
 {
     // Textured cube
     m_Shader1.UseProgram();

@@ -18,11 +18,11 @@ int32           g_Height       = 600;
 // Movement
 bool  g_FirstResize = false;
 bool  g_FirstMouse = false;
-float g_LastX = 0.0f;
-float g_LastY = 0.0f;
+real32 g_LastX = 0.0f;
+real32 g_LastY = 0.0f;
 
 // Timestep
-float g_DeltaTime = 0.0f;
+real32 g_DeltaTime = 0.0f;
 
 // Graphics
 GraphicsEngine::Renderer* g_Renderer = NULL;
@@ -173,28 +173,28 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM 
 void CameraKeyboardCallback()
 {
     if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (float)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (real32)g_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (float)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (real32)g_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (float)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (real32)g_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (float)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (real32)g_DeltaTime);
 }
 
 void CameraMouseCallback(const POINT& pos)
 {
     if(g_FirstMouse)
     {
-        g_LastX = (float)pos.x;
-        g_LastY = (float)pos.y;
+        g_LastX = (real32)pos.x;
+        g_LastY = (real32)pos.y;
         g_FirstMouse = false;
     }
 
-    float xoffset = (float)pos.x - g_LastX;
-    float yoffset = g_LastY - (float)pos.y;
-    g_LastX = (float)pos.x;
-    g_LastY = (float)pos.y;
+    real32 xoffset = (real32)pos.x - g_LastX;
+    real32 yoffset = g_LastY - (real32)pos.y;
+    g_LastX = (real32)pos.x;
+    g_LastY = (real32)pos.y;
 
     g_Scene->m_Camera.MouseMovement(xoffset, yoffset);
 }

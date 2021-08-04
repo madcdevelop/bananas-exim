@@ -21,13 +21,13 @@ public:
     glm::vec3 m_Specular;
     glm::vec3 m_Emissive;
 
-    float m_Shininess;
+    real32 m_Shininess;
 
     std::vector<Texture> m_Textures;
 
 public:
     Material();
-    Material(const std::string& name, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& emissive, const float shininess, const std::vector<Texture>& textures);
+    Material(const std::string& name, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& emissive, const real32 shininess, const std::vector<Texture>& textures);
     ~Material();
 };
 
