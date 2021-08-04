@@ -173,13 +173,13 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM 
 void CameraKeyboardCallback()
 {
     if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, (real32)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, g_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, (real32)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, g_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, (real32)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, g_DeltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, (real32)g_DeltaTime);
+        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, g_DeltaTime);
 }
 
 void CameraMouseCallback(const POINT& pos)
