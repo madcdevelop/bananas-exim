@@ -8,22 +8,21 @@ namespace CoreEngine
 
 class Timestep
 {
-public:
-    Timestep()
-        :m_PCFreq(0.0), m_CounterStart(0)
-    {
-    }
-
 private:
-    double m_PCFreq;
-    long long m_CounterStart;
+    int64          m_CounterElapsed;
+    uint64         m_CyclesElapsed;
+    uint64         m_LastCycleCount;
+    uint64         m_EndCycleCount;
+    int64          m_PerfCountFrequency;
+    LARGE_INTEGER  m_EndCounter;
+    LARGE_INTEGER  m_LastCounter;
 
 public:
-    void Print(double lastFrameTime, double currentFrameTime, double deltaTime);
+    Timestep();
 
+    void Print(real32 msPerFrame, real32 fps, real32 megaCyclesPerFrame);
     void StartCounter();
-    double GetTime();
-
+    float GetTime();
 };
 
 }

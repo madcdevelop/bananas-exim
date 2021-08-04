@@ -22,8 +22,7 @@ float g_LastX = 0.0f;
 float g_LastY = 0.0f;
 
 // Timestep
-double g_DeltaTime = 0.0;
-double g_LastFrameTime = 0.0;
+float g_DeltaTime = 0.0f;
 
 // Graphics
 GraphicsEngine::Renderer* g_Renderer = NULL;
@@ -96,10 +95,6 @@ WinMain(HINSTANCE hInstance,
     g_Running = true;
     while(g_Running)
     {
-        double time = g_Timestep->GetTime();
-        g_DeltaTime = time - g_LastFrameTime;
-        g_LastFrameTime = time;
-
         MSG message;
         while(PeekMessage(&message, NULL, NULL, NULL, PM_REMOVE))
         {
@@ -119,6 +114,8 @@ WinMain(HINSTANCE hInstance,
                 g_RenderDevice->Render();
             }
         }
+
+        g_DeltaTime = g_Timestep->GetTime();
     }
 
     ProgramShutdown();

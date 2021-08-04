@@ -1,8 +1,6 @@
 #ifndef CORE_ENGINE_COMMON_H
 #define CORE_ENGINE_COMMON_H
 
-#include "Timestep.h"
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -32,6 +30,8 @@ typedef unsigned char      uint8;
 typedef unsigned short     uint16;
 typedef unsigned int       uint32;
 typedef unsigned long long uint64;
+typedef float              real32;
+typedef double             real64;
 
 // assert intrinsic to compiler
 #define ASSERT(f) if (!(f)) __debugbreak(); // msvc specific

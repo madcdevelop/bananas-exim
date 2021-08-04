@@ -2,6 +2,7 @@
 #define GRAPHICS_ENGINE_PLATFORM_WIN32_H
 
 #include "../Core/Common.h"
+#include "../Core/Timestep.h"
 #include "Renderer.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -33,8 +34,7 @@ private:
     float m_LastY = 0.0f;
 
     // Timestep
-    double m_DeltaTime;
-    double m_LastFrameTime;
+    real32 m_DeltaTime;
     
 public:
     PlatformWin32(HINSTANCE hInstance, HWND hwnd);
