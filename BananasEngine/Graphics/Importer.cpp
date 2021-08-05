@@ -93,12 +93,13 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
             for (const auto& innerToken : tokens)
             {
                 if(innerToken == start) continue;
+                
                 std::string faceToken;
-                std::vector<std::string> faceTokens;
+                std::string faceTokens[3];
                 std::stringstream faceSS(innerToken);
-                while(std::getline(faceSS, faceToken, '/'))
+                for(int innerTokenIndex=0; std::getline(faceSS, faceToken, '/'); innerTokenIndex++)
                 {
-                    faceTokens.push_back(faceToken);
+                    faceTokens[innerTokenIndex] = faceToken;
                 }
 
                 Index index = { 0 };
@@ -106,6 +107,7 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
                 index.textureIndex  = std::stoul(faceTokens[1]);
                 index.normalIndex   = std::stoul(faceTokens[2]);
                 face.indices[faceIndex] = index;
+                
                 faceIndex++;
                 meshSize++;
             }
