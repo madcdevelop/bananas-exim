@@ -25,7 +25,7 @@ namespace BananasEditor
     {
         private enum Win32Msg
         {
-            WM_SIZE          = 0x0005
+            WM_SIZE = 0x0005
         }
 
         Application mainApp;
@@ -62,7 +62,7 @@ namespace BananasEditor
             {
                 case Win32Msg.WM_SIZE:
                 {
-                    Debug.WriteLine("Resize Window ");
+                    Debug.WriteLine("Resize Window");
                     windowHost.Resize();
                 }break;
                 default:

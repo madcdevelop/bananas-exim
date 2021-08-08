@@ -30,7 +30,7 @@
             </MenuItem>
             
         </Menu>
-        
+
         <Border Name="ControlHostElement"
         Width="Auto"
         Height="Auto"
@@ -38,6 +38,7 @@
         VerticalAlignment="Stretch"
         BorderBrush="LightGray"
         BorderThickness="3"
-        DockPanel.Dock="Left"/>
+        DockPanel.Dock="Left"></Border>
+        
     </DockPanel>
 </Window>
