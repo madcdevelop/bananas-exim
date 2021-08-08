@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Interop;
+using System.Diagnostics;
 
 
 namespace BananasEditor
@@ -21,6 +23,11 @@ namespace BananasEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private enum Win32Msg
+        {
+            WM_SIZE          = 0x0005
+        }
+
         Application mainApp;
         Window parentWindow;
         ControlHost windowHost;
@@ -29,10 +36,13 @@ namespace BananasEditor
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += On_UIReady;
         }
 
         private void On_UIReady(object sender, EventArgs e)
         {
+            Loaded -= On_UIReady;
+
             // Init Window
             mainApp = System.Windows.Application.Current;
             parentWindow = mainApp.MainWindow;
@@ -40,9 +50,25 @@ namespace BananasEditor
 
             // Host win32 Window inside WPF
             windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
+            windowHost.MessageHook += new HwndSourceHook(MsgProc);
             ControlHostElement.Child = windowHost;
             renderScene = new Scene();
             CompositionTarget.Rendering += new EventHandler(Render);
+        }
+
+        private IntPtr MsgProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch((Win32Msg)msg)
+            {
+                case Win32Msg.WM_SIZE:
+                {
+                    Debug.WriteLine("Resize Window ");
+                    windowHost.Resize();
+                }break;
+                default:
+                    break;
+            }
+            return IntPtr.Zero;
         }
 
         private void Render(object sender, EventArgs e)

@@ -19,6 +19,9 @@ namespace BananasEditor
         internal static extern int Win32Run();
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void Win32Resize();
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void Win32KeyboardCameraMove();
 
         [DllImport("user32.dll")]
@@ -49,6 +52,11 @@ namespace BananasEditor
         public int Run()
         {
             return Win32Run();
+        }
+
+        public void Resize()
+        {
+            Win32Resize();
         }
 
         public void KeyboardCameraMove()

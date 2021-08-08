@@ -40,6 +40,12 @@ int32 Win32Run()
 }
 
 EDITOR_INTERFACE
+void Win32Resize()
+{
+    g_Window->m_RenderDevice->Resize();
+}
+
+EDITOR_INTERFACE
 void Win32KeyboardCameraMove()
 {
     return g_Window->CameraKeyboardCallback();
