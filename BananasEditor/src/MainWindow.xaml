@@ -16,10 +16,11 @@
         Keyboard.KeyDown="window_KeyDown"
         WindowStartupLocation="CenterScreen">
 
-    <DockPanel Background="LightGreen">
+    <DockPanel Background="LightGray">
         
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+            <MenuItem Header="_File" 
+                      BorderThickness="0">
                 <MenuItem Header="_Import">
                     <MenuItem Header="_Wavefront(.obj)" Click="menuImportWavefrontOBJ_Click"/>
                 </MenuItem>
@@ -37,8 +38,8 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         BorderBrush="LightGray"
-        BorderThickness="3"
-        DockPanel.Dock="Left"></Border>
-        
+        BorderThickness="1"
+        DockPanel.Dock="Left"/>
+
     </DockPanel>
 </Window>
