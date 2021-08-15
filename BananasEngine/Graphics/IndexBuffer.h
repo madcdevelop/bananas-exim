@@ -10,6 +10,22 @@ struct Index {
     uint32 positionIndex;
     uint32 textureIndex;
     uint32 normalIndex;
+
+    bool operator<(const Index& other) const {
+        return (positionIndex  < other.positionIndex) || 
+               (positionIndex == other.positionIndex && 
+                textureIndex   < other.textureIndex) ||
+               (positionIndex == other.positionIndex && 
+                textureIndex  == other.textureIndex && 
+                normalIndex    < other.normalIndex);
+    }
+
+    bool operator==(const Index& other) const
+    {
+        return (positionIndex == other.positionIndex &&
+                textureIndex  == other.textureIndex &&
+                normalIndex   == other.normalIndex);
+    }
 };
 
 struct Face {

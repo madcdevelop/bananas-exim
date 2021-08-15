@@ -151,33 +151,32 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
     }
 
     // Fill vertices based on index coordinates
-    std::map<std::string, int32> distinctVertices;
+    std::map<Index, int32> distinctVertices;
     std::vector<Vertex> vertices;
     std::vector<uint32> indices;
 
     int32 indicesIndex = 0;
     int32 meshProcessedSize = 0;
     int32 meshProcessedIndex = 0;
-    for(auto &&f : faces)
+    for(auto &&face : faces)
     {
-        for(auto &&i : f.indices)
+        for(auto &&faceIndex : face.indices)
         {
             // Face format: v1/vt1/vn1
             // Only add keys that are unique. Re-use vertex data that already exists
-            std::string indexKey = std::to_string(i.positionIndex) + "/" + std::to_string(i.textureIndex) + "/" + std::to_string(i.normalIndex); 
-            auto found = distinctVertices.find(indexKey);
+            auto found = distinctVertices.find(faceIndex);
             if(found != distinctVertices.end()) 
             {
                 indices.push_back(found->second);
             }
             else
             {
-                distinctVertices.insert(std::pair<std::string, int32>(indexKey, indicesIndex));
+                distinctVertices.insert(std::pair<Index, int32>(faceIndex, indicesIndex));
 
                 Vertex v;
-                v.position   = positions[i.positionIndex-1];
-                v.textureUV  = textureCoordinates[i.textureIndex-1];
-                v.normal     = normals[i.normalIndex-1];
+                v.position   = positions[faceIndex.positionIndex-1];
+                v.textureUV  = textureCoordinates[faceIndex.textureIndex-1];
+                v.normal     = normals[faceIndex.normalIndex-1];
 
                 vertices.push_back(v);
                 indices.push_back(indicesIndex);
