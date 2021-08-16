@@ -60,7 +60,7 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
         std::vector<std::string> tokens;
         std::stringstream ss(line);
 
-        while(std::getline(ss, token, ' '))
+        while(ss >> token)
         {
             tokens.push_back(token);
         }
@@ -234,7 +234,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         std::vector<std::string> tokens;
         std::stringstream ss(line);
 
-        while(std::getline(ss, token, ' '))
+        while(ss >> token)
         {
             tokens.push_back(token);
         }
