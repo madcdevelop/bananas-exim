@@ -2,8 +2,6 @@
 #define GRAPHICS_ENGINE_MESH_H
 
 #include "../Core/Common.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
 #include "Material.h"
 #include "Texture.h"
 
@@ -11,6 +9,38 @@
 
 namespace GraphicsEngine
 {
+
+struct Vertex {
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 textureUV;
+};
+
+struct Index {
+    uint32 positionIndex;
+    uint32 textureIndex;
+    uint32 normalIndex;
+
+    bool operator<(const Index& other) const {
+        return (positionIndex  < other.positionIndex) || 
+               (positionIndex == other.positionIndex && 
+                textureIndex   < other.textureIndex) ||
+               (positionIndex == other.positionIndex && 
+                textureIndex  == other.textureIndex && 
+                normalIndex    < other.normalIndex);
+    }
+
+    bool operator==(const Index& other) const
+    {
+        return (positionIndex == other.positionIndex &&
+                textureIndex  == other.textureIndex &&
+                normalIndex   == other.normalIndex);
+    }
+};
+
+struct Face {
+    Index indices[3];
+};
 
 class Mesh 
 {
@@ -20,12 +50,11 @@ public:
     std::vector<uint32> m_Indices;
     Material m_Material;
 
-private:
-    uint32 m_VAO;
 
-    // TODO: Switch to unique_ptr
-    VertexBuffer* m_VertexBuffer;
-    IndexBuffer* m_IndexBuffer;
+private:
+    uint32 m_VertexArrayObjectId;
+    uint32 m_VertexBufferId;
+    uint32 m_IndexBufferId;
 
 public:
     Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32>& indices, Material& material);

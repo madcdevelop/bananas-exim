@@ -5,7 +5,7 @@ namespace GraphicsEngine
 
 Mesh::Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32>& indices, Material& material)
     : m_Name(name), m_Vertices(vertices), m_Indices(indices), m_Material(material),
-      m_VAO(0)
+    m_VertexArrayObjectId(0), m_VertexBufferId(0), m_IndexBufferId(0)
 {
 }
 
@@ -37,21 +37,26 @@ void Mesh::Draw(Shader& shader)
     shader.SetVec3("material.specular", m_Material.m_Specular);
     shader.SetFloat("material.shininess", m_Material.m_Shininess);
 
-    m_VertexBuffer->Bind();
-    m_IndexBuffer->Bind();
-    GLCALL(glBindVertexArray(m_VAO));
-    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<uint32>(m_IndexBuffer->m_Count), GL_UNSIGNED_INT, 0));
+    GLCALL(glBindVertexArray(m_VertexArrayObjectId));
+    GLCALL(glDrawElements(GL_TRIANGLES, static_cast<uint32>(m_Indices.size()), GL_UNSIGNED_INT, 0));
     GLCALL(glBindVertexArray(0));
 }
 
 void Mesh::SetupMesh()
 {
     // Vertex Array Object
-    GLCALL(glGenVertexArrays(1, &m_VAO));
-    GLCALL(glBindVertexArray(m_VAO));
+    GLCALL(glGenVertexArrays(1, &m_VertexArrayObjectId));
+    GLCALL(glBindVertexArray(m_VertexArrayObjectId));
 
-    m_VertexBuffer = new VertexBuffer{m_Vertices, static_cast<uint32>(m_Vertices.size())};
-    m_IndexBuffer = new IndexBuffer{m_Indices, static_cast<uint32>(m_Indices.size())};
+    // Vertex Buffer
+    GLCALL(glGenBuffers(1, &m_VertexBufferId));
+    GLCALL(glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferId));
+    GLCALL(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW));
+
+    // Index Buffer
+    GLCALL(glGenBuffers(1, &m_IndexBufferId));
+    GLCALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferId));
+    GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * m_Indices.size(), &m_Indices[0], GL_STATIC_DRAW));
 
     // Vertex attributes
     GLCALL(glEnableVertexAttribArray(0));

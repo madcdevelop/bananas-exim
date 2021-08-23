@@ -24,7 +24,6 @@
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Graphics\Exporter.h" />
     <ClInclude Include="Graphics\Importer.h" />
-    <ClInclude Include="Graphics\IndexBuffer.h" />
     <ClInclude Include="Graphics\Material.h" />
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\Model.h" />
@@ -36,7 +35,6 @@
     <ClInclude Include="Graphics\Shader.h" />
     <ClInclude Include="Graphics\Texture.h" />
     <ClInclude Include="Core\Timestep.h" />
-    <ClInclude Include="Graphics\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\Exporter.cpp" />
@@ -46,7 +44,6 @@
     <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Core\Common.cpp" />
     <ClCompile Include="Extern\glad\glad.c" />
-    <ClCompile Include="Graphics\IndexBuffer.cpp" />
     <ClCompile Include="Graphics\Model.cpp" />
     <ClCompile Include="Graphics\PlatformWin32.cpp" />
     <ClCompile Include="Graphics\RenderDeviceOpenGL.cpp" />
@@ -55,7 +52,6 @@
     <ClCompile Include="Graphics\Shader.cpp" />
     <ClCompile Include="Graphics\Texture.cpp" />
     <ClCompile Include="Core\Timestep.cpp" />
-    <ClCompile Include="Graphics\VertexBuffer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
