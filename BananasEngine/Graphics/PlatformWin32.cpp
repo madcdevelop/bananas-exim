@@ -28,6 +28,8 @@ PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
 
 PlatformWin32::~PlatformWin32()
 {
+    delete m_Timestep;
+    delete m_Renderer;
 }
 
 bool PlatformWin32::Win32CreateWindow()
