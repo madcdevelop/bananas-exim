@@ -52,6 +52,12 @@ void Win32KeyboardCameraMove()
 }
 
 EDITOR_INTERFACE
+void Win32Shutdown()
+{
+    delete g_Window;
+}
+
+EDITOR_INTERFACE
 void CreateScene()
 {
     g_Scene = new GraphicsEngine::Scene();
@@ -78,3 +84,8 @@ void SceneExportModels(const char* fileName)
     g_Window->m_RenderDevice->m_Scene->ExportModels(std::string(fileName));
 }
 
+EDITOR_INTERFACE
+void SceneShutdown()
+{
+    delete g_Scene;
+}

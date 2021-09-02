@@ -24,6 +24,9 @@ namespace BananasEditor
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void Win32KeyboardCameraMove();
 
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void Win32Shutdown();
+
         [DllImport("user32.dll")]
         internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
@@ -86,6 +89,8 @@ namespace BananasEditor
         
         protected override void DestroyWindowCore(HandleRef hwnd) 
         {
+            Scene.Shutdown();
+            Win32Shutdown();
             DestroyWindow(hwnd.Handle);
         }
     }

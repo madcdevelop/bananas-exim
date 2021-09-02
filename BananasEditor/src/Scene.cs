@@ -11,15 +11,23 @@ namespace BananasEditor
     public class Scene
     {
         #region PInvoke
+
         // PInvoke declarations
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void CreateScene();
+
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr GetScene();
+
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SceneLoadModels(string fileName);
+
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SceneExportModels(string fileName);
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void SceneShutdown();
+
         #endregion
 
         IntPtr RenderScene = IntPtr.Zero;
@@ -38,6 +46,11 @@ namespace BananasEditor
         public void ExportModels(string fileName)
         {
             SceneExportModels(fileName);
+        }
+
+        public static void Shutdown()
+        {
+            SceneShutdown();
         }
     }
 }
