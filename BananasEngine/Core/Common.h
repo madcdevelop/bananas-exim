@@ -13,13 +13,23 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+// Includes and defines for debugging memory leaks
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#ifdef _DEBUG
+    #define DBG_NEW new ( _NORMAL_BLOCK, __FILE__, __LINE__)
+#else
+    #define DBG_NEW new
+#endif
+
 // Virtual Key Codes
 // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 #define BANANAS_KEY_W 0x57
 #define BANANAS_KEY_S 0x53
 #define BANANAS_KEY_D 0x44
 #define BANANAS_KEY_A 0x41
-
 
 // Common Types
 typedef signed char        int8;
