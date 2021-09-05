@@ -21,10 +21,10 @@ namespace GraphicsEngine
 
 Scene::Scene()
     : m_Camera(glm::vec3(5.0f, 10.0f, 10.0f), -120.0f, -30.0f),
-      m_Shader1("C:\\Code\\bananas-exim\\Content\\Shaders\\test_vs.glsl", 
-                "C:\\Code\\bananas-exim\\Content\\Shaders\\test_fs.glsl"),
-      m_ShaderLight("C:\\Code\\bananas-exim\\Content\\Shaders\\lighting_vs.glsl", 
-                    "C:\\Code\\bananas-exim\\Content\\Shaders\\lighting_fs.glsl")
+      m_Shader1("../../../Content/Shaders/test_vs.glsl", 
+                "../../../Content/Shaders/test_fs.glsl"),
+      m_ShaderLight("../../../Content/Shaders/lighting_vs.glsl", 
+                    "../../../Content/Shaders/lighting_fs.glsl")
 {
 }
 
