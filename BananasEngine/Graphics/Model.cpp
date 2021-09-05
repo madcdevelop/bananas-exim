@@ -34,7 +34,7 @@ void Model::LoadModel(const std::string& filePath)
     Importer import;
     import.LoadModel(filePath, outNames, outVertices, outIndices, outMeshSizes, outMaterials);
 
-    // TODO: Optimize to use same material for each mesh instead 
+    // TODO(neil): Optimize to use same material for each mesh instead 
     // of creating new ones per mesh if they are the same material.
     for(uint32 i = 0; i < outMeshSizes.size(); i++)
     {

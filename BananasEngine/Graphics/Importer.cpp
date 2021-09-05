@@ -222,6 +222,10 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
     std::vector<real32> shininess;
     std::vector<Texture> textures;
     std::vector<std::vector<Texture>> texturesPerMesh;
+    std::string textureFilePath;
+
+    textureFilePath = filePath.substr(0, filePath.find_last_of("\\"));
+    textureFilePath = textureFilePath.substr(0, textureFilePath.find_last_of("\\"));
 
     uint32 materialCount = 0;
 
@@ -260,7 +264,7 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         // Specular Highlights
         else if(start == "Ns")
         {
-            // TODO: Rounds up number from 323.999994 to 324.000000
+            // TODO(neil): Rounds up number from 323.999994 to 324.000000
             shininess.push_back(std::stof(tokens[1]));
         }
         // Ambient Color
@@ -287,15 +291,13 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         else if(start == "map_Kd")
         {
             std::string textureFileName = tokens[1].substr(tokens[1].find_last_of("\\")+1);
-            // TODO: Change to relative file path
-            textures.push_back(Texture("texture_diffuse", std::string("C:\\Code\\bananas-exim\\Content\\Textures\\" + textureFileName)));
+            textures.push_back(Texture("texture_diffuse", textureFilePath + std::string("\\Textures\\" + textureFileName)));
         }
         // Specular Texture File Path
         else if(start == "map_Ks")
         {
             std::string textureFileName = tokens[1].substr(tokens[1].find_last_of("\\")+1);
-            // TODO: Change to relative file path
-            textures.push_back(Texture("texture_specular", std::string("C:\\Code\\bananas-exim\\Content\\Textures\\" + textureFileName)));
+            textures.push_back(Texture("texture_specular", textureFilePath + std::string("\\Textures\\" + textureFileName)));
             texturesPerMesh.push_back(textures);
             // Last texture file to load. Clear for next material.
             textures.clear();
@@ -311,11 +313,10 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         materialIndices.push_back(found->second);
     }
 
-    // TODO: update to match material index
-    for(uint32 i = 0; i < materialIndices.size(); i++)
+    for(uint32 matIndex = 0; matIndex < materialIndices.size(); matIndex++)
     {
-        uint32 materialIndex = materialIndices[i];
-        Material material(usemtl[i], ambient[materialIndex], diffuse[materialIndex], specular[materialIndex], emissive[materialIndex], shininess[materialIndex], texturesPerMesh[materialIndex]);
+        uint32 materialIndex = materialIndices[matIndex];
+        Material material(usemtl[matIndex], ambient[materialIndex], diffuse[materialIndex], specular[materialIndex], emissive[materialIndex], shininess[materialIndex], texturesPerMesh[materialIndex]);
         outMaterials.push_back(material);
     }
 

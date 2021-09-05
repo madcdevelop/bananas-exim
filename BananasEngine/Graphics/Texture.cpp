@@ -36,7 +36,7 @@ uint32 Texture::LoadBMPCustom(const char* imagepath)
     fopen_s(&file, imagepath, "rb");
     
     if(!file){
-        MessageBoxA(NULL, "Image could not be opened", "Error", 0);
+        OutputDebugString(L"ERROR\t\tImage could not be opened\n");
         return 0;
     }
     if(fread(header, 1, 54, file) != 54){
