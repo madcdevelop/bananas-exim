@@ -20,11 +20,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\BananasImportExportSplashScreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BananasEngineDll\BananasEngineDll.vcxproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="Resources\BananasImportExportSplashScreen.png" />
   </ItemGroup>
 
 </Project>
