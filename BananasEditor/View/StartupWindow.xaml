@@ -1,0 +1,99 @@
+﻿<Window x:Class="BananasEditor.StartupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BananasEditor"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d" 
+        Height="450" 
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
+        MouseDown="window_MouseDown">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Grid.Row="0"
+                    Grid.Column="3">
+            <Button Width="20"
+                    Height="20" 
+                    Margin="5,0,5,5"
+                    Content="✖"
+                    Background="Transparent"
+                    FontWeight="Bold"
+                    Click="buttonExit_Click"/>
+
+        </StackPanel>
+
+        <Border BorderBrush="Black"
+                BorderThickness="2"
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Bananas Import/Export Tool"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           FontSize="36"
+                           Margin="30,10,0,0" />
+                <TextBlock Text="v1.00.0"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           FontSize="14"
+                           Margin="0,10,10,0"/>
+            </Grid>
+        </Border>
+
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="90,0,0,0">
+            <ToggleButton Content="New Scene"
+                          x:Name="newSceneButton"
+                          Click="buttonNewScene_Click"
+                          FontSize="20"
+                          Padding="10,10,10,10" />
+            <ToggleButton Content="Open Scene"
+                          x:Name="openSceneButton"
+                          Click="buttonOpenScene_Click"
+                          FontSize="20"
+                          Padding="10,10,10,10"
+                          Margin="0,30,0,0" />
+        </StackPanel>
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Left"
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Margin="60,30,0,0">
+            <TextBlock Text="Recent Files"
+                       FontSize="20" />
+            <ListBox>
+                <TextBlock>Scene1.scene</TextBlock>
+                <TextBlock>Scene2.scene</TextBlock>
+                <TextBlock>Scene3.scene</TextBlock>
+                <TextBlock>SceneN.scene</TextBlock>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</Window>
