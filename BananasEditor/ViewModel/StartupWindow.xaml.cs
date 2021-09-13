@@ -21,6 +21,23 @@ namespace BananasEditor
                 DragMove();
         }
 
+        private void buttonMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void buttonMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if(WindowState == System.Windows.WindowState.Normal)
+            {
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                Application.Current.MainWindow.WindowState = WindowState.Normal;
+            }
+        }
+
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         { 
             Application.Current.Shutdown();

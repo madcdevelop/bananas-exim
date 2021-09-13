@@ -28,15 +28,29 @@
         <StackPanel HorizontalAlignment="Right"
                     Orientation="Horizontal"
                     Grid.Row="0"
-                    Grid.Column="3">
+                    Grid.Column="2"
+                    Grid.ColumnSpan="3">
+            <Button Width="20"
+                    Height="20"
+                    Margin="5,0,5,5"
+                    Content="_"
+                    Background="Transparent"
+                    FontWeight="Bold"
+                    Click="buttonMinimize_Click" />
+            <Button Width="20"
+                    Height="20"
+                    Margin="5,0,5,5"
+                    Content="□"
+                    Background="Transparent"
+                    FontWeight="Bold"
+                    Click="buttonMaximize_Click" />
             <Button Width="20"
                     Height="20" 
                     Margin="5,0,5,5"
-                    Content="✖"
+                    Content="x"
                     Background="Transparent"
                     FontWeight="Bold"
                     Click="buttonExit_Click"/>
-
         </StackPanel>
 
         <Border BorderBrush="Black"
