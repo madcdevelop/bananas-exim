@@ -10,8 +10,31 @@
         Width="800"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
+        Background="#F0F0F0"
         ResizeMode="CanResizeWithGrip"
         MouseDown="window_MouseDown">
+
+    <Window.Resources>
+        <Style x:Key="smallButtonStyle">
+            <Setter Property="Button.Width"
+                    Value="20" />
+            <Setter Property="Button.Height"
+                    Value="20" />
+            <Setter Property="Button.Margin"
+                    Value="5,0,5,5" />
+            <Setter Property="Button.Background"
+                    Value="Transparent" />
+            <Setter Property="Button.FontWeight"
+                    Value="Bold" />
+        </Style>
+        <Style x:Key="buttonStyle">
+            <Setter Property="Button.FontSize"
+                    Value="20" />
+            <Setter Property="Button.Padding"
+                    Value="10,10,10,10" />
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -30,26 +53,14 @@
                     Grid.Row="0"
                     Grid.Column="2"
                     Grid.ColumnSpan="3">
-            <Button Width="20"
-                    Height="20"
-                    Margin="5,0,5,5"
-                    Content="_"
-                    Background="Transparent"
-                    FontWeight="Bold"
+            <Button Content="_"
+                    Style="{StaticResource smallButtonStyle}"
                     Click="buttonMinimize_Click" />
-            <Button Width="20"
-                    Height="20"
-                    Margin="5,0,5,5"
-                    Content="□"
-                    Background="Transparent"
-                    FontWeight="Bold"
+            <Button Content="□"
+                    Style="{StaticResource smallButtonStyle}"
                     Click="buttonMaximize_Click" />
-            <Button Width="20"
-                    Height="20" 
-                    Margin="5,0,5,5"
-                    Content="x"
-                    Background="Transparent"
-                    FontWeight="Bold"
+            <Button Content="x"
+                    Style="{StaticResource smallButtonStyle}"
                     Click="buttonExit_Click"/>
         </StackPanel>
 
@@ -86,13 +97,11 @@
             <ToggleButton Content="New Scene"
                           x:Name="newSceneButton"
                           Click="buttonNewScene_Click"
-                          FontSize="20"
-                          Padding="10,10,10,10" />
+                          Style="{StaticResource buttonStyle}" />
             <ToggleButton Content="Open Scene"
                           x:Name="openSceneButton"
                           Click="buttonOpenScene_Click"
-                          FontSize="20"
-                          Padding="10,10,10,10"
+                          Style="{StaticResource buttonStyle}"
                           Margin="0,30,0,0" />
         </StackPanel>
         <StackPanel Orientation="Vertical"
@@ -103,10 +112,10 @@
             <TextBlock Text="Recent Files"
                        FontSize="20" />
             <ListBox>
-                <TextBlock>Scene1.scene</TextBlock>
-                <TextBlock>Scene2.scene</TextBlock>
-                <TextBlock>Scene3.scene</TextBlock>
-                <TextBlock>SceneN.scene</TextBlock>
+                <TextBlock>PlaceholderScene1.scene</TextBlock>
+                <TextBlock>PlaceholderScene2.scene</TextBlock>
+                <TextBlock>PlaceholderScene3.scene</TextBlock>
+                <TextBlock>PlaceholderSceneN.scene</TextBlock>
             </ListBox>
         </StackPanel>
     </Grid>
