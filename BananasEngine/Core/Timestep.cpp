@@ -39,11 +39,11 @@ real32 Timestep::GetTime()
     m_CyclesElapsed  = m_EndCycleCount - m_LastCycleCount;
     m_CounterElapsed = m_EndCounter.QuadPart - m_LastCounter.QuadPart;
 
+#if 0
     real32 msPerFrame = ((1000.0f*(real32)m_CounterElapsed) / (real32)m_PerfCountFrequency);
     real32 fps = (real32)m_PerfCountFrequency / (real32)m_CounterElapsed;
     real32 megaCyclesPerFrame = (real32)m_CyclesElapsed / (1000.0f * 1000.0f);
 
-#if 0
     Print(msPerFrame, fps, megaCyclesPerFrame);
 #endif
 
