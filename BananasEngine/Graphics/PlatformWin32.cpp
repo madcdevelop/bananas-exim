@@ -34,6 +34,11 @@ PlatformWin32::~PlatformWin32()
 
 bool PlatformWin32::Win32CreateWindow()
 {
+
+#if MEMORY_LEAK_CHECK
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
     // Initialize PlatformWin32
     Init();
 
