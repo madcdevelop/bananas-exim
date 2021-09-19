@@ -21,12 +21,18 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File" 
                       BorderThickness="0">
+                <MenuItem Header="_New" Click="menuNewScene_Click"/>
+                <MenuItem Header="_Open" Click="menuOpenScene_Click"/>
+                <Separator></Separator>
+                <MenuItem Header="_Save" Click="menuSaveScene_Click"/>
+                <Separator></Separator>
                 <MenuItem Header="_Import">
                     <MenuItem Header="_Wavefront(.obj)" Click="menuImportWavefrontOBJ_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Export">
                     <MenuItem Header="_Wavefront(.obj)" Click="menuExportWavefrontOBJ_Click"/>
                 </MenuItem>
+                <Separator></Separator>
                 <MenuItem Header="_Exit" Click="menuExit_Click"/>
             </MenuItem>
             

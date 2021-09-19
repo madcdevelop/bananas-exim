@@ -66,6 +66,21 @@ namespace BananasEditor
             windowHost.Run();
         }
 
+        private void menuNewScene_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("New Scene!");
+        }
+
+        private void menuOpenScene_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Open Scene!");
+        }
+
+        private void menuSaveScene_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Save Scene!");
+        }
+
         private void menuImportWavefrontOBJ_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
