@@ -72,6 +72,12 @@ void SceneSaveScene(const char* fileName)
 }
 
 EDITOR_INTERFACE
+void SceneOpenScene(const char* fileName)
+{
+    CoreEngine::DeSerializeFromXML(fileName, g_Scene);
+}
+
+EDITOR_INTERFACE
 GraphicsEngine::Scene* GetScene()
 {
     return g_Scene;

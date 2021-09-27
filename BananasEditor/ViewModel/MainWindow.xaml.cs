@@ -18,10 +18,15 @@ namespace BananasEditor
             WM_SIZE = 0x0005
         }
 
-        Application mainApp;
-        Window parentWindow;
-        ControlHost windowHost;
-        Scene renderScene;
+        private Application mainApp;
+        private Window parentWindow;
+        private ControlHost windowHost;
+        private Scene renderScene;
+
+        public Scene RenderScene
+        {
+            get { return renderScene; } set { renderScene = value; }
+        }
 
         public MainWindow()
         {
@@ -73,7 +78,22 @@ namespace BananasEditor
 
         private void menuOpenScene_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Open Scene!");
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Nullable<bool> result = openFileDlg.ShowDialog();
+
+            if(result == true)
+            {
+                string fileName = openFileDlg.FileName;
+                string[] tokens = fileName.Split('.');
+                if(tokens.Length > 1 && tokens[1] == "bxml")
+                {
+                    renderScene.OpenScene(fileName);
+                }
+                else
+                {
+                    MessageBox.Show("File type is not a Bananas Scene (.bxml) file.");
+                }
+            }
         }
 
         private void menuSaveScene_Click(object sender, RoutedEventArgs e)

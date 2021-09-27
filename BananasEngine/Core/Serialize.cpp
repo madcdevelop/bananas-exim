@@ -97,4 +97,9 @@ void OutputAttributesXML(std::fstream& output, const std::string& attributes)
         output << "." << token;
 }
 
+bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scene)
+{
+    return true;
+}
+
 }
