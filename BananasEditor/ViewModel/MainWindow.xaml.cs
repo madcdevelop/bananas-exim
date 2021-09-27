@@ -78,7 +78,22 @@ namespace BananasEditor
 
         private void menuSaveScene_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Save Scene!");
+            Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog();
+            Nullable<bool> result = saveFileDlg.ShowDialog();
+
+            if(result == true)
+            {
+                string fileName = saveFileDlg.FileName;
+                string[] tokens = fileName.Split('.');
+                if(tokens.Length > 1 && tokens[1] == "bxml")
+                {
+                    renderScene.SaveScene(fileName);
+                }
+                else
+                {
+                    MessageBox.Show("File selected is not a Bananas Scene (bxml) file.");
+                }
+            }
         }
 
         private void menuImportWavefrontOBJ_Click(object sender, RoutedEventArgs e)

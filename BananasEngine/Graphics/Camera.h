@@ -16,13 +16,12 @@ enum CameraMovement {
 class Camera {
 
 public:
+    std::string m_Name = "camera";
     glm::vec3 m_Position;
     glm::vec3 m_Front;
     glm::vec3 m_Up;
     glm::vec3 m_Right;
 
-
-private:
     real32 m_Yaw;
     real32 m_Pitch;
     real32 m_Fov;

@@ -7,6 +7,10 @@ Timestep::Timestep()
 {
 }
 
+Timestep::~Timestep()
+{
+}
+
 void Timestep::Print(real32 msPerFrame, real32 fps, real32 megaCyclesPerFrame)
 {
     // TODO(neil): Contents may not fit inside buffer or may be a null terminated string. 

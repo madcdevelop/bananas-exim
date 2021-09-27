@@ -1,5 +1,6 @@
 #include "Common.h"
 #include "PlatformWin32.h"
+#include "Serialize.h"
 
 #include <thread>
 
@@ -62,6 +63,12 @@ void CreateScene()
 {
     g_Scene = new GraphicsEngine::Scene();
     g_Window->m_RenderDevice->m_Scene = g_Scene;
+}
+
+EDITOR_INTERFACE
+void SceneSaveScene(const char* fileName)
+{
+    CoreEngine::SerializeToXML(fileName, g_Scene);
 }
 
 EDITOR_INTERFACE

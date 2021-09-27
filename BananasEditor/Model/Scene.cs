@@ -17,6 +17,9 @@ namespace BananasEditor
         internal static extern void CreateScene();
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void SceneSaveScene(string fileName);
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr GetScene();
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -36,6 +39,11 @@ namespace BananasEditor
         {
             CreateScene();
             RenderScene = GetScene();
+        }
+
+        public void SaveScene(string fileName)
+        {
+            SceneSaveScene(fileName);
         }
 
         public void LoadModels(string fileName)
