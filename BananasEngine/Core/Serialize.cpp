@@ -1,5 +1,7 @@
 #include "Serialize.h"
 
+#include "Stack.h"
+
 namespace CoreEngine
 {
 
@@ -99,6 +101,124 @@ void OutputAttributesXML(std::fstream& output, const std::string& attributes)
 
 bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scene)
 {
+    std::ifstream fileStream(filePath, std::ios::in);
+    if(!fileStream.is_open())
+    {
+        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " 
+                                   + std::string(filePath) + ".\n";
+        OutputDebugStringA(errorMessage.c_str());
+        return false;
+    }
+
+    Stack* xmlStack = new Stack();
+
+    while(!fileStream.eof())
+    {
+        std::string line = "";
+        std::string token = "";
+        std::string value = "";
+        std::getline(fileStream, line);
+
+        OutputDebugStringA(line.c_str());
+        OutputDebugString((LPCWSTR)"\n");
+
+        if (line.compare("<?xml version=\"1.0\" encoding=\"UTF-8\"?>") == 0)
+            continue;
+
+        char prevChar;
+        int32 count = 0;
+        for (auto c : line)
+        {
+            if(c == '\t') continue;
+            // XML Node Start
+            else if (c == '<')
+            {
+                prevChar = c;
+                continue;
+            }
+            // XML Node End
+            else if (prevChar == '<' && c == '/')
+            {
+                // Camera.Position
+                if (token.compare("camera.position.x") == 0)
+                    scene->m_Camera.m_Position[0] = std::stof(value);
+                else if (token.compare("camera.position.y") == 0)
+                    scene->m_Camera.m_Position[1] = std::stof(value);
+                else if (token.compare("camera.position.z") == 0)
+                    scene->m_Camera.m_Position[2] = std::stof(value);
+                // Camera.Front
+                else if (token.compare("camera.front.x") == 0)
+                    scene->m_Camera.m_Front[0] = std::stof(value);
+                else if (token.compare("camera.front.y") == 0)
+                    scene->m_Camera.m_Front[1] = std::stof(value);
+                else if (token.compare("camera.front.z") == 0)
+                    scene->m_Camera.m_Front[2] = std::stof(value);
+                // Camera.Up                
+                else if (token.compare("camera.up.x") == 0)
+                    scene->m_Camera.m_Up[0] = std::stof(value);
+                else if (token.compare("camera.up.y") == 0)
+                    scene->m_Camera.m_Up[1] = std::stof(value);
+                else if (token.compare("camera.up.z") == 0)
+                    scene->m_Camera.m_Up[2] = std::stof(value);
+                // Camera.Right
+                else if (token.compare("camera.right.x") == 0)
+                    scene->m_Camera.m_Right[0] = std::stof(value);
+                else if (token.compare("camera.right.y") == 0)
+                    scene->m_Camera.m_Right[1] = std::stof(value);
+                else if (token.compare("camera.right.z") == 0)
+                    scene->m_Camera.m_Right[2] = std::stof(value);
+                // Camera Attributes
+                else if (token.compare("camera.yaw") == 0)
+                    scene->m_Camera.m_Yaw = std::stof(value);
+                else if (token.compare("camera.pitch") == 0) 
+                    scene->m_Camera.m_Pitch = std::stof(value);
+                else if (token.compare("camera.fov") == 0) 
+                    scene->m_Camera.m_Fov = std::stof(value);
+                else if (token.compare("camera.movementSpeed") == 0) 
+                    scene->m_Camera.m_MovementSpeed = std::stof(value);
+                else if (token.compare("camera.sensitivity") == 0) 
+                    scene->m_Camera.m_Sensitivity = std::stof(value);
+                // Count
+                if (token.compare("count") == 0)
+                    count = std::stoi(value);
+                                    
+                token = "";
+                value = "";
+                prevChar = '/';
+            }
+            // XML Node Attributes
+            else if (c == ' ')
+            {
+                // NOTE(neil): currently ignoring attributes for xml with break
+                prevChar = c;
+                xmlStack->Push(token);
+                token = "";
+                break;
+            }
+            // XML Node Start Close
+            else if (c == '>')
+            {
+                if (xmlStack->Peek().compare(token) == 0)
+                    xmlStack->Pop();
+                else
+                    xmlStack->Push(token);
+
+                prevChar = c;
+            }
+            // XML Node End Close
+            else if (prevChar == '>')
+            {
+                value.push_back(c);
+            }
+            else
+            {
+                token.push_back(c);
+            }
+        }
+    }
+
+    delete xmlStack;
+
     return true;
 }
 

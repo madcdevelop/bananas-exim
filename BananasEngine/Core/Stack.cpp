@@ -37,7 +37,9 @@ std::string Stack::Pop()
     else
     {
         OutputDebugStringA(std::string("INFO\t\tStack Pop()\t\t\tItem: " + m_Stack[m_Top] + "\n").c_str());
-        return m_Stack[m_Top--];
+        std::string item = m_Stack[m_Top];
+        m_Stack[m_Top--] = "";
+        return item;
     }
 }
 
