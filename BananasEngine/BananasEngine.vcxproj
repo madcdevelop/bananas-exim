@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Serialize.h" />
+    <ClInclude Include="Core\Stack.h" />
     <ClInclude Include="Graphics\Camera.h" />
     <ClInclude Include="Core\Common.h" />
     <ClInclude Include="Core\Core.h" />
@@ -39,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Serialize.cpp" />
+    <ClCompile Include="Core\Stack.cpp" />
     <ClCompile Include="Graphics\Exporter.cpp" />
     <ClCompile Include="Graphics\Importer.cpp" />
     <ClCompile Include="Graphics\Material.cpp" />

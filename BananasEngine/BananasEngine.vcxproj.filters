@@ -18,6 +18,7 @@
     <ClInclude Include="Graphics\RenderDeviceOpenGL.h" />
     <ClInclude Include="Graphics\Exporter.h" />
     <ClInclude Include="Core\Serialize.h" />
+    <ClInclude Include="Core\Stack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Extern\glad\glad.c" />
@@ -36,5 +37,6 @@
     <ClCompile Include="Graphics\PlatformWin32.cpp" />
     <ClCompile Include="Graphics\Exporter.cpp" />
     <ClCompile Include="Core\Serialize.cpp" />
+    <ClCompile Include="Core\Stack.cpp" />
   </ItemGroup>
 </Project>
