@@ -78,81 +78,69 @@ namespace BananasEditor
 
         private void menuOpenScene_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Bananas Scene|*.bxml",
+                Title = "Open Bananas Scene",
+            };
+
             Nullable<bool> result = openFileDlg.ShowDialog();
 
             if(result == true)
             {
                 string fileName = openFileDlg.FileName;
-                string[] tokens = fileName.Split('.');
-                if(tokens.Length > 1 && tokens[1] == "bxml")
-                {
-                    renderScene.OpenScene(fileName);
-                }
-                else
-                {
-                    MessageBox.Show("File type is not a Bananas Scene (.bxml) file.");
-                }
+                renderScene.OpenScene(fileName);
             }
         }
 
         private void menuSaveScene_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog();
+            Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Bananas Scene|*.bxml",
+                Title = "Save Bananas Scene",
+            };
+
             Nullable<bool> result = saveFileDlg.ShowDialog();
 
             if(result == true)
             {
                 string fileName = saveFileDlg.FileName;
-                string[] tokens = fileName.Split('.');
-                if(tokens.Length > 1 && tokens[1] == "bxml")
-                {
-                    renderScene.SaveScene(fileName);
-                }
-                else
-                {
-                    MessageBox.Show("File selected is not a Bananas Scene (bxml) file.");
-                }
+                renderScene.SaveScene(fileName);
             }
         }
 
         private void menuImportWavefrontOBJ_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Wavefront|*.obj",
+                Title = "Import Wavefront(.obj) File",
+            };
+
             Nullable<bool> result = openFileDlg.ShowDialog();
 
             if(result == true)
             {
                 string filename = openFileDlg.FileName;
-                string[] tokens = filename.Split('.');
-                if(tokens[1] == "obj")
-                {
-                    renderScene.LoadModels(filename);
-                }
-                else
-                {
-                    MessageBox.Show("File selected is not a Wavefront (.obj) file.");
-                }
+                renderScene.LoadModels(filename);
             }
         }
 
         private void menuExportWavefrontOBJ_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog();
+            Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Wavefront|*.obj",
+                Title = "Export Wavefront(.obj) File",
+            };
+
             Nullable<bool> result = saveFileDlg.ShowDialog();
 
             if(result == true)
             {
                 string filename = saveFileDlg.FileName;
-                string[] tokens = filename.Split('.');
-                if(tokens.Length > 1 && tokens[1] == "obj")
-                {
-                    renderScene.ExportModels(filename);
-                }
-                else
-                {
-                    MessageBox.Show("File type is not a Wavefront (.obj) file.");
-                }
+                renderScene.ExportModels(filename);
             }
         }
 

@@ -52,24 +52,21 @@ namespace BananasEditor
 
         private void buttonOpenScene_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Bananas Scene|*.bxml",
+                Title = "Open Bananas Scene",
+            };
+
             Nullable<bool> result = openFileDlg.ShowDialog();
 
             if(result == true)
             {
-                string fileName = openFileDlg.FileName;
-                string[] tokens = fileName.Split('.');
-                if(tokens.Length > 1 && tokens[1] == "bxml")
-                {
-                    MainWindow mainWindow = new MainWindow();
-                    mainWindow.Show();
-                    mainWindow.RenderScene.OpenScene(fileName);
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("File type is not a Bananas Scene (.bxml) file.");
-                }
+                string fileName = openFileDlg.FileName;                
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                mainWindow.RenderScene.OpenScene(fileName);
+                this.Close();
             }
         }
     }
