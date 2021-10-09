@@ -44,37 +44,37 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
     
     // Camera.Position
     fileOut << "\t" << "\t" << "\t" << "<" << camera->m_Name << "." << "position" << ">" << std::endl;
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Position.x, "position.x");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Position.y, "position.y");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Position.z, "position.z");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Position.x, "position.x");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Position.y, "position.y");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Position.z, "position.z");
     fileOut << "\t" << "\t" << "\t" << "</" << camera->m_Name << "." << "position" << ">" << std::endl;
 
     // Camera.Front
     fileOut << "\t" << "\t" << "\t" << "<" << camera->m_Name << "." << "front" << ">" << std::endl;
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Front.x, "front.x");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Front.y, "front.y");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Front.z, "front.z");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Front.x, "front.x");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Front.y, "front.y");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Front.z, "front.z");
     fileOut << "\t" << "\t" << "\t" << "</" << camera->m_Name << "." << "front" << ">" << std::endl;
 
     // Camera.Up    
     fileOut << "\t" << "\t" << "\t" << "<" << camera->m_Name << "." << "up" << ">" << std::endl;
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Up.x, "up.x");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Up.y, "up.y");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Up.z, "up.z");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Up.x, "up.x");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Up.y, "up.y");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Up.z, "up.z");
     fileOut << "\t" << "\t" << "\t" << "</" << camera->m_Name << "." << "up" << ">" << std::endl;
 
     // Camera.Right
     fileOut << "\t" << "\t" << "\t" << "<" << camera->m_Name << "." << "right" << ">" << std::endl;
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Right.x, "right.x");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Right.y, "right.y");
-    OutputItemXML(fileOut, 4, camera->m_Name, camera->m_Right.z, "right.z");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Right.x, "right.x");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Right.y, "right.y");
+    SerializeItemXML(fileOut, 4, camera->m_Name, camera->m_Right.z, "right.z");
     fileOut << "\t" << "\t" << "\t" << "</" << camera->m_Name << "." << "right" << ">" << std::endl;
 
-    OutputItemXML(fileOut, 3, camera->m_Name, camera->m_Yaw, "yaw");
-    OutputItemXML(fileOut, 3, camera->m_Name, camera->m_Pitch, "pitch");
-    OutputItemXML(fileOut, 3, camera->m_Name, camera->m_Fov, "fov");
-    OutputItemXML(fileOut, 3, camera->m_Name, camera->m_MovementSpeed, "movementSpeed");
-    OutputItemXML(fileOut, 3, camera->m_Name, camera->m_Sensitivity, "sensitivity");
+    SerializeItemXML(fileOut, 3, camera->m_Name, camera->m_Yaw, "yaw");
+    SerializeItemXML(fileOut, 3, camera->m_Name, camera->m_Pitch, "pitch");
+    SerializeItemXML(fileOut, 3, camera->m_Name, camera->m_Fov, "fov");
+    SerializeItemXML(fileOut, 3, camera->m_Name, camera->m_MovementSpeed, "movementSpeed");
+    SerializeItemXML(fileOut, 3, camera->m_Name, camera->m_Sensitivity, "sensitivity");
 
     // End of Camera 
     fileOut << "\t" << "\t" << "</" << "item" << ">" << std::endl; 
@@ -97,20 +97,20 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
             fileOut << "\t" << "\t" << "\t" << "\t" << "<" << "count" << ">" << scene->m_Models[modelIndex].m_Meshes.size() << "</" << "count" << ">" << std::endl;
             fileOut << "\t" << "\t" << "\t" << "\t" << "<" << "item" << " " << "id=\"" << ++id << "\"" << " " << "version" << "=\"" << version << "\"" << ">" << std::endl;
 
-            OutputItemXML(fileOut, 5, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Name, "name");
+            SerializeItemXML(fileOut, 5, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Name, "name");
 
             // Vertices
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "vertices" << ">" << std::endl;
             for (const auto vertex : scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Vertices)
             {
-                OutputItemXML(fileOut, 6, "mesh", vertex.position.x, "vertices.position.x");
-                OutputItemXML(fileOut, 6, "mesh", vertex.position.y, "vertices.position.y");
-                OutputItemXML(fileOut, 6, "mesh", vertex.position.z, "vertices.position.z");
-                OutputItemXML(fileOut, 6, "mesh", vertex.normal.x, "vertices.normal.x");
-                OutputItemXML(fileOut, 6, "mesh", vertex.normal.y, "vertices.normal.y");
-                OutputItemXML(fileOut, 6, "mesh", vertex.normal.z, "vertices.normal.z");
-                OutputItemXML(fileOut, 6, "mesh", vertex.textureUV.x, "vertices.textureUV.x");
-                OutputItemXML(fileOut, 6, "mesh", vertex.textureUV.y, "vertices.textureUV.y");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.position.x, "vertices.position.x");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.position.y, "vertices.position.y");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.position.z, "vertices.position.z");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.normal.x, "vertices.normal.x");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.normal.y, "vertices.normal.y");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.normal.z, "vertices.normal.z");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.textureUV.x, "vertices.textureUV.x");
+                SerializeItemXML(fileOut, 6, "mesh", vertex.textureUV.y, "vertices.textureUV.y");
             }
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "vertices" << ">" << std::endl;
 
@@ -118,44 +118,44 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "indices" << ">" << std::endl;
             for (const auto index : scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Indices)
             {
-                OutputItemXML(fileOut, 6, "mesh", index, "indices");
+                SerializeItemXML(fileOut, 6, "mesh", index, "indices");
             }
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "indices" << ">" << std::endl;
 
             // Material
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material" << ">" << std::endl;
 
-            OutputItemXML(fileOut, 6, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Name, "name");
+            SerializeItemXML(fileOut, 6, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Name, "name");
 
             // Material - Ambient
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material.ambient" << ">" << std::endl;
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Ambient.x, "material.ambient.x");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Ambient.y, "material.ambient.y");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Ambient.z, "material.ambient.z");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Ambient.x, "material.ambient.x");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Ambient.y, "material.ambient.y");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Ambient.z, "material.ambient.z");
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "material.ambient" << ">" << std::endl;
 
             // Material - Diffuse
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material.diffuse" << ">" << std::endl;
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Diffuse.x, "material.diffuse.x");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Diffuse.y, "material.diffuse.y");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Diffuse.z, "material.diffuse.z");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Diffuse.x, "material.diffuse.x");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Diffuse.y, "material.diffuse.y");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Diffuse.z, "material.diffuse.z");
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "material.diffuse" << ">" << std::endl;
 
             // Material - Specular
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material.specular" << ">" << std::endl;
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Specular.x, "material.specular.x");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Specular.y, "material.specular.y");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Specular.z, "material.specular.z");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Specular.x, "material.specular.x");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Specular.y, "material.specular.y");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Specular.z, "material.specular.z");
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "material.specular" << ">" << std::endl;
 
             // Material - Emissive
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material.emissive" << ">" << std::endl;
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Emissive.x, "material.emissive.x");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Emissive.y, "material.emissive.y");
-            OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Emissive.z, "material.emissive.z");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Emissive.x, "material.emissive.x");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Emissive.y, "material.emissive.y");
+            SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Emissive.z, "material.emissive.z");
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "material.emissive" << ">" << std::endl;
 
-            OutputItemXML(fileOut, 6, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Shininess, "material.shininess");
+            SerializeItemXML(fileOut, 6, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Shininess, "material.shininess");
 
             // Textures
             for (uint32 textureIndex = 0; 
@@ -163,8 +163,8 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
                  textureIndex++)
             {
                 fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material.texture" << ">" << std::endl;
-                OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath, "material.texture.filepath");
-                OutputItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_Type, "material.texture.type");
+                SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath, "material.texture.filepath");
+                SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_Type, "material.texture.type");
                 fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "material.texture" << ">" << std::endl;
             }
             // End of Material
@@ -184,52 +184,52 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
     return true;
 }
 
-void OutputItemXML(std::fstream& output, int32 indents, const std::string& name, const std::string& value, const std::string& attributes)
+void SerializeItemXML(std::fstream& output, int32 indents, const std::string& name, const std::string& value, const std::string& attributes)
 {
     for (int i = 0; i < indents; ++i)
         output << "\t";
     output << "<" << name;
     if (attributes != "")
-        OutputAttributesXML(output, attributes);
+        SerializeAttributesXML(output, attributes);
     output << ">";
     output << value;
     output << "</" << name;
     if (attributes != "")
-        OutputAttributesXML(output, attributes);
+        SerializeAttributesXML(output, attributes);
     output << ">" << std::endl;
 }
 
-void OutputItemXML(std::fstream& output, int32 indents, const std::string& name, const uint32 value, const std::string& attributes)
+void SerializeItemXML(std::fstream& output, int32 indents, const std::string& name, const uint32 value, const std::string& attributes)
 {
     for (int i = 0; i < indents; ++i)
         output << "\t";
     output << "<" << name;
     if (attributes != "")
-        OutputAttributesXML(output, attributes);
+        SerializeAttributesXML(output, attributes);
     output << ">";
     output << value;
     output << "</" << name;
     if (attributes != "")
-        OutputAttributesXML(output, attributes);
+        SerializeAttributesXML(output, attributes);
     output << ">" << std::endl;
 }
 
-void OutputItemXML(std::fstream& output, int32 indents, const std::string& name, const real32 value, const std::string& attributes)
+void SerializeItemXML(std::fstream& output, int32 indents, const std::string& name, const real32 value, const std::string& attributes)
 {
     for(int i = 0; i < indents; ++i)
         output << "\t";
     output << "<" << name;
     if(attributes != "")
-        OutputAttributesXML(output, attributes);
+        SerializeAttributesXML(output, attributes);
     output << ">";
     output << value;
     output << "</" << name;
     if(attributes != "")
-        OutputAttributesXML(output, attributes);
+        SerializeAttributesXML(output, attributes);
     output << ">" << std::endl;
 }
 
-void OutputAttributesXML(std::fstream& output, const std::string& attributes)
+void SerializeAttributesXML(std::fstream& output, const std::string& attributes)
 {
     std::string token;
     std::stringstream ss(attributes);
