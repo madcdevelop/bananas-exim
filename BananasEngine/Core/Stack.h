@@ -27,6 +27,7 @@ public:
     bool Push(std::string item);
     std::string Pop();
     std::string Peek();
+    std::string Parent();
     bool IsFull();
     bool IsEmpty();
 };

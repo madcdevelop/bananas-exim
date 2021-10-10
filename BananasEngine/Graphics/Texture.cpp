@@ -3,10 +3,14 @@
 namespace GraphicsEngine
 {
 
+Texture::Texture()
+    : m_RenderId(0), m_Type(""), m_FilePath("")
+{
+}
+
 Texture::Texture(const std::string& type, const std::string& filePath)
     : m_RenderId(0), m_Type(type), m_FilePath(filePath)
 {
-    
 }
 
 Texture::~Texture()

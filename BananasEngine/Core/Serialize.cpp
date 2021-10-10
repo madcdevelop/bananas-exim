@@ -1,6 +1,7 @@
 #include "Serialize.h"
 
 #include "Stack.h"
+#include "../Graphics/Mesh.h"
 
 namespace CoreEngine
 {
@@ -90,11 +91,12 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
         fileOut << "\t" << "\t" << "<" << "count" << ">" << scene->m_Models.size() << "</" << "count" << ">" << std::endl;
         fileOut << "\t" << "\t" << "<" << "item" << " " << "id=\"" << ++id << "\"" << " " << "version" << "=\"" << version << "\"" << ">" << std::endl;
         
+        // Start of Mesh
+        fileOut << "\t" << "\t" << "\t" << "<" << "mesh" << " " << "id=\"" << ++id << "\"" << " " << "version" << "=\"" << version << "\"" << ">" << std::endl;
+        fileOut << "\t" << "\t" << "\t" << "\t" << "<" << "count" << ">" << scene->m_Models[modelIndex].m_Meshes.size() << "</" << "count" << ">" << std::endl;
+
         for (uint32 meshIndex = 0; meshIndex < scene->m_Models[modelIndex].m_Meshes.size(); meshIndex++)
         {
-            // Start of Mesh
-            fileOut << "\t" << "\t" << "\t" << "<" << "mesh" << " " << "id=\"" << ++id << "\"" << " " << "version" << "=\"" << version << "\"" << ">" << std::endl;
-            fileOut << "\t" << "\t" << "\t" << "\t" << "<" << "count" << ">" << scene->m_Models[modelIndex].m_Meshes.size() << "</" << "count" << ">" << std::endl;
             fileOut << "\t" << "\t" << "\t" << "\t" << "<" << "item" << " " << "id=\"" << ++id << "\"" << " " << "version" << "=\"" << version << "\"" << ">" << std::endl;
 
             SerializeItemXML(fileOut, 5, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Name, "name");
@@ -116,16 +118,18 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
 
             // Indices
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "indices" << ">" << std::endl;
-            for (const auto index : scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Indices)
+            for (int32 indicesIndex = 0; 
+                 indicesIndex < scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Indices.size();
+                 indicesIndex++)
             {
-                SerializeItemXML(fileOut, 6, "mesh", index, "indices");
+                SerializeItemXML(fileOut, 6, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Indices[indicesIndex], std::string("indices." + std::to_string(indicesIndex)));
             }
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "indices" << ">" << std::endl;
 
             // Material
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material" << ">" << std::endl;
 
-            SerializeItemXML(fileOut, 6, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Name, "name");
+            SerializeItemXML(fileOut, 6, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Name, "material.name");
 
             // Material - Ambient
             fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material.ambient" << ">" << std::endl;
@@ -163,8 +167,8 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
                  textureIndex++)
             {
                 fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "<" << "mesh" << "." << "material.texture" << ">" << std::endl;
-                SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath, "material.texture.filepath");
                 SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_Type, "material.texture.type");
+                SerializeItemXML(fileOut, 7, "mesh", scene->m_Models[modelIndex].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath, "material.texture.filepath");
                 fileOut << "\t" << "\t" << "\t" << "\t" << "\t" << "\t" << "</" << "mesh" << "." << "material.texture" << ">" << std::endl;
             }
             // End of Material
@@ -172,9 +176,9 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
 
             // End of Mesh
             fileOut << "\t" << "\t" << "\t" << "\t" << "</" << "item" << ">" << std::endl;
-            fileOut << "\t" << "\t" << "\t" << "</" << "mesh" << ">" << std::endl;
         }
         // End of Model
+        fileOut << "\t" << "\t" << "\t" << "</" << "mesh" << ">" << std::endl;
         fileOut << "\t" << "\t" << "</" << "item" << ">" << std::endl;
         fileOut << "\t" << "</" << "model" << ">" << std::endl;
     }
@@ -250,6 +254,25 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
 
     Stack* xmlStack = new Stack();
 
+    if (scene->m_Models.size() > 0)
+        scene->m_Models.clear();
+
+    std::vector<std::string> outNames;
+    std::vector<std::vector<GraphicsEngine::Vertex>> outVertices;
+    std::vector<std::vector<uint32>> outIndices;
+    std::vector<GraphicsEngine::Material> outMaterials;
+
+    std::vector<GraphicsEngine::Vertex> tempVertices;
+    std::vector<uint32> tempIndices;
+    int32 indicesIndex = 0;
+    int32 meshCount = 0;
+    
+    GraphicsEngine::Vertex tempVertex;
+    GraphicsEngine::Material tempMaterial;
+    GraphicsEngine::Texture tempTexture;
+
+    int32 cameraCount = 0;
+
     while(!fileStream.eof())
     {
         std::string line = "";
@@ -257,14 +280,10 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
         std::string value = "";
         std::getline(fileStream, line);
 
-        OutputDebugStringA(line.c_str());
-        OutputDebugString((LPCWSTR)"\n");
-
         if (line.compare("<?xml version=\"1.0\" encoding=\"UTF-8\"?>") == 0)
             continue;
 
         char prevChar;
-        int32 count = 0;
         for (auto c : line)
         {
             if(c == '\t') continue;
@@ -316,10 +335,109 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     scene->m_Camera.m_MovementSpeed = std::stof(value);
                 else if (token.compare("camera.sensitivity") == 0) 
                     scene->m_Camera.m_Sensitivity = std::stof(value);
+                
+                // Mesh Data
+                if (token.compare("mesh.name") == 0)
+                    outNames.push_back(value);
+                
+                // Mesh Vertices
+                // Mesh Position
+                else if (token.compare("mesh.vertices.position.x") == 0)
+                    tempVertex.position.x = std::stof(value);
+                else if (token.compare("mesh.vertices.position.y") == 0)
+                    tempVertex.position.y = std::stof(value);
+                else if (token.compare("mesh.vertices.position.z") == 0)
+                    tempVertex.position.z = std::stof(value);
+                // Mesh Normal
+                else if (token.compare("mesh.vertices.normal.x") == 0)
+                    tempVertex.normal.x = std::stof(value);
+                else if (token.compare("mesh.vertices.normal.y") == 0)
+                    tempVertex.normal.y = std::stof(value);
+                else if (token.compare("mesh.vertices.normal.z") == 0)
+                    tempVertex.normal.z = std::stof(value);
+                // Mesh Texture UV
+                else if (token.compare("mesh.vertices.textureUV.x") == 0)
+                    tempVertex.textureUV.x = std::stof(value);
+                else if (token.compare("mesh.vertices.textureUV.y") == 0)
+                {
+                    tempVertex.textureUV.y = std::stof(value);
+                    tempVertices.push_back(tempVertex);
+                }
+                else if (xmlStack->Peek().compare("mesh.vertices") == 0)
+                {
+                    outVertices.push_back(tempVertices);
+                    tempVertices.clear();
+                }
+                
+                // Mesh Indices
+                else if (token.compare(std::string("mesh.indices." + std::to_string(indicesIndex))) == 0)
+                {
+                    tempIndices.push_back(std::stoi(value));
+                    indicesIndex++;
+                }
+                else if (xmlStack->Peek().compare("mesh.indices") == 0)
+                {
+                    outIndices.push_back(tempIndices);
+                    indicesIndex = 0;
+                    tempIndices.clear();
+                }
+                
+                // Mesh Material
+                else if (token.compare("mesh.material.name") == 0)
+                    tempMaterial.m_Name = value;
+                // Mesh Material Ambient
+                else if (token.compare("mesh.material.ambient.x") == 0)
+                    tempMaterial.m_Ambient.x = std::stof(value);
+                else if (token.compare("mesh.material.ambient.y") == 0)
+                    tempMaterial.m_Ambient.y = std::stof(value);
+                else if (token.compare("mesh.material.ambient.z") == 0)
+                    tempMaterial.m_Ambient.z = std::stof(value);
+                // Mesh Material Diffuse
+                else if (token.compare("mesh.material.diffuse.x") == 0)
+                    tempMaterial.m_Diffuse.x = std::stof(value);
+                else if (token.compare("mesh.material.diffuse.y") == 0)
+                    tempMaterial.m_Diffuse.y = std::stof(value);
+                else if (token.compare("mesh.material.diffuse.z") == 0)
+                    tempMaterial.m_Diffuse.z = std::stof(value);
+                // Mesh Material Specular
+                else if (token.compare("mesh.material.specular.x") == 0)
+                    tempMaterial.m_Specular.x = std::stof(value);
+                else if (token.compare("mesh.material.specular.y") == 0)
+                    tempMaterial.m_Specular.y = std::stof(value);
+                else if (token.compare("mesh.material.specular.z") == 0)
+                    tempMaterial.m_Specular.z = std::stof(value);
+                // Mesh Material
+                else if (token.compare("mesh.material.shininess") == 0)
+                    tempMaterial.m_Shininess = std::stof(value);
+                // Mesh Material Texture
+                else if (token.compare("mesh.material.texture.type") == 0)
+                    tempTexture.m_Type = value;
+                else if (token.compare("mesh.material.texture.filepath") == 0)
+                    tempTexture.m_FilePath = value;
+                else if (xmlStack->Peek().compare("mesh.material.texture") == 0)
+                    tempMaterial.m_Textures.push_back(tempTexture);
+                // Mesh Material End
+                else if (xmlStack->Peek().compare("mesh.material") == 0)
+                    outMaterials.push_back(tempMaterial);
                 // Count
-                if (token.compare("count") == 0)
-                    count = std::stoi(value);
-                                    
+                if (token.compare("count") == 0 && xmlStack->Parent().compare("camera") == 0)
+                    cameraCount = std::stoi(value);
+                else if (token.compare("count") == 0 && xmlStack->Parent().compare("mesh") == 0)
+                    meshCount = std::stoi(value);
+
+                // Model End
+                if (xmlStack->Peek().compare("model") == 0)
+                {
+                    std::vector<GraphicsEngine::Mesh> meshes;
+                    GraphicsEngine::Model model;
+                    for(int32 i = 0; i < meshCount; i++)
+                    {
+                        GraphicsEngine::Mesh mesh{outNames[i], outVertices[i], outIndices[i], outMaterials[i]};
+                        model.m_Meshes.push_back(mesh);
+                    }
+                    scene->m_Models.push_back(model);
+                }
+
                 token = "";
                 value = "";
                 prevChar = '/';
@@ -356,6 +474,10 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
     }
 
     delete xmlStack;
+
+    scene->m_IsModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+
+    fileStream.close();
 
     return true;
 }

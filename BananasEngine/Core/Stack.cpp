@@ -22,7 +22,6 @@ bool Stack::Push(std::string item)
     else
     {
         m_Stack[++m_Top] = item;
-        OutputDebugStringA(std::string("INFO\t\tStack Push()\t\tItem: " + item + "\n").c_str());
         return true;
     }
 }
@@ -36,7 +35,6 @@ std::string Stack::Pop()
     }
     else
     {
-        OutputDebugStringA(std::string("INFO\t\tStack Pop()\t\t\tItem: " + m_Stack[m_Top] + "\n").c_str());
         std::string item = m_Stack[m_Top];
         m_Stack[m_Top--] = "";
         return item;
@@ -52,8 +50,20 @@ std::string Stack::Peek()
     }
     else
     {
-        OutputDebugStringA(std::string("INFO\t\tStack Peek()\t\tItem: " + m_Stack[m_Top] + "\n").c_str());
         return m_Stack[m_Top];
+    }
+}
+
+std::string Stack::Parent()
+{
+    if (m_Top <= 0)
+    {
+        OutputDebugStringA("ERROR\t\tStack Parent()\t\tStack Underflow!\n");
+        return "";
+    }
+    else
+    {
+        return m_Stack[m_Top-1];
     }
 }
 
