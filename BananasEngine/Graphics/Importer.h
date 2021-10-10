@@ -19,7 +19,7 @@ public:
     bool LoadModel(const std::string& filePath, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::vector<Material>& outMaterials);
 
 private:
-    void LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::string& path, std::vector<Material>& outMaterial);
+    void LoadModelOBJ(const std::string& filePath, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::string& mtlPath, std::vector<Material>& outMaterial);
     bool LoadModelMTL(std::string& filePath, std::vector<std::string>& usemtl, std::vector<Material>& outMaterials);
 };
 

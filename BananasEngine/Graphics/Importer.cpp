@@ -15,31 +15,28 @@ Importer::~Importer()
 
 bool Importer::LoadModel(const std::string& filePath, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::vector<Material>& outMaterials)
 {
+    // Import based on file type
+    std::string fileType = filePath.substr(filePath.find_last_of(".")+1);
+    std::string path = filePath.substr(0, filePath.find_last_of("\\"));
+    if (fileType == "obj") {
+        LoadModelOBJ(filePath, outNames, outVertices, outIndices, outMeshSizes, path, outMaterials);
+        return true;
+    }
+
+    return false;
+}
+
+void Importer::LoadModelOBJ(const std::string& filePath, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::string& mtlPath, std::vector<Material>& outMaterials)
+{
     // Open the file
     std::ifstream fileStream(filePath, std::ios::in);
     if(!fileStream.is_open())
     {
         std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " + std::string(filePath) + ". File does not exist.\n";
         OutputDebugStringA(errorMessage.c_str());
-        return false;
+        return;
     }
 
-    // Import based on file type
-    std::string fileType = filePath.substr(filePath.find_last_of(".")+1);
-    std::string path = filePath.substr(0, filePath.find_last_of("\\"));
-    if (fileType == "obj") {
-        LoadModelOBJ(fileStream, outNames, outVertices, outIndices, outMeshSizes, path, outMaterials);
-        return true;
-    }
-
-    std::string errorMessage = "ERROR\t\tFile Type\t\tPossibly incorrect filetype: " + std::string(filePath) + ".Currently only loads .obj files\n";
-    OutputDebugStringA(errorMessage.c_str());
-
-    return false;
-}
-
-void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>& outNames, std::vector<std::vector<Vertex>>& outVertices, std::vector<std::vector<uint32>>& outIndices, std::vector<uint32>& outMeshSizes, std::string& path, std::vector<Material>& outMaterials)
-{
     std::vector<glm::vec3> positions;
     std::vector<glm::vec2> textureCoordinates;
     std::vector<glm::vec3> normals;
@@ -84,7 +81,8 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
             glm::vec2 textureCoordinate(std::stof(tokens[1]), std::stof(tokens[2]));
             textureCoordinates.push_back(textureCoordinate); 
         }
-        // Indices f v1/vt1/vn1 (Specifically triangulate faces on export)
+        // Indices f v1/vt1/vn1 
+        // TODO(neil): Currently only able to triangulate faces on import
         else if(start == "f")
         {
             Face face;
@@ -197,11 +195,11 @@ void Importer::LoadModelOBJ(std::ifstream& fileStream, std::vector<std::string>&
             indices.clear();
         }
     }
+    fileStream.close();
 
     // Load MTL file
-    std::string filePath = path + "\\" + mtllib;
-    LoadModelMTL(filePath, usemtl, outMaterials);
-    
+    std::string mtlFilePath = mtlPath + "\\" + mtllib;
+    LoadModelMTL(mtlFilePath, usemtl, outMaterials);
 }
 
 bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& usemtl, std::vector<Material>& outMaterials)
@@ -319,6 +317,8 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         Material material(usemtl[matIndex], ambient[materialIndex], diffuse[materialIndex], specular[materialIndex], emissive[materialIndex], shininess[materialIndex], texturesPerMesh[materialIndex]);
         outMaterials.push_back(material);
     }
+
+    fileStream.close();
 
     return true;
 }
