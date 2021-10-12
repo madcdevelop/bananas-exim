@@ -28,6 +28,8 @@ void Model::LoadModel(const std::string& filePath)
     std::vector<std::string> outNames;
     std::vector<std::vector<Vertex>> outVertices;
     std::vector<std::vector<uint32>> outIndices;
+    // TODO(neil): outMeshSizes is only used to loop through an array in Importer. 
+    //             Pass back a meshCount instead. Use the meshSizes buffer for internal function.
     std::vector<uint32> outMeshSizes;
     std::vector<Material> outMaterials;
     

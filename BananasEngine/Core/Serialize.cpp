@@ -296,46 +296,15 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
             // XML Node End
             else if (prevChar == '<' && c == '/')
             {
-                // Camera.Position
-                if (token.compare("camera.position.x") == 0)
-                    scene->m_Camera.m_Position[0] = std::stof(value);
-                else if (token.compare("camera.position.y") == 0)
-                    scene->m_Camera.m_Position[1] = std::stof(value);
-                else if (token.compare("camera.position.z") == 0)
-                    scene->m_Camera.m_Position[2] = std::stof(value);
-                // Camera.Front
-                else if (token.compare("camera.front.x") == 0)
-                    scene->m_Camera.m_Front[0] = std::stof(value);
-                else if (token.compare("camera.front.y") == 0)
-                    scene->m_Camera.m_Front[1] = std::stof(value);
-                else if (token.compare("camera.front.z") == 0)
-                    scene->m_Camera.m_Front[2] = std::stof(value);
-                // Camera.Up                
-                else if (token.compare("camera.up.x") == 0)
-                    scene->m_Camera.m_Up[0] = std::stof(value);
-                else if (token.compare("camera.up.y") == 0)
-                    scene->m_Camera.m_Up[1] = std::stof(value);
-                else if (token.compare("camera.up.z") == 0)
-                    scene->m_Camera.m_Up[2] = std::stof(value);
-                // Camera.Right
-                else if (token.compare("camera.right.x") == 0)
-                    scene->m_Camera.m_Right[0] = std::stof(value);
-                else if (token.compare("camera.right.y") == 0)
-                    scene->m_Camera.m_Right[1] = std::stof(value);
-                else if (token.compare("camera.right.z") == 0)
-                    scene->m_Camera.m_Right[2] = std::stof(value);
-                // Camera Attributes
-                else if (token.compare("camera.yaw") == 0)
-                    scene->m_Camera.m_Yaw = std::stof(value);
-                else if (token.compare("camera.pitch") == 0) 
-                    scene->m_Camera.m_Pitch = std::stof(value);
-                else if (token.compare("camera.fov") == 0) 
-                    scene->m_Camera.m_Fov = std::stof(value);
-                else if (token.compare("camera.movementSpeed") == 0) 
-                    scene->m_Camera.m_MovementSpeed = std::stof(value);
-                else if (token.compare("camera.sensitivity") == 0) 
-                    scene->m_Camera.m_Sensitivity = std::stof(value);
-                
+                // Count
+                if (token.compare("count") == 0 && xmlStack->Parent().compare("camera") == 0)
+                    cameraCount = std::stoi(value);
+                else if (token.compare("count") == 0 && xmlStack->Parent().compare("mesh") == 0)
+                    meshCount = std::stoi(value);
+                // Camera
+                else if (token.substr(0, 6).compare("camera") == 0)
+                    scene->m_Camera.LoadCameraXML(token, std::stof(value));
+
                 // Mesh Data
                 if (token.compare("mesh.name") == 0)
                     outNames.push_back(value);
@@ -419,11 +388,6 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                 // Mesh Material End
                 else if (xmlStack->Peek().compare("mesh.material") == 0)
                     outMaterials.push_back(tempMaterial);
-                // Count
-                if (token.compare("count") == 0 && xmlStack->Parent().compare("camera") == 0)
-                    cameraCount = std::stoi(value);
-                else if (token.compare("count") == 0 && xmlStack->Parent().compare("mesh") == 0)
-                    meshCount = std::stoi(value);
 
                 // Model End
                 if (xmlStack->Peek().compare("model") == 0)

@@ -35,6 +35,8 @@ public:
     void KeyboardMovement(CameraMovement direction, real32 deltaTime);
     void MouseMovement(real32 xoffset, real32 yoffset);
 
+    void LoadCameraXML(std::string &token, float value);
+
 private:
     void UpdateCameraVectors();
 };
