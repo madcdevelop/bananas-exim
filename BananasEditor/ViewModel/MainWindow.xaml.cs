@@ -73,7 +73,7 @@ namespace BananasEditor
 
         private void menuNewScene_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("New Scene!");
+            renderScene.NewScene();
         }
 
         private void menuOpenScene_Click(object sender, RoutedEventArgs e)

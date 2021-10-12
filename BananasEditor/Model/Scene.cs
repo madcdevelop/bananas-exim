@@ -44,6 +44,13 @@ namespace BananasEditor
             RenderScene = GetScene();
         }
 
+        public void NewScene()
+        {
+            SceneShutdown();
+            CreateScene();
+            RenderScene = GetScene();
+        }
+
         public void SaveScene(string fileName)
         {
             SceneSaveScene(fileName);
