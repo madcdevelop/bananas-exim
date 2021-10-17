@@ -16,7 +16,6 @@ enum CameraMovement {
 class Camera {
 
 public:
-    std::string m_Name = "camera";
     glm::vec3 m_Position;
     glm::vec3 m_Front;
     glm::vec3 m_Up;
@@ -34,8 +33,6 @@ public:
 
     void KeyboardMovement(CameraMovement direction, real32 deltaTime);
     void MouseMovement(real32 xoffset, real32 yoffset);
-
-    void LoadCameraXML(std::string &token, float value);
 
 private:
     void UpdateCameraVectors();

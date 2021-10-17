@@ -45,49 +45,6 @@ void Camera::MouseMovement(real32 xoffset, real32 yoffset)
     UpdateCameraVectors();
 }
 
-void Camera::LoadCameraXML(std::string &token, float value)
-{
-    // Camera.Position
-    if (token.compare("camera.position.x") == 0)
-        m_Position[0] = value;
-    else if (token.compare("camera.position.y") == 0)
-        m_Position[1] = value;
-    else if (token.compare("camera.position.z") == 0)
-        m_Position[2] = value;
-    // Camera.Front
-    else if (token.compare("camera.front.x") == 0)
-        m_Front[0] = value;
-    else if (token.compare("camera.front.y") == 0)
-        m_Front[1] = value;
-    else if (token.compare("camera.front.z") == 0)
-        m_Front[2] = value;
-    // Camera.Up                
-    else if (token.compare("camera.up.x") == 0)
-        m_Up[0] = value;
-    else if (token.compare("camera.up.y") == 0)
-        m_Up[1] = value;
-    else if (token.compare("camera.up.z") == 0)
-        m_Up[2] = value;
-    // Camera.Right
-    else if (token.compare("camera.right.x") == 0)
-        m_Right[0] = value;
-    else if (token.compare("camera.right.y") == 0)
-        m_Right[1] = value;
-    else if (token.compare("camera.right.z") == 0)
-        m_Right[2] = value;
-    // Camera Attributes
-    else if (token.compare("camera.yaw") == 0)
-        m_Yaw = value;
-    else if (token.compare("camera.pitch") == 0) 
-        m_Pitch = value;
-    else if (token.compare("camera.fov") == 0) 
-        m_Fov = value;
-    else if (token.compare("camera.movementSpeed") == 0) 
-        m_MovementSpeed = value;
-    else if (token.compare("camera.sensitivity") == 0) 
-        m_Sensitivity = value;
-}
-
 void Camera::UpdateCameraVectors()
 {
     glm::vec3 direction;
