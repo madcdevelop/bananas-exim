@@ -36,6 +36,7 @@ namespace BananasEditor
 
         private void On_UIReady(object sender, EventArgs e)
         {
+            this.Title = "Bananas Import/Export " + "[Untitled.bxml]";
             Loaded -= On_UIReady;
 
             // Init Window
@@ -74,6 +75,7 @@ namespace BananasEditor
         private void menuNewScene_Click(object sender, RoutedEventArgs e)
         {
             renderScene.NewScene();
+            this.Title = "Bananas Import/Export " + "[Untitled.bxml]";
         }
 
         private void menuOpenScene_Click(object sender, RoutedEventArgs e)
@@ -90,6 +92,7 @@ namespace BananasEditor
             {
                 string fileName = openFileDlg.FileName;
                 renderScene.OpenScene(fileName);
+                this.Title = "Bananas Import/Export " + "[" + fileName + "]";
             }
         }
 

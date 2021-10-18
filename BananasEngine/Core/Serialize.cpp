@@ -162,8 +162,7 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
             {
                 SerializeBeginTagXML(fileOut, 5, "Texture");
                 SerializeItemXML(fileOut, 6, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type);
-                SerializeItemXML(fileOut, 6, "FilePath", mesh->
-                m_Material.m_Textures[textureIndex].m_FilePath);
+                SerializeItemXML(fileOut, 6, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath);
                 SerializeEndTagXML(fileOut, 5, "Texture");
             }
             SerializeEndTagXML(fileOut, 4, "Material");
