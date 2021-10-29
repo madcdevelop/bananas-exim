@@ -625,4 +625,237 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
     return true;
 }
 
+bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
+{
+    std::fstream fileOut;
+
+    fileOut.open(filePath, std::ios_base::out);
+    if(!fileOut.is_open())
+    {
+        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " 
+                                   + std::string(filePath) + ".\n";
+        OutputDebugStringA(errorMessage.c_str());
+        return false;
+    }
+
+    /////////////////////////////////////
+    // Output to structure of a json file
+    /////////////////////////////////////
+
+    int32 id = 0;
+    int32 version = 1;
+
+    // Opening
+    fileOut << CURLY_BRACKET_START << std::endl;
+
+    /////////////////////////////////////
+    // Camera
+    /////////////////////////////////////
+
+    GraphicsEngine::Camera* camera = &scene->m_Camera;
+    
+    SerializeBeginObjectJSON(fileOut, 1, "Camera", CURLY_BRACKET_START);
+
+    SerializeItemJSON(fileOut, 2, "Id", id++, true);
+
+    SerializeBeginObjectJSON(fileOut, 2, "Position", CURLY_BRACKET_START);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_Position.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_Position.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_Position.z, false);
+    SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Position
+
+    SerializeBeginObjectJSON(fileOut, 2, "Front", CURLY_BRACKET_START);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_Front.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_Front.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_Front.z, false);
+    SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Front
+
+    SerializeBeginObjectJSON(fileOut, 2, "Up", CURLY_BRACKET_START);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_Up.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_Up.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_Up.z, false);
+    SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Up
+
+    SerializeBeginObjectJSON(fileOut, 2, "Right", CURLY_BRACKET_START);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_Right.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_Right.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_Right.z, false);
+    SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Right
+
+    SerializeItemJSON(fileOut, 2, "Yaw", camera->m_Yaw, true);
+    SerializeItemJSON(fileOut, 2, "Pitch", camera->m_Pitch, true);
+    SerializeItemJSON(fileOut, 2, "Fov", camera->m_Fov, true);
+    SerializeItemJSON(fileOut, 2, "MovementSpeed", camera->m_MovementSpeed, true);
+    SerializeItemJSON(fileOut, 2, "Sensitivity", camera->m_Sensitivity, false);
+
+    SerializeEndJSON(fileOut, 1, CURLY_BRACKET_END, true); // Camera
+
+    /////////////////////////////////////
+    // Models
+    /////////////////////////////////////
+
+    SerializeBeginObjectJSON(fileOut, 1, "Model", SQUARE_BRACKET_START);
+
+    for (uint32 modelIndex = 0; modelIndex < scene->m_Models.size(); modelIndex++)
+    {
+        SerializeBeginJSON(fileOut, 2, CURLY_BRACKET_START);
+        SerializeItemJSON(fileOut, 3, "Id", id++, true);
+        SerializeItemJSON(fileOut, 3, "Size", static_cast<int32>(scene->m_Models[modelIndex].m_Meshes.size()), true);
+
+        SerializeBeginObjectJSON(fileOut, 3, "Mesh", SQUARE_BRACKET_START);
+        for (uint32 meshIndex = 0; meshIndex < scene->m_Models[modelIndex].m_Meshes.size(); meshIndex++)
+        {
+            GraphicsEngine::Mesh *mesh = &scene->m_Models[modelIndex].m_Meshes[meshIndex];
+            
+            SerializeBeginJSON(fileOut, 4, CURLY_BRACKET_START);
+            SerializeItemJSON(fileOut, 5, "Id", id++, true);
+            SerializeItemJSON(fileOut, 5, "Name", mesh->m_Name, true);
+
+            SerializeBeginObjectJSON(fileOut, 5, "Vertices", SQUARE_BRACKET_START);
+            for ( const auto vertex : mesh->m_Vertices)
+            {
+                SerializeBeginJSON(fileOut, 6, CURLY_BRACKET_START);
+
+                SerializeBeginObjectJSON(fileOut, 7, "Position", CURLY_BRACKET_START);
+                SerializeItemJSON(fileOut, 8, "x", vertex.position.x, true);
+                SerializeItemJSON(fileOut, 8, "y", vertex.position.y, true);
+                SerializeItemJSON(fileOut, 8, "z", vertex.position.z, false);
+                SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
+
+                SerializeBeginObjectJSON(fileOut, 7, "Normal", CURLY_BRACKET_START);
+                SerializeItemJSON(fileOut, 8, "x", vertex.normal.x, true);
+                SerializeItemJSON(fileOut, 8, "y", vertex.normal.y, true);
+                SerializeItemJSON(fileOut, 8, "z", vertex.normal.z, false);
+                SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
+
+                SerializeBeginObjectJSON(fileOut, 7, "TextureUV", CURLY_BRACKET_START);
+                SerializeItemJSON(fileOut, 8, "x", vertex.textureUV.x, true);
+                SerializeItemJSON(fileOut, 8, "y", vertex.textureUV.y, false);
+                SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, false);
+
+                // TODO(neil): not always a comma on the end. Last one does not have comma
+                SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true);
+            }
+            SerializeEndJSON(fileOut, 5, SQUARE_BRACKET_END, true);
+
+
+
+
+        }
+    }
+
+    // Closing
+    fileOut << CURLY_BRACKET_END << std::endl;
+
+    return true;
+}
+
+void SerializeBeginJSON(std::fstream& output, int32 indents, char bracket)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << bracket;
+    output << std::endl;
+}
+
+void SerializeBeginObjectJSON(std::fstream& output, int32 indents, const std::string& object, char bracket)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << "\"";
+    output << object;
+    output << "\"";
+    output << ":";
+    output << " ";
+    output << bracket;
+    output << std::endl;
+}
+
+void SerializeEndJSON(std::fstream& output, int32 indents, char bracket, bool comma)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << bracket;
+    if (comma)
+        output << ",";
+    output << std::endl;
+}
+
+void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, real32 value, bool comma)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << "\"";
+    output << key;
+    output << "\"";
+    output << ":";
+    output << " ";
+    output << value;
+    if (comma)
+        output << ",";
+    output << std::endl;
+}
+
+void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, int32 value, bool comma)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << "\"";
+    output << key;
+    output << "\"";
+    output << ":";
+    output << " ";
+    output << value;
+    if (comma)
+        output << ",";
+    output << std::endl;
+}
+
+void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const std::string& value, bool comma)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << "\"";
+    output << key;
+    output << "\"";
+    output << ":";
+    output << " ";
+    output << "\"";
+    output << value;
+    output <<  "\"";
+    if (comma)
+        output << ",";
+    output << std::endl;
+}
+
+
+bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
+{
+    std::fstream fileOut;
+
+    fileOut.open(filePath, std::ios_base::out);
+    if(!fileOut.is_open())
+    {
+        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " 
+                                   + std::string(filePath) + ".\n";
+        OutputDebugStringA(errorMessage.c_str());
+        return false;
+    }
+
+    /////////////////////////////////////
+    // Output to structure of a yaml file
+    /////////////////////////////////////
+
+    int32 id = 0;
+    int32 version = 1;
+
+    return true;
+}
+
 }
