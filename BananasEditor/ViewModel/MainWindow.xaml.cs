@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -36,7 +37,7 @@ namespace BananasEditor
 
         private void On_UIReady(object sender, EventArgs e)
         {
-            this.Title = "Bananas Import/Export " + "[Untitled.bxml]";
+            this.Title = "Bananas Import/Export " + "[Untitled.bscene]";
             Loaded -= On_UIReady;
 
             // Init Window
@@ -75,23 +76,23 @@ namespace BananasEditor
         private void menuNewScene_Click(object sender, RoutedEventArgs e)
         {
             renderScene.NewScene();
-            this.Title = "Bananas Import/Export " + "[Untitled.bxml]";
+            this.Title = "Bananas Import/Export " + "[Untitled.bscene]";
         }
 
         private void menuOpenScene_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog
             {
-                Filter = "Bananas Scene|*.bxml",
+                Filter = "Bananas Scene|*.bscene",
                 Title = "Open Bananas Scene",
             };
 
             Nullable<bool> result = openFileDlg.ShowDialog();
-
             if(result == true)
             {
                 string fileName = openFileDlg.FileName;
-                renderScene.OpenScene(fileName);
+                string[] tokens = fileName.Split(".");
+                renderScene.OpenScene(tokens[0]);
                 this.Title = "Bananas Import/Export " + "[" + fileName + "]";
             }
         }
@@ -100,16 +101,18 @@ namespace BananasEditor
         {
             Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog
             {
-                Filter = "Bananas Scene|*.bxml",
+                Filter = "Bananas Scene | *.bscene",
                 Title = "Save Bananas Scene",
             };
 
             Nullable<bool> result = saveFileDlg.ShowDialog();
-
             if(result == true)
             {
                 string fileName = saveFileDlg.FileName;
-                renderScene.SaveScene(fileName);
+                string[] tokens = fileName.Split(".");
+                renderScene.SaveScene(tokens[0]);
+                File.Create(fileName);
+                this.Title = "Bananas Import/Export " + "[" + fileName + "]";
             }
         }
 
@@ -122,7 +125,6 @@ namespace BananasEditor
             };
 
             Nullable<bool> result = openFileDlg.ShowDialog();
-
             if(result == true)
             {
                 string filename = openFileDlg.FileName;
@@ -139,7 +141,6 @@ namespace BananasEditor
             };
 
             Nullable<bool> result = saveFileDlg.ShowDialog();
-
             if(result == true)
             {
                 string filename = saveFileDlg.FileName;

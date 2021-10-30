@@ -68,13 +68,14 @@ void CreateScene()
 EDITOR_INTERFACE
 void SceneSaveScene(const char* fileName)
 {
-    CoreEngine::SerializeToXML(fileName, g_Scene);
+    CoreEngine::SerializeToXML(std::string(fileName) + ".bxml", g_Scene);
+    CoreEngine::SerializeToJSON(std::string(fileName) + ".bjson", g_Scene);
 }
 
 EDITOR_INTERFACE
 void SceneOpenScene(const char* fileName)
 {
-    CoreEngine::DeSerializeFromXML(fileName, g_Scene);
+    CoreEngine::DeSerializeFromXML(std::string(fileName) + ".bxml", g_Scene);
 }
 
 EDITOR_INTERFACE

@@ -1,5 +1,7 @@
 #include "Serialize.h"
 
+#include <algorithm>
+
 #include "Stack.h"
 #include "../Graphics/Mesh.h"
 
@@ -162,7 +164,11 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
             {
                 SerializeBeginTagXML(fileOut, 5, "Texture");
                 SerializeItemXML(fileOut, 6, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type);
-                SerializeItemXML(fileOut, 6, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath);
+
+                std::string path = "";
+                SerializeInsertAfter(mesh->m_Material.m_Textures[textureIndex].m_FilePath, path, '\\', '\\');
+                SerializeItemXML(fileOut, 6, "FilePath", path);
+
                 SerializeEndTagXML(fileOut, 5, "Texture");
             }
             SerializeEndTagXML(fileOut, 4, "Material");
@@ -642,8 +648,8 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
     // Output to structure of a json file
     /////////////////////////////////////
 
-    int32 id = 0;
-    int32 version = 1;
+    uint32 id = 0;
+    uint32 version = 1;
 
     // Opening
     fileOut << CURLY_BRACKET_START << std::endl;
@@ -700,7 +706,7 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
     {
         SerializeBeginJSON(fileOut, 2, CURLY_BRACKET_START);
         SerializeItemJSON(fileOut, 3, "Id", id++, true);
-        SerializeItemJSON(fileOut, 3, "Size", static_cast<int32>(scene->m_Models[modelIndex].m_Meshes.size()), true);
+        SerializeItemJSON(fileOut, 3, "Size", static_cast<uint32>(scene->m_Models[modelIndex].m_Meshes.size()), true);
 
         SerializeBeginObjectJSON(fileOut, 3, "Mesh", SQUARE_BRACKET_START);
         for (uint32 meshIndex = 0; meshIndex < scene->m_Models[modelIndex].m_Meshes.size(); meshIndex++)
@@ -712,37 +718,110 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
             SerializeItemJSON(fileOut, 5, "Name", mesh->m_Name, true);
 
             SerializeBeginObjectJSON(fileOut, 5, "Vertices", SQUARE_BRACKET_START);
-            for ( const auto vertex : mesh->m_Vertices)
+            for (int vIndex = 0; vIndex < mesh->m_Vertices.size(); vIndex++)
             {
                 SerializeBeginJSON(fileOut, 6, CURLY_BRACKET_START);
 
                 SerializeBeginObjectJSON(fileOut, 7, "Position", CURLY_BRACKET_START);
-                SerializeItemJSON(fileOut, 8, "x", vertex.position.x, true);
-                SerializeItemJSON(fileOut, 8, "y", vertex.position.y, true);
-                SerializeItemJSON(fileOut, 8, "z", vertex.position.z, false);
+                SerializeItemJSON(fileOut, 8, "x", mesh->m_Vertices[vIndex].position.x, true);
+                SerializeItemJSON(fileOut, 8, "y", mesh->m_Vertices[vIndex].position.y, true);
+                SerializeItemJSON(fileOut, 8, "z", mesh->m_Vertices[vIndex].position.z, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
 
                 SerializeBeginObjectJSON(fileOut, 7, "Normal", CURLY_BRACKET_START);
-                SerializeItemJSON(fileOut, 8, "x", vertex.normal.x, true);
-                SerializeItemJSON(fileOut, 8, "y", vertex.normal.y, true);
-                SerializeItemJSON(fileOut, 8, "z", vertex.normal.z, false);
+                SerializeItemJSON(fileOut, 8, "x", mesh->m_Vertices[vIndex].normal.x, true);
+                SerializeItemJSON(fileOut, 8, "y", mesh->m_Vertices[vIndex].normal.y, true);
+                SerializeItemJSON(fileOut, 8, "z", mesh->m_Vertices[vIndex].normal.z, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
 
                 SerializeBeginObjectJSON(fileOut, 7, "TextureUV", CURLY_BRACKET_START);
-                SerializeItemJSON(fileOut, 8, "x", vertex.textureUV.x, true);
-                SerializeItemJSON(fileOut, 8, "y", vertex.textureUV.y, false);
+                SerializeItemJSON(fileOut, 8, "x", mesh->m_Vertices[vIndex].textureUV.x, true);
+                SerializeItemJSON(fileOut, 8, "y", mesh->m_Vertices[vIndex].textureUV.y, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, false);
 
-                // TODO(neil): not always a comma on the end. Last one does not have comma
-                SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true);
+                if (vIndex != mesh->m_Vertices.size()-1)
+                    SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true);
+                else
+                    SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, false);
             }
-            SerializeEndJSON(fileOut, 5, SQUARE_BRACKET_END, true);
+            SerializeEndJSON(fileOut, 5, SQUARE_BRACKET_END, true); // Vertices
 
+            // Indices
+            SerializeBeginObjectJSON(fileOut, 5, "Indices", SQUARE_BRACKET_START);
+            for (uint32 indicesIndex = 0;
+                 indicesIndex < mesh->m_Indices.size()-1;
+                 indicesIndex++)
+            {
+                SerializeItemNoKeyJSON(fileOut, 6, mesh->m_Indices[indicesIndex], true);
+            }
+            // Last index
+            SerializeItemNoKeyJSON(fileOut, 6, mesh->m_Indices[mesh->m_Indices.size()-1], false);
+            SerializeEndJSON(fileOut, 5, SQUARE_BRACKET_END, true); // indices
 
+            // Material
+            SerializeBeginObjectJSON(fileOut, 5, "Material", CURLY_BRACKET_START);
+            SerializeItemJSON(fileOut, 6, "Name", mesh->m_Material.m_Name, true);
 
+            SerializeBeginObjectJSON(fileOut, 6, "Ambient", CURLY_BRACKET_START);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Ambient.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Ambient.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Ambient.z, false);
+            SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Ambient
 
+            SerializeBeginObjectJSON(fileOut, 6, "Diffuse", CURLY_BRACKET_START);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Diffuse.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Diffuse.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Diffuse.z, false);
+            SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Diffuse
+
+            SerializeBeginObjectJSON(fileOut, 6, "Specular", CURLY_BRACKET_START);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Specular.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Specular.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Specular.z, false);
+            SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Specular
+
+            SerializeBeginObjectJSON(fileOut, 6, "Emissive", CURLY_BRACKET_START);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Emissive.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Emissive.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Emissive.z, false);
+            SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Emissive
+
+            SerializeItemJSON(fileOut, 6, "Shininess", mesh->m_Material.m_Shininess, true);
+
+            SerializeBeginObjectJSON(fileOut, 6, "Textures", SQUARE_BRACKET_START);
+            std::string path = "";
+            for (uint32 textureIndex = 0;
+                 textureIndex < mesh->m_Material.m_Textures.size()-1;
+                 textureIndex++)
+            {
+                SerializeInsertAfter(mesh->m_Material.m_Textures[textureIndex].m_FilePath, path, '\\', '\\');
+                SerializeBeginJSON(fileOut, 7, CURLY_BRACKET_START);
+                SerializeItemJSON(fileOut, 8, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type, true);
+                SerializeItemJSON(fileOut, 8, "FilePath", path, false);
+                SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
+            }
+            // Last index
+            SerializeInsertAfter(mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_FilePath, path, '\\', '\\');
+            SerializeBeginJSON(fileOut, 7, CURLY_BRACKET_START);
+            SerializeItemJSON(fileOut, 8, "Type", mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_Type, true);
+            SerializeItemJSON(fileOut, 8, "FilePath", path, false);
+            SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, false);
+
+            SerializeEndJSON(fileOut, 6, SQUARE_BRACKET_END, false); // textures
+            SerializeEndJSON(fileOut, 5, CURLY_BRACKET_END, false); // material
+
+            if (meshIndex != scene->m_Models[modelIndex].m_Meshes.size()-1)
+                SerializeEndJSON(fileOut, 4, CURLY_BRACKET_END, true); // mesh
+            else
+                SerializeEndJSON(fileOut, 4, CURLY_BRACKET_END, false); // mesh
         }
+        SerializeEndJSON(fileOut, 3, SQUARE_BRACKET_END, false); // model
+        if (modelIndex != scene->m_Models.size()-1)
+            SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // model
+        else
+            SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, false); // model
     }
+    SerializeEndJSON(fileOut, 1, SQUARE_BRACKET_END, false); // model
 
     // Closing
     fileOut << CURLY_BRACKET_END << std::endl;
@@ -784,38 +863,6 @@ void SerializeEndJSON(std::fstream& output, int32 indents, char bracket, bool co
     output << std::endl;
 }
 
-void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, real32 value, bool comma)
-{
-    for (int32 i = 0; i < indents; ++i)
-        output << "\t";
-
-    output << "\"";
-    output << key;
-    output << "\"";
-    output << ":";
-    output << " ";
-    output << value;
-    if (comma)
-        output << ",";
-    output << std::endl;
-}
-
-void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, int32 value, bool comma)
-{
-    for (int32 i = 0; i < indents; ++i)
-        output << "\t";
-
-    output << "\"";
-    output << key;
-    output << "\"";
-    output << ":";
-    output << " ";
-    output << value;
-    if (comma)
-        output << ",";
-    output << std::endl;
-}
-
 void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const std::string& value, bool comma)
 {
     for (int32 i = 0; i < indents; ++i)
@@ -829,6 +876,49 @@ void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& k
     output << "\"";
     output << value;
     output <<  "\"";
+    if (comma)
+        output << ",";
+    output << std::endl;
+}
+
+void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const uint32 value, bool comma)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << "\"";
+    output << key;
+    output << "\"";
+    output << ":";
+    output << " ";
+    output << value;
+    if (comma)
+        output << ",";
+    output << std::endl;
+}
+
+void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const real32 value, bool comma)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << "\"";
+    output << key;
+    output << "\"";
+    output << ":";
+    output << " ";
+    output << value;
+    if (comma)
+        output << ",";
+    output << std::endl;
+}
+
+void SerializeItemNoKeyJSON(std::fstream& output, int32 indents, const uint32 value, bool comma)
+{
+    for (int32 i = 0; i < indents; ++i)
+        output << "\t";
+
+    output << value;
     if (comma)
         output << ",";
     output << std::endl;
@@ -857,5 +947,16 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
 
     return true;
 }
+
+void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i)
+{
+    for (const char c : lhs)
+    {
+        rhs.push_back(c);
+        if (c == r)
+            rhs.push_back(i);
+    }    
+}
+
 
 }

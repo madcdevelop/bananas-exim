@@ -21,8 +21,6 @@ struct XMLAttribute
 #define CURLY_BRACKET_END '}'
 #define SQUARE_BRACKET_START '['
 #define SQUARE_BRACKET_END ']'
-#define COMMA ','
-#define NO_COMMA ""
 
 // XML
 bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene);
@@ -44,12 +42,17 @@ void SerializeBeginJSON(std::fstream& output, int32 indents, char bracket);
 void SerializeBeginObjectJSON(std::fstream& output, int32 indents, const std::string& object, char bracket);
 void SerializeEndJSON(std::fstream& output, int32 indents, char bracket, bool comma);
 
-void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, real32 value, bool comma);
-void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, int32 value, bool comma);
 void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const std::string& value, bool comma);
+void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const uint32 value, bool comma);
+void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const real32 value, bool comma);
+
+void SerializeItemNoKeyJSON(std::fstream& output, int32 indents, const uint32 value, bool comma);
 
 // YAML
 bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene);
+
+// Helper
+void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i);
 
 }
 

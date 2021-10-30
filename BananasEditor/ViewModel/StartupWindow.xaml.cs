@@ -54,19 +54,19 @@ namespace BananasEditor
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog
             {
-                Filter = "Bananas Scene|*.bxml",
+                Filter = "Bananas Scene|*.bscene",
                 Title = "Open Bananas Scene",
             };
 
             Nullable<bool> result = openFileDlg.ShowDialog();
-
             if(result == true)
             {
                 string fileName = openFileDlg.FileName;                
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
                 mainWindow.Title = "Bananas Import/Export " + "[" + fileName + "]";
-                mainWindow.RenderScene.OpenScene(fileName);
+                string[] tokens = fileName.Split(".");
+                mainWindow.RenderScene.OpenScene(tokens[0]);
                 this.Close();
             }
         }
