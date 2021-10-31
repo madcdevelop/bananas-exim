@@ -9,6 +9,15 @@ namespace CoreEngine
 
 #define XML_ATTRIBUTE_MAX_SIZE 2
 #define XML_CHAR_LENGTH 10
+#define TAB_SIZE 2
+
+#define CURLY_BRACKET_START '{'
+#define CURLY_BRACKET_END '}'
+#define SQUARE_BRACKET_START '['
+#define SQUARE_BRACKET_END ']'
+
+#define YAML_DASH_START "- "
+#define YAML_SPACE_START "  "
 
 struct XMLAttribute
 {
@@ -16,11 +25,6 @@ struct XMLAttribute
     char name[XML_ATTRIBUTE_MAX_SIZE][XML_CHAR_LENGTH];
     int32 value[XML_ATTRIBUTE_MAX_SIZE];
 };
-
-#define CURLY_BRACKET_START '{'
-#define CURLY_BRACKET_END '}'
-#define SQUARE_BRACKET_START '['
-#define SQUARE_BRACKET_END ']'
 
 // XML
 bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene);
@@ -50,6 +54,14 @@ void SerializeItemNoKeyJSON(std::fstream& output, int32 indents, const uint32 va
 
 // YAML
 bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene);
+
+void SerializeBeginYAML(std::fstream& output, int32 indents, const std::string& name);
+void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, const std::string& value, const char* start);
+void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, uint32 value, const char* start);
+void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, real32 value, const char* start);
+
+void SerializeVector3DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, real32 z, const char* start);
+void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, const char* start);
 
 // Helper
 void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i);

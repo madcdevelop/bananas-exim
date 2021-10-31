@@ -942,10 +942,204 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
     // Output to structure of a yaml file
     /////////////////////////////////////
 
-    int32 id = 0;
-    int32 version = 1;
+    uint32 id = 0;
+    uint32 version = 1;
+
+    fileOut << "# Bananas Import/Export v1.0" << std::endl;
+
+    /////////////////////////////////////
+    // Camera
+    /////////////////////////////////////
+
+    SerializeBeginYAML(fileOut, 0, "Camera");
+    SerializeItemYAML(fileOut, 1, "Id", id++, YAML_DASH_START);
+
+    SerializeVector3DYAML(fileOut, 1, "Position", scene->m_Camera.m_Position.x, 
+                                                  scene->m_Camera.m_Position.y, 
+                                                  scene->m_Camera.m_Position.z, 
+                                                  YAML_DASH_START);
+    SerializeVector3DYAML(fileOut, 1, "Front", scene->m_Camera.m_Front.x, 
+                                               scene->m_Camera.m_Front.y, 
+                                               scene->m_Camera.m_Front.z, 
+                                               YAML_DASH_START);
+    SerializeVector3DYAML(fileOut, 1, "Up", scene->m_Camera.m_Up.x, 
+                                            scene->m_Camera.m_Up.y, 
+                                            scene->m_Camera.m_Up.z, 
+                                            YAML_DASH_START);
+    SerializeVector3DYAML(fileOut, 1, "Right", scene->m_Camera.m_Right.x, 
+                                               scene->m_Camera.m_Right.y, 
+                                               scene->m_Camera.m_Right.z, 
+                                               YAML_DASH_START);
+
+    SerializeItemYAML(fileOut, 1, "Yaw", scene->m_Camera.m_Yaw, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "Pitch", scene->m_Camera.m_Pitch, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "Fov", scene->m_Camera.m_Fov, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "MovementSpeed", scene->m_Camera.m_MovementSpeed, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "Sensitivity", scene->m_Camera.m_Sensitivity, YAML_DASH_START);
+
+    /////////////////////////////////////
+    // Models
+    /////////////////////////////////////
+
+
+    for (uint32 modelIndex = 0; modelIndex < scene->m_Models.size(); modelIndex++)
+    {
+        SerializeBeginYAML(fileOut, 0, "Model");
+        SerializeItemYAML(fileOut, 1, "Id", id++, YAML_DASH_START);
+        SerializeItemYAML(fileOut, 1, "Size", static_cast<uint32>(scene->m_Models[modelIndex].m_Meshes.size()), YAML_DASH_START);
+
+        for (uint32 meshIndex = 0; meshIndex < scene->m_Models[modelIndex].m_Meshes.size(); meshIndex++)
+        {
+            GraphicsEngine::Mesh *mesh = &scene->m_Models[modelIndex].m_Meshes[meshIndex];
+
+            SerializeBeginYAML(fileOut, 1, "Mesh");
+            SerializeItemYAML(fileOut, 2, "Id", id++, YAML_DASH_START);
+            SerializeItemYAML(fileOut, 2, "Name", mesh->m_Name, YAML_DASH_START);
+            
+            SerializeBeginYAML(fileOut, 2, "Vertices");
+            for (const auto vertex : mesh->m_Vertices)
+            {
+                SerializeVector3DYAML(fileOut, 3, "Position", vertex.position.x, vertex.position.y, vertex.position.z, YAML_DASH_START);
+                SerializeVector3DYAML(fileOut, 3, "Normal", vertex.normal.x, vertex.normal.y, vertex.normal.z, YAML_SPACE_START);
+                SerializeVector2DYAML(fileOut, 3, "TextureUV", vertex.textureUV.x, vertex.textureUV.y, YAML_SPACE_START);
+            }
+
+            // Indices
+            fileOut << "    " << "- Indices: [";
+            for (uint32 indicesIndex = 0;
+                 indicesIndex < mesh->m_Indices.size()-1;
+                 indicesIndex++)
+            {
+                fileOut << mesh->m_Indices[indicesIndex] << ", ";
+            }
+            fileOut << mesh->m_Indices[mesh->m_Indices.size()-1];
+            fileOut << "]" << std::endl;
+
+            SerializeBeginYAML(fileOut, 2, "Material");
+            SerializeItemYAML(fileOut, 3, "Name", mesh->m_Material.m_Name, YAML_DASH_START);
+            SerializeVector3DYAML(fileOut, 3, "Ambient", mesh->m_Material.m_Ambient.x, 
+                                                         mesh->m_Material.m_Ambient.y, 
+                                                         mesh->m_Material.m_Ambient.z, 
+                                                         YAML_DASH_START);
+            SerializeVector3DYAML(fileOut, 3, "Diffuse", mesh->m_Material.m_Diffuse.x, 
+                                                         mesh->m_Material.m_Diffuse.y, 
+                                                         mesh->m_Material.m_Diffuse.z, 
+                                                         YAML_DASH_START);
+            SerializeVector3DYAML(fileOut, 3, "Specular", mesh->m_Material.m_Specular.x, 
+                                                          mesh->m_Material.m_Specular.y, 
+                                                          mesh->m_Material.m_Specular.z, 
+                                                          YAML_DASH_START);
+            SerializeVector3DYAML(fileOut, 3, "Emissive", mesh->m_Material.m_Emissive.x, 
+                                                          mesh->m_Material.m_Emissive.y, 
+                                                          mesh->m_Material.m_Emissive.z, 
+                                                          YAML_DASH_START);
+            SerializeItemYAML(fileOut, 3, "Shininess", mesh->m_Material.m_Shininess, YAML_DASH_START);
+
+            SerializeBeginYAML(fileOut, 3, "Textures");
+            std::string path = "";
+            for (uint32 textureIndex = 0;
+                 textureIndex < mesh->m_Material.m_Textures.size();
+                 textureIndex++)
+            {
+                SerializeItemYAML(fileOut, 4, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type, YAML_DASH_START);
+                
+                SerializeInsertAfter(mesh->m_Material.m_Textures[textureIndex].m_FilePath, path, '\\', '\\');
+                SerializeItemYAML(fileOut, 4, "FilePath", path, YAML_SPACE_START);
+            }
+        }
+    }
 
     return true;
+}
+
+void SerializeBeginYAML(std::fstream& output, int32 indents, const std::string& name)
+{
+    for (int32 i = 0; i < indents * TAB_SIZE; ++i)
+        output << " ";
+
+    output << "- ";
+    output << name;
+    output << ":";
+    output << std::endl;
+}
+
+void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, const std::string& value, const char* start)
+{
+    for (int32 i = 0; i < indents * TAB_SIZE; ++i)
+        output << " ";
+
+    output << start;
+    output << key;
+    output << ": ";
+    output << value;
+    output << std::endl;
+}
+
+void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, uint32 value, const char* start)
+{
+    for (int32 i = 0; i < indents * TAB_SIZE; ++i)
+        output << " ";
+
+    output << start;
+    output << key;
+    output << ": ";
+    output << value;
+    output << std::endl;
+}
+
+void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, real32 value, const char* start)
+{
+    for (int32 i = 0; i < indents * TAB_SIZE; ++i)
+        output << " ";
+
+    output << start;
+    output << key;
+    output << ": ";
+    output << value;
+    output << std::endl;
+}
+
+void SerializeVector3DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, real32 z, const char* start)
+{
+    for (int32 i = 0; i < indents * TAB_SIZE; ++i)
+        output << " ";
+
+    output << start;
+    output << key;
+    output << ": ";
+    
+    output << CURLY_BRACKET_START;
+    output << "x:";
+    output << x;
+    output << ", ";
+    output << "y:";
+    output << y;
+    output << ", ";
+    output << "z:";
+    output << z;
+    output << CURLY_BRACKET_END;
+    
+    output << std::endl;
+}
+
+void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, const char* start)
+{
+    for (int32 i = 0; i < indents * TAB_SIZE; ++i)
+        output << " ";
+
+    output << start;
+    output << key;
+    output << ": ";
+    
+    output << CURLY_BRACKET_START;
+    output << "x:";
+    output << x;
+    output << ", ";
+    output << "y:";
+    output << y;
+    output << CURLY_BRACKET_END;
+    
+    output << std::endl;
 }
 
 void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i)
