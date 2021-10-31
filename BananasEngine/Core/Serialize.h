@@ -67,9 +67,6 @@ void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::strin
 
 bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* scene);
 
-// Helper
-void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i);
-
 }
 
 #endif

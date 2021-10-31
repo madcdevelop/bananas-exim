@@ -164,11 +164,7 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
             {
                 SerializeBeginTagXML(fileOut, 5, "Texture");
                 SerializeItemXML(fileOut, 6, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type);
-
-                std::string path = "";
-                SerializeInsertAfter(mesh->m_Material.m_Textures[textureIndex].m_FilePath, path, '\\', '\\');
-                SerializeItemXML(fileOut, 6, "FilePath", path);
-
+                SerializeItemXML(fileOut, 6, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath);
                 SerializeEndTagXML(fileOut, 5, "Texture");
             }
             SerializeEndTagXML(fileOut, 4, "Material");
@@ -466,6 +462,7 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
             else if (tag.compare("/Material") == 0)
             {
                 meshMaterials.push_back(tempMaterial);
+                tempMaterial.m_Textures.clear();
                 stack->Pop();
                 stack->Pop();
             }
@@ -789,23 +786,19 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
             SerializeItemJSON(fileOut, 6, "Shininess", mesh->m_Material.m_Shininess, true);
 
             SerializeBeginObjectJSON(fileOut, 6, "Textures", SQUARE_BRACKET_START);
-            std::string path = "";
             for (uint32 textureIndex = 0;
                  textureIndex < mesh->m_Material.m_Textures.size()-1;
                  textureIndex++)
             {
-                SerializeInsertAfter(mesh->m_Material.m_Textures[textureIndex].m_FilePath, path, '\\', '\\');
                 SerializeBeginJSON(fileOut, 7, CURLY_BRACKET_START);
                 SerializeItemJSON(fileOut, 8, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type, true);
-                SerializeItemJSON(fileOut, 8, "FilePath", path, false);
+                SerializeItemJSON(fileOut, 8, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
-                path.clear();
             }
             // Last index
-            SerializeInsertAfter(mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_FilePath, path, '\\', '\\');
             SerializeBeginJSON(fileOut, 7, CURLY_BRACKET_START);
             SerializeItemJSON(fileOut, 8, "Type", mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_Type, true);
-            SerializeItemJSON(fileOut, 8, "FilePath", path, false);
+            SerializeItemJSON(fileOut, 8, "FilePath", mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_FilePath, false);
             SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, false);
 
             SerializeEndJSON(fileOut, 6, SQUARE_BRACKET_END, false); // textures
@@ -1165,6 +1158,7 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
                     )
             {
                 meshMaterials.push_back(tempMaterial);
+                tempMaterial.m_Textures.clear();
                 stack->Pop();
                 stack->Pop();
             }
@@ -1440,16 +1434,12 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
             SerializeItemYAML(fileOut, 3, "Shininess", mesh->m_Material.m_Shininess, YAML_DASH_START);
 
             SerializeBeginYAML(fileOut, 3, "Textures");
-            std::string path = "";
             for (uint32 textureIndex = 0;
                  textureIndex < mesh->m_Material.m_Textures.size();
                  textureIndex++)
             {
                 SerializeItemYAML(fileOut, 4, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type, YAML_DASH_START);
-                
-                SerializeInsertAfter(mesh->m_Material.m_Textures[textureIndex].m_FilePath, path, '\\', '\\');
-                SerializeItemYAML(fileOut, 4, "FilePath", path, YAML_SPACE_START);
-                path.clear();
+                SerializeItemYAML(fileOut, 4, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath, YAML_SPACE_START);
             }
         }
     }
@@ -1550,17 +1540,6 @@ void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::strin
 bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
 {
     return true;
-}
-
-
-void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i)
-{
-    for (const char c : lhs)
-    {
-        rhs.push_back(c);
-        if (c == r)
-            rhs.push_back(i);
-    }    
 }
 
 
