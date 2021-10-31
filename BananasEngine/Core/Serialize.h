@@ -52,6 +52,8 @@ void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& k
 
 void SerializeItemNoKeyJSON(std::fstream& output, int32 indents, const uint32 value, bool comma);
 
+bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* scene);
+
 // YAML
 bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene);
 
@@ -62,6 +64,8 @@ void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& k
 
 void SerializeVector3DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, real32 z, const char* start);
 void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, const char* start);
+
+bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* scene);
 
 // Helper
 void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i);

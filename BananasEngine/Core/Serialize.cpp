@@ -275,7 +275,7 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
         return false;
     }
 
-    Stack* xmlStack = new Stack();
+    Stack* stack = new Stack();
 
     GraphicsEngine::Vertex tempVertex;
     GraphicsEngine::Material tempMaterial;
@@ -338,25 +338,25 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
         if (!tokens.empty())
         {
             tag = tokens[0];
-            xmlStack->Push(tag);
+            stack->Push(tag);
         }
         else
-            break;
+            continue;
             
         // Mark current scope
         if (tag.compare("Camera") == 0)
             currentScope = "Camera";
         else if (tag.compare("/Camera") == 0)
         {
-            currentScope = "";
-            xmlStack->Pop();
+            currentScope.clear();
+            stack->Pop();
         }
         else if (tag.compare("Mesh") == 0)
             currentScope = "Mesh";
         else if (tag.compare("/Mesh") == 0)
         {
-            currentScope = "";
-            xmlStack->Pop();
+            currentScope.clear();
+            stack->Pop();
         }
 
         // Assign values to Camera
@@ -368,10 +368,10 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                 (tag.compare("/Right") == 0)
                 )
             {
-                xmlStack->Pop();
-                xmlStack->Pop();
+                stack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Position") == 0)
+            else if (stack->Parent().compare("Position") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -380,9 +380,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     scene->m_Camera.m_Position[1] = value;
                 else if (tag.compare("z") == 0)
                     scene->m_Camera.m_Position[2] = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Front") == 0)
+            else if (stack->Parent().compare("Front") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -391,9 +391,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     scene->m_Camera.m_Front[1] = value;
                 else if (tag.compare("z") == 0)
                     scene->m_Camera.m_Front[2] = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Up") == 0)
+            else if (stack->Parent().compare("Up") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -402,9 +402,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     scene->m_Camera.m_Up[1] = value;
                 else if (tag.compare("z") == 0)
                     scene->m_Camera.m_Up[2] = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Right") == 0)
+            else if (stack->Parent().compare("Right") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -413,32 +413,32 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     scene->m_Camera.m_Right[1] = value;
                 else if (tag.compare("z") == 0)
                     scene->m_Camera.m_Right[2] = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("Yaw") == 0)
             {
                 scene->m_Camera.m_Yaw = std::stof(tokens[1]);
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("Pitch") == 0)
             {
                 scene->m_Camera.m_Pitch = std::stof(tokens[1]);
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("Fov") == 0)
             {
                 scene->m_Camera.m_Fov = std::stof(tokens[1]);
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("MovementSpeed") == 0)
             {
                 scene->m_Camera.m_MovementSpeed = std::stof(tokens[1]);
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("Sensitivity") == 0)
             {
                 scene->m_Camera.m_Sensitivity = std::stof(tokens[1]);
-                xmlStack->Pop();
+                stack->Pop();
             }            
         }   // end of Camera
 
@@ -454,48 +454,48 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                 (tag.compare("/Emissive") == 0)
                 )
             {
-                xmlStack->Pop();
-                xmlStack->Pop();
+                stack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("/Texture") == 0)
             {
                 tempMaterial.m_Textures.push_back(tempTexture);
-                xmlStack->Pop();
-                xmlStack->Pop();
+                stack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("/Material") == 0)
             {
                 meshMaterials.push_back(tempMaterial);
-                xmlStack->Pop();
-                xmlStack->Pop();
+                stack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("/Vertex") == 0)
             {
                 tempVertices.push_back(tempVertex);
-                xmlStack->Pop();
-                xmlStack->Pop();
+                stack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("/Vertices") == 0)
             {
                 meshVertices.push_back(tempVertices);
                 tempVertices.clear();
-                xmlStack->Pop();
-                xmlStack->Pop();
+                stack->Pop();
+                stack->Pop();
             }
             else if (tag.compare("/Indices") == 0)
             {
                 meshIndices.push_back(tempIndices);
                 tempIndices.clear();
-                xmlStack->Pop();
-                xmlStack->Pop();
+                stack->Pop();
+                stack->Pop();
             }
             else if ((tag.compare("Name") == 0) && 
-                     (xmlStack->Parent().compare("Mesh") == 0))
+                     (stack->Parent().compare("Mesh") == 0))
             {
                 meshNames.push_back(tokens[1]);
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Position") == 0)
+            else if (stack->Parent().compare("Position") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -504,9 +504,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     tempVertex.position.y = value;
                 else if (tag.compare("z") == 0)
                     tempVertex.position.z = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Normal") == 0)
+            else if (stack->Parent().compare("Normal") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -515,29 +515,29 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     tempVertex.normal.y = value;
                 else if (tag.compare("z") == 0)
                     tempVertex.normal.z = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("TextureUV") == 0)
+            else if (stack->Parent().compare("TextureUV") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
                     tempVertex.textureUV.x = value;
                 else if (tag.compare("y") == 0)
                     tempVertex.textureUV.y = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Indices") == 0)
+            else if (stack->Parent().compare("Indices") == 0)
             {
                 tempIndices.push_back(std::stoi(tokens[1]));
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if ((tag.compare("Name") == 0) && 
-                     (xmlStack->Parent().compare("Material") == 0))
+                     (stack->Parent().compare("Material") == 0))
             {
                 tempMaterial.m_Name = tokens[1];
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Ambient") == 0)
+            else if (stack->Parent().compare("Ambient") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -546,9 +546,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     tempMaterial.m_Ambient.y = value;
                 else if (tag.compare("z") == 0)
                     tempMaterial.m_Ambient.z = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Diffuse") == 0)
+            else if (stack->Parent().compare("Diffuse") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -557,9 +557,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     tempMaterial.m_Diffuse.y = value;
                 else if (tag.compare("z") == 0)
                     tempMaterial.m_Diffuse.z = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Specular") == 0)
+            else if (stack->Parent().compare("Specular") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -568,9 +568,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     tempMaterial.m_Specular.y = value;
                 else if (tag.compare("z") == 0)
                     tempMaterial.m_Specular.z = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
-            else if (xmlStack->Parent().compare("Emissive") == 0)
+            else if (stack->Parent().compare("Emissive") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
@@ -579,35 +579,35 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                     tempMaterial.m_Emissive.y = value;
                 else if (tag.compare("z") == 0)
                     tempMaterial.m_Emissive.z = value;
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if ((tag.compare("Shininess") == 0) && 
-                     (xmlStack->Parent().compare("Material") == 0))
+                     (stack->Parent().compare("Material") == 0))
             {
                 tempMaterial.m_Shininess = std::stof(tokens[1]);
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if ((tag.compare("Type") == 0) && 
-                     (xmlStack->Parent().compare("Texture") == 0))
+                     (stack->Parent().compare("Texture") == 0))
             {
                 tempTexture.m_Type = tokens[1];
-                xmlStack->Pop();
+                stack->Pop();
             }
             else if ((tag.compare("FilePath") == 0) && 
-                     (xmlStack->Parent().compare("Texture") == 0))
+                     (stack->Parent().compare("Texture") == 0))
             {
                 tempTexture.m_FilePath = tokens[1];
-                xmlStack->Pop();
+                stack->Pop();
             }            
         }   // end of Mesh
 
         // Array check
         else if ((tag.compare("Array") == 0) && 
-                 (xmlStack->Parent().compare("Model") == 0))
+                 (stack->Parent().compare("Model") == 0))
             meshCount = std::stoi(tokens[2]);
         else if ((tag.compare("/Array") == 0) &&
-                 (xmlStack->Parent().compare("Model") == 0))
-            xmlStack->Pop();
+                 (stack->Parent().compare("Model") == 0))
+            stack->Pop();
 
         // Add Mesh to models
         else if (tag.compare("/Model") == 0)
@@ -620,12 +620,12 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
                 model.m_Meshes.push_back(mesh);
             }
             scene->m_Models.push_back(model);
-            xmlStack->Pop();
+            stack->Pop();
         }
 
     }   // end of fileStream 
 
-    delete xmlStack;
+    delete stack;
     scene->m_IsModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
     fileStream.close();
     return true;
@@ -799,6 +799,7 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
                 SerializeItemJSON(fileOut, 8, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type, true);
                 SerializeItemJSON(fileOut, 8, "FilePath", path, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
+                path.clear();
             }
             // Last index
             SerializeInsertAfter(mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_FilePath, path, '\\', '\\');
@@ -924,6 +925,409 @@ void SerializeItemNoKeyJSON(std::fstream& output, int32 indents, const uint32 va
     output << std::endl;
 }
 
+bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* scene)
+{
+    std::ifstream fileStream(filePath, std::ios::in);
+    if(!fileStream.is_open())
+    {
+        std::string errorMessage = "ERROR\t\tFileStream\t\tCould not read file path: " 
+                                   + std::string(filePath) + ".\n";
+        OutputDebugStringA(errorMessage.c_str());
+        return false;
+    }
+
+    Stack* stack = new Stack();
+
+    GraphicsEngine::Vertex tempVertex;
+    GraphicsEngine::Material tempMaterial;
+    GraphicsEngine::Texture tempTexture;
+
+    std::vector<GraphicsEngine::Vertex> tempVertices;
+    std::vector<uint32> tempIndices;
+
+    std::vector<std::string> meshNames;
+    std::vector<std::vector<GraphicsEngine::Vertex>> meshVertices;
+    std::vector<std::vector<uint32>> meshIndices;
+    std::vector<GraphicsEngine::Material> meshMaterials;
+
+    int32 meshCount = 0;
+
+    std::string currentScope = "";
+
+    if (scene->m_Models.size() > 0)
+        scene->m_Models.clear();
+
+    // Parse each line and de-serialize data
+    while(!fileStream.eof())
+    {
+        std::string line = "";
+        std::getline(fileStream, line);
+
+        // Parse line into tokens
+        std::string token = "";
+        std::vector<std::string> tokens;
+        char p = '\0';
+        for (char c : line)
+        {
+            if (c != '\t')
+            {
+                if (c != CURLY_BRACKET_START
+                    && c != SQUARE_BRACKET_START
+                    && (c != ':' || p != '"') // filepath
+                    && c != '"'
+                    && c != ' '
+                    && c != ','
+                    )
+                {
+                    token.push_back(c);
+                }
+                else if (!token.empty())
+                {
+                    tokens.push_back(token);
+                    token.clear();
+                }
+            }
+            p = c;
+        }
+        // Check last token (no comma as end of line)
+        if (!token.empty())
+        {
+            tokens.push_back(token);
+            token.clear();
+        }
+
+        ///////////////////////////////////////////
+        // Go through tokens and de-serialize them
+        ///////////////////////////////////////////
+
+        // Key
+        std::string key;
+        if (!tokens.empty())
+        {
+            key = tokens[0];
+            stack->Push(key);
+        }
+        else
+            continue;
+        
+        // Mark current scope
+        if (key.compare("Camera") == 0)
+            currentScope = "Camera";
+        else if (key.compare("Mesh") == 0)
+            currentScope = "Mesh";
+        // Unmark current scope
+        else if ((stack->Parent().compare("Camera") == 0) &&
+                (key.compare("}") == 0)
+                )
+        {
+            currentScope.clear();
+            stack->Pop();
+            stack->Pop();
+        }
+        else if ((stack->Parent().compare("Mesh") == 0) &&
+                (key.compare("}") == 0)
+                )
+        {
+            stack->Pop();
+        }
+        else if ((stack->Parent().compare("Mesh") == 0) &&
+                (key.compare("]") == 0)
+                )
+        {
+            currentScope.clear();
+            stack->Pop();
+            stack->Pop();
+        }
+
+
+        else if (key.compare("Id") == 0)
+            stack->Pop();
+        
+        else if ((key.compare("Size") == 0) && 
+                 (stack->Parent().compare("Model") == 0))
+        {
+            meshCount = std::stoi(tokens[1]);
+            stack->Pop();
+        }
+
+        // Assign values to Camera
+        else if (currentScope.compare("Camera") == 0)
+        {
+            if ((key.compare("}") == 0) ||
+                (key.compare("]") == 0)
+                )
+            {
+                stack->Pop();
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Position") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    scene->m_Camera.m_Position[0] = value;
+                else if (key.compare("y") == 0)
+                    scene->m_Camera.m_Position[1] = value;
+                else if (key.compare("z") == 0)
+                    scene->m_Camera.m_Position[2] = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Front") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    scene->m_Camera.m_Front[0] = value;
+                else if (key.compare("y") == 0)
+                    scene->m_Camera.m_Front[1] = value;
+                else if (key.compare("z") == 0)
+                    scene->m_Camera.m_Front[2] = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Up") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    scene->m_Camera.m_Up[0] = value;
+                else if (key.compare("y") == 0)
+                    scene->m_Camera.m_Up[1] = value;
+                else if (key.compare("z") == 0)
+                    scene->m_Camera.m_Up[2] = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Right") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    scene->m_Camera.m_Right[0] = value;
+                else if (key.compare("y") == 0)
+                    scene->m_Camera.m_Right[1] = value;
+                else if (key.compare("z") == 0)
+                    scene->m_Camera.m_Right[2] = value;
+                stack->Pop();
+            }
+            else if (key.compare("Yaw") == 0)
+            {
+                scene->m_Camera.m_Yaw = std::stof(tokens[1]);
+                stack->Pop();
+            }
+            else if (key.compare("Pitch") == 0)
+            {
+                scene->m_Camera.m_Pitch = std::stof(tokens[1]);
+                stack->Pop();
+            }
+            else if (key.compare("Fov") == 0)
+            {
+                scene->m_Camera.m_Fov = std::stof(tokens[1]);
+                stack->Pop();
+            }
+            else if (key.compare("MovementSpeed") == 0)
+            {
+                scene->m_Camera.m_MovementSpeed = std::stof(tokens[1]);
+                stack->Pop();
+            }
+            else if (key.compare("Sensitivity") == 0)
+            {
+                scene->m_Camera.m_Sensitivity = std::stof(tokens[1]);
+                stack->Pop();
+            }            
+        }   // end of Camera
+        
+        // Assign values to Mesh
+        else if (currentScope.compare("Mesh") == 0)
+        {
+            if ((stack->Parent().compare("Position") == 0 && key.compare("}") == 0) ||
+                (stack->Parent().compare("Normal") == 0 && key.compare("}") == 0) ||
+                (stack->Parent().compare("TextureUV") == 0 && key.compare("}") == 0) ||
+                (stack->Parent().compare("Ambient") == 0 && key.compare("}") == 0) ||
+                (stack->Parent().compare("Diffuse") == 0 && key.compare("}") == 0) ||
+                (stack->Parent().compare("Specular") == 0 && key.compare("}") == 0) ||
+                (stack->Parent().compare("Emissive") == 0 && key.compare("}") == 0)
+                )
+            {
+                stack->Pop();
+                stack->Pop();
+            }
+            else if ((stack->Parent().compare("Textures") == 0) &&
+                     (key.compare("}") == 0)
+                )
+            {
+                tempMaterial.m_Textures.push_back(tempTexture);
+                stack->Pop();
+            }
+            else if ((stack->Parent().compare("Textures") == 0) &&
+                     (key.compare("]") == 0)
+                    )
+            {
+                stack->Pop();
+                stack->Pop();
+            }
+            else if ((stack->Parent().compare("Material") == 0) &&
+                     (key.compare("}") == 0)
+                    )
+            {
+                meshMaterials.push_back(tempMaterial);
+                stack->Pop();
+                stack->Pop();
+            }
+            else if ((stack->Parent().compare("Vertices") == 0) &&
+                     (key.compare("}") == 0)
+                    )
+            {
+                tempVertices.push_back(tempVertex);
+                stack->Pop();
+            }
+            else if ((stack->Parent().compare("Vertices") == 0) &&
+                     (key.compare("]") == 0)
+                    )
+            {
+                meshVertices.push_back(tempVertices);
+                tempVertices.clear();
+                stack->Pop();
+                stack->Pop();
+            }
+            else if ((stack->Parent().compare("Indices") == 0) &&
+                     (key.compare("]") == 0)
+                    )
+            {
+                meshIndices.push_back(tempIndices);
+                tempIndices.clear();
+                stack->Pop();
+                stack->Pop();
+            }
+            else if ((key.compare("Name") == 0) && 
+                     (stack->Parent().compare("Mesh") == 0))
+            {
+                meshNames.push_back(tokens[1]);
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Position") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    tempVertex.position.x = value;
+                else if (key.compare("y") == 0)
+                    tempVertex.position.y = value;
+                else if (key.compare("z") == 0)
+                    tempVertex.position.z = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Normal") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    tempVertex.normal.x = value;
+                else if (key.compare("y") == 0)
+                    tempVertex.normal.y = value;
+                else if (key.compare("z") == 0)
+                    tempVertex.normal.z = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("TextureUV") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    tempVertex.textureUV.x = value;
+                else if (key.compare("y") == 0)
+                    tempVertex.textureUV.y = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Indices") == 0)
+            {
+                tempIndices.push_back(std::stoi(tokens[0]));
+                stack->Pop();
+            }
+            else if ((key.compare("Name") == 0) && 
+                     (stack->Parent().compare("Material") == 0))
+            {
+                tempMaterial.m_Name = tokens[1];
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Ambient") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    tempMaterial.m_Ambient.x = value;
+                else if (key.compare("y") == 0)
+                    tempMaterial.m_Ambient.y = value;
+                else if (key.compare("z") == 0)
+                    tempMaterial.m_Ambient.z = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Diffuse") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    tempMaterial.m_Diffuse.x = value;
+                else if (key.compare("y") == 0)
+                    tempMaterial.m_Diffuse.y = value;
+                else if (key.compare("z") == 0)
+                    tempMaterial.m_Diffuse.z = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Specular") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    tempMaterial.m_Specular.x = value;
+                else if (key.compare("y") == 0)
+                    tempMaterial.m_Specular.y = value;
+                else if (key.compare("z") == 0)
+                    tempMaterial.m_Specular.z = value;
+                stack->Pop();
+            }
+            else if (stack->Parent().compare("Emissive") == 0)
+            {
+                real32 value = std::stof(tokens[1]);
+                if (key.compare("x") == 0)
+                    tempMaterial.m_Emissive.x = value;
+                else if (key.compare("y") == 0)
+                    tempMaterial.m_Emissive.y = value;
+                else if (key.compare("z") == 0)
+                    tempMaterial.m_Emissive.z = value;
+                stack->Pop();
+            }
+            else if ((key.compare("Shininess") == 0) && 
+                     (stack->Parent().compare("Material") == 0))
+            {
+                tempMaterial.m_Shininess = std::stof(tokens[1]);
+                stack->Pop();
+            }
+            else if ((key.compare("Type") == 0) && 
+                     (stack->Parent().compare("Textures") == 0))
+            {
+                tempTexture.m_Type = tokens[1];
+                stack->Pop();
+            }
+            else if ((key.compare("FilePath") == 0) && 
+                     (stack->Parent().compare("Textures") == 0))
+            {
+                tempTexture.m_FilePath = tokens[1];
+                stack->Pop();
+            }            
+        }   // end of Mesh
+
+        // Add Mesh to models
+        else if ((stack->Parent().compare("Model") == 0) &&
+                 (key.compare("}") == 0)
+                 )
+        {
+            std::vector<GraphicsEngine::Mesh> meshes;
+            GraphicsEngine::Model model;
+            for(int32 i = 0; i < meshCount; i++)
+            {
+                GraphicsEngine::Mesh mesh{meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i]};
+                model.m_Meshes.push_back(mesh);
+            }
+            scene->m_Models.push_back(model);
+            stack->Pop();
+        }
+
+    } // end of fileStream
+    
+    delete stack;
+    scene->m_IsModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+    fileStream.close();
+    return true;
+}
 
 bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
 {
@@ -1045,6 +1449,7 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
                 
                 SerializeInsertAfter(mesh->m_Material.m_Textures[textureIndex].m_FilePath, path, '\\', '\\');
                 SerializeItemYAML(fileOut, 4, "FilePath", path, YAML_SPACE_START);
+                path.clear();
             }
         }
     }
@@ -1141,6 +1546,12 @@ void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::strin
     
     output << std::endl;
 }
+
+bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
+{
+    return true;
+}
+
 
 void SerializeInsertAfter(const std::string& lhs, std::string& rhs, const char r, const char i)
 {
