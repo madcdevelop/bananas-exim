@@ -77,8 +77,8 @@ EDITOR_INTERFACE
 void SceneOpenScene(const char* fileName)
 {
     // CoreEngine::DeSerializeFromXML(std::string(fileName) + ".bxml", g_Scene);
-    CoreEngine::DeSerializeFromJSON(std::string(fileName) + ".bjson", g_Scene);
-    // CoreEngine::DeSerializeFromYAML(std::string(fileName) + ".byaml", g_Scene);
+    // CoreEngine::DeSerializeFromJSON(std::string(fileName) + ".bjson", g_Scene);
+    CoreEngine::DeSerializeFromYAML(std::string(fileName) + ".byaml", g_Scene);
 }
 
 EDITOR_INTERFACE

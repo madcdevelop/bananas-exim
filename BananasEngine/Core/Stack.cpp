@@ -41,6 +41,13 @@ std::string Stack::Pop()
     }
 }
 
+void Stack::Pop(int32 count)
+{
+    for (int i = 0; i < count; i++)
+        Pop();
+}
+
+
 std::string Stack::Peek()
 {
     if (m_Top < 0)
