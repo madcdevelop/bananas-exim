@@ -1606,12 +1606,16 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
             }
             p = c;
         }
-        // Special case where Mesh ended and nothing is left in file
-        if (line.empty() && (!tempMaterial.m_Textures.empty()))
+        // Last line of file is empty
+        if (line.empty())
         {
-            meshMaterials.push_back(tempMaterial);
-            tempMaterial.m_Textures.clear();
-            stack->Pop(4);
+            // Special case where Mesh ended and nothing is left in file
+            if (!tempMaterial.m_Textures.empty())
+            {
+                meshMaterials.push_back(tempMaterial);
+                tempMaterial.m_Textures.clear();
+                stack->Pop(4);
+            }
             continue;
         }
         // Last token
@@ -1865,14 +1869,17 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
     }
 
     // Cleanup at end of file
-    std::vector<GraphicsEngine::Mesh> meshes;
-    GraphicsEngine::Model model;
-    for(int32 i = 0; i < meshCount; i++)
+    if (meshCount > 0)
     {
-        GraphicsEngine::Mesh mesh{meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i]};
-        model.m_Meshes.push_back(mesh);
+        std::vector<GraphicsEngine::Mesh> meshes;
+        GraphicsEngine::Model model;
+        for (int32 i = 0; i < meshCount; i++)
+        {
+            GraphicsEngine::Mesh mesh{ meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i] };
+            model.m_Meshes.push_back(mesh);
+        }
+        scene->m_Models.push_back(model);
     }
-    scene->m_Models.push_back(model);
 
     delete stack;
     scene->m_IsModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;

@@ -24,6 +24,11 @@ namespace BananasEditor
         private ControlHost windowHost;
         private Scene renderScene;
 
+        private readonly string untitled = "Bananas Import/Export " + "[Untitled.bscene]";
+        private string m_fileName;
+
+        public string FileName { get { return m_fileName; } set { m_fileName = value; } }
+
         public Scene RenderScene
         {
             get { return renderScene; } set { renderScene = value; }
@@ -37,7 +42,7 @@ namespace BananasEditor
 
         private void On_UIReady(object sender, EventArgs e)
         {
-            this.Title = "Bananas Import/Export " + "[Untitled.bscene]";
+            this.Title = untitled;
             Loaded -= On_UIReady;
 
             // Init Window
@@ -76,7 +81,7 @@ namespace BananasEditor
         private void menuNewScene_Click(object sender, RoutedEventArgs e)
         {
             renderScene.NewScene();
-            this.Title = "Bananas Import/Export " + "[Untitled.bscene]";
+            this.Title = untitled;
         }
 
         private void menuOpenScene_Click(object sender, RoutedEventArgs e)
@@ -90,14 +95,42 @@ namespace BananasEditor
             Nullable<bool> result = openFileDlg.ShowDialog();
             if(result == true)
             {
-                string fileName = openFileDlg.FileName;
-                string[] tokens = fileName.Split(".");
+                m_fileName = openFileDlg.FileName;
+                string[] tokens = m_fileName.Split(".");
                 renderScene.OpenScene(tokens[0]);
-                this.Title = "Bananas Import/Export " + "[" + fileName + "]";
+                this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
         }
 
         private void menuSaveScene_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Title == untitled)
+            {
+                Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog
+                {
+                    Filter = "Bananas Scene | *.bscene",
+                    Title = "Save Bananas Scene",
+                };
+
+                Nullable<bool> result = saveFileDlg.ShowDialog();
+                if (result == true)
+                {
+                    m_fileName = saveFileDlg.FileName;
+                    string[] tokens = m_fileName.Split(".");
+                    renderScene.SaveScene(tokens[0]);
+                    File.Create(m_fileName);
+                    this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
+                }
+            }
+            else
+            {
+                string[] tokens = m_fileName.Split(".");
+                renderScene.SaveScene(tokens[0]);
+                File.Create(m_fileName);
+            }
+        }
+
+        private void menuSaveAsScene_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog
             {
@@ -108,11 +141,11 @@ namespace BananasEditor
             Nullable<bool> result = saveFileDlg.ShowDialog();
             if(result == true)
             {
-                string fileName = saveFileDlg.FileName;
-                string[] tokens = fileName.Split(".");
+                m_fileName = saveFileDlg.FileName;
+                string[] tokens = m_fileName.Split(".");
                 renderScene.SaveScene(tokens[0]);
-                File.Create(fileName);
-                this.Title = "Bananas Import/Export " + "[" + fileName + "]";
+                File.Create(m_fileName);
+                this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
         }
 

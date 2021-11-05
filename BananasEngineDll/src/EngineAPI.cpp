@@ -68,8 +68,8 @@ void CreateScene()
 EDITOR_INTERFACE
 void SceneSaveScene(const char* fileName)
 {
-    CoreEngine::SerializeToXML(std::string(fileName) + ".bxml", g_Scene);
-    CoreEngine::SerializeToJSON(std::string(fileName) + ".bjson", g_Scene);
+    // CoreEngine::SerializeToXML(std::string(fileName) + ".bxml", g_Scene);
+    // CoreEngine::SerializeToJSON(std::string(fileName) + ".bjson", g_Scene);
     CoreEngine::SerializeToYAML(std::string(fileName) + ".byaml", g_Scene);
 }
 

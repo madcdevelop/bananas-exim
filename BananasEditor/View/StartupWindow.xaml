@@ -115,6 +115,7 @@
                 <TextBlock>PlaceholderScene1.scene</TextBlock>
                 <TextBlock>PlaceholderScene2.scene</TextBlock>
                 <TextBlock>PlaceholderScene3.scene</TextBlock>
+                <TextBlock>PlaceholderScene4.scene</TextBlock>
                 <TextBlock>PlaceholderSceneN.scene</TextBlock>
             </ListBox>
         </StackPanel>
