@@ -93,7 +93,7 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
             SerializeItemXML(fileOut, 4, "Name", mesh->m_Name);
 
             SerializeBeginTagXML(fileOut, 4, "Vertices");
-            for (const auto vertex : mesh->m_Vertices)
+            for (const auto& vertex : mesh->m_Vertices)
             {
                 SerializeBeginTagXML(fileOut, 5, "Vertex");
 
@@ -1394,7 +1394,7 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
             SerializeItemYAML(fileOut, 2, "Name", mesh->m_Name, YAML_DASH_START);
             
             SerializeBeginYAML(fileOut, 2, "Vertices");
-            for (const auto vertex : mesh->m_Vertices)
+            for (const auto& vertex : mesh->m_Vertices)
             {
                 SerializeVector3DYAML(fileOut, 3, "Position", vertex.position.x, vertex.position.y, vertex.position.z, YAML_DASH_START);
                 SerializeVector3DYAML(fileOut, 3, "Normal", vertex.normal.x, vertex.normal.y, vertex.normal.z, YAML_SPACE_START);
