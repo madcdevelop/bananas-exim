@@ -74,7 +74,7 @@ void SceneSaveScene(const char* fileName)
 }
 
 EDITOR_INTERFACE
-void SceneOpenScene(const char* fileName)
+void SceneLoadScene(const char* fileName)
 {
     // CoreEngine::DeSerializeFromXML(std::string(fileName) + ".bxml", g_Scene);
     // CoreEngine::DeSerializeFromJSON(std::string(fileName) + ".bjson", g_Scene);
@@ -88,7 +88,7 @@ GraphicsEngine::Scene* GetScene()
 } 
 
 EDITOR_INTERFACE
-void SceneLoadModels(const char* fileName)
+void SceneImportModels(const char* fileName)
 {
     g_Window->m_RenderDevice->m_Scene->CreateImportThread(std::string(fileName));
 }

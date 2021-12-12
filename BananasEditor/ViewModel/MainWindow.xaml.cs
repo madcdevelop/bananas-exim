@@ -97,7 +97,7 @@ namespace BananasEditor
             {
                 m_fileName = openFileDlg.FileName;
                 string[] tokens = m_fileName.Split(".");
-                renderScene.OpenScene(tokens[0]);
+                renderScene.LoadScene(tokens[0]);
                 this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
         }
@@ -161,7 +161,7 @@ namespace BananasEditor
             if(result == true)
             {
                 string filename = openFileDlg.FileName;
-                renderScene.LoadModels(filename);
+                renderScene.ImportModels(filename);
             }
         }
 

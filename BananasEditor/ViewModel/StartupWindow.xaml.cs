@@ -67,7 +67,7 @@ namespace BananasEditor
                 mainWindow.Show();
                 mainWindow.Title = "Bananas Import/Export " + "[" + fileName + "]";
                 string[] tokens = fileName.Split(".");
-                mainWindow.RenderScene.OpenScene(tokens[0]);
+                mainWindow.RenderScene.LoadScene(tokens[0]);
                 this.Close();
             }
         }
