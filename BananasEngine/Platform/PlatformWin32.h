@@ -3,11 +3,11 @@
 
 #include "../Core/Common.h"
 #include "../Core/Timestep.h"
-#include "Renderer.h"
+#include "../Graphics/Renderer.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-namespace GraphicsEngine
+namespace PlatformEngine
 {
 
 class PlatformWin32
@@ -23,8 +23,8 @@ public:
     DWORD           m_WindowStyle;
     const wchar_t*  m_WindowTitle;
 
-    Renderer*               m_Renderer;
-    RenderDeviceOpenGL*     m_RenderDevice;
+    GraphicsEngine::Renderer*               m_Renderer;
+    GraphicsEngine::RenderDeviceOpenGL*     m_RenderDevice;
     CoreEngine::Timestep*   m_Timestep;
 
 private:

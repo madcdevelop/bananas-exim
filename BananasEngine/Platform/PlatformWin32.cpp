@@ -2,7 +2,7 @@
 
 namespace
 {
-    GraphicsEngine::PlatformWin32 *g_PlatformWin32;
+    PlatformEngine::PlatformWin32 *g_PlatformWin32;
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -13,7 +13,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-namespace GraphicsEngine
+namespace PlatformEngine
 {
 
 PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
@@ -44,7 +44,7 @@ bool PlatformWin32::Win32CreateWindow()
 
     // TODO(neil): Move this section out of function and into EngineDll.
     // Initialize Renderer
-    m_Renderer = new Renderer{m_hInstance};
+    m_Renderer = new GraphicsEngine::Renderer{m_hInstance};
     m_Renderer->CreateRenderDevice(m_RenderDevice);
 
     // Initialize RenderDevice

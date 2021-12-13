@@ -29,7 +29,6 @@
     <ClInclude Include="Graphics\Material.h" />
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\Model.h" />
-    <ClInclude Include="Graphics\PlatformWin32.h" />
     <ClInclude Include="Graphics\RenderDeviceOpenGL.h" />
     <ClInclude Include="Graphics\Renderer.h" />
     <ClInclude Include="Graphics\RendererTestData.h" />
@@ -37,6 +36,7 @@
     <ClInclude Include="Graphics\Shader.h" />
     <ClInclude Include="Graphics\Texture.h" />
     <ClInclude Include="Core\Timestep.h" />
+    <ClInclude Include="Platform\PlatformWin32.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Serialize.cpp" />
@@ -49,13 +49,13 @@
     <ClCompile Include="Core\Common.cpp" />
     <ClCompile Include="Extern\glad\glad.c" />
     <ClCompile Include="Graphics\Model.cpp" />
-    <ClCompile Include="Graphics\PlatformWin32.cpp" />
     <ClCompile Include="Graphics\RenderDeviceOpenGL.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />
     <ClCompile Include="Graphics\Scene.cpp" />
     <ClCompile Include="Graphics\Shader.cpp" />
     <ClCompile Include="Graphics\Texture.cpp" />
     <ClCompile Include="Core\Timestep.cpp" />
+    <ClCompile Include="Platform\PlatformWin32.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

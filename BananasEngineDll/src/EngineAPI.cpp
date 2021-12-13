@@ -1,5 +1,5 @@
 #include "Common.h"
-#include "PlatformWin32.h"
+#include "../Platform/PlatformWin32.h"
 #include "Serialize.h"
 
 #include <chrono>
@@ -10,7 +10,7 @@
 #endif
 
 // Graphics
-GraphicsEngine::PlatformWin32* g_Window;
+PlatformEngine::PlatformWin32* g_Window;
 GraphicsEngine::Scene* g_Scene;
 
 namespace BananasEngineDll
@@ -19,7 +19,7 @@ namespace BananasEngineDll
 EDITOR_INTERFACE
 bool Win32CreateWindow(HINSTANCE hInstance, HWND hwnd)
 {
-    g_Window = new GraphicsEngine::PlatformWin32(hInstance, hwnd);
+    g_Window = new PlatformEngine::PlatformWin32(hInstance, hwnd);
     if (g_Window) 
     {
         g_Window->Win32CreateWindow();
