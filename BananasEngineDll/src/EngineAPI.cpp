@@ -2,6 +2,7 @@
 #include "PlatformWin32.h"
 #include "Serialize.h"
 
+#include <chrono>
 #include <thread>
 
 #ifndef EDITOR_INTERFACE
@@ -68,17 +69,33 @@ void CreateScene()
 EDITOR_INTERFACE
 void SceneSaveScene(const char* fileName)
 {
+    auto start = std::chrono::steady_clock::now();
+
     // CoreEngine::SerializeToXML(std::string(fileName) + ".bxml", g_Scene);
     // CoreEngine::SerializeToJSON(std::string(fileName) + ".bjson", g_Scene);
     CoreEngine::SerializeToYAML(std::string(fileName) + ".byaml", g_Scene);
+
+    auto end = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+    std::string message = "Save Scene\nTime to execute: " + std::to_string(elapsedTime) + " milliseconds\n";
+    OutputDebugStringA(message.c_str());
 }
 
 EDITOR_INTERFACE
 void SceneLoadScene(const char* fileName)
 {
+    auto start = std::chrono::steady_clock::now();
+
     // CoreEngine::DeSerializeFromXML(std::string(fileName) + ".bxml", g_Scene);
     // CoreEngine::DeSerializeFromJSON(std::string(fileName) + ".bjson", g_Scene);
     CoreEngine::DeSerializeFromYAML(std::string(fileName) + ".byaml", g_Scene);
+
+    auto end = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+    std::string message = "Load Scene\nTime to execute: " + std::to_string(elapsedTime) + " milliseconds\n";
+    OutputDebugStringA(message.c_str());
 }
 
 EDITOR_INTERFACE
