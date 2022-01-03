@@ -18,23 +18,23 @@ public:
     HINSTANCE       m_hInstance;
     HDC             m_hDeviceContext;
     HGLRC           m_hRenderContext;
-    UINT            m_Width;
-    UINT            m_Height;
-    DWORD           m_WindowStyle;
-    const wchar_t*  m_WindowTitle;
+    UINT            m_width;
+    UINT            m_height;
+    DWORD           m_windowStyle;
+    const wchar_t*  m_windowTitle;
 
-    GraphicsEngine::Renderer*               m_Renderer;
-    GraphicsEngine::RenderDeviceOpenGL*     m_RenderDevice;
-    CoreEngine::Timestep*   m_Timestep;
+    GraphicsEngine::Renderer*               m_renderer;
+    GraphicsEngine::RenderDeviceOpenGL*     m_renderDevice;
+    CoreEngine::Timestep*   m_timestep;
 
 private:
     // Camera Movement
-    bool  m_FirstMouse = false;
-    real32 m_LastX = 0.0f;
-    real32 m_LastY = 0.0f;
+    bool  m_firstMouse = false;
+    real32 m_lastX = 0.0f;
+    real32 m_lastY = 0.0f;
 
     // Timestep
-    real32 m_DeltaTime;
+    real32 m_deltaTime;
     
 public:
     PlatformWin32(HINSTANCE hInstance, HWND hwnd);

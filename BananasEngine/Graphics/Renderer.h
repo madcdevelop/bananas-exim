@@ -10,7 +10,7 @@ namespace GraphicsEngine
 class Renderer {
 
 public:
-    RenderDeviceOpenGL* m_Device;
+    RenderDeviceOpenGL* m_device;
     HINSTANCE m_hInstance;
 
 public:

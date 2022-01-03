@@ -21,15 +21,15 @@ enum ModelLoadState {
 class Scene
 {
 public:
-    std::vector<Model> m_Models;
-    Camera m_Camera;
+    std::vector<Model> m_models;
+    Camera m_camera;
 
-    ModelLoadState m_IsModelLoaded = ModelLoadState::NOT_LOADED;
-    std::thread m_ImportThread;
+    ModelLoadState m_isModelLoaded = ModelLoadState::NOT_LOADED;
+    std::thread m_importThread;
 
 private:
-    Shader m_Shader1;
-    Shader m_ShaderLight;
+    Shader m_shader1;
+    Shader m_shaderLight;
 
 
 public:

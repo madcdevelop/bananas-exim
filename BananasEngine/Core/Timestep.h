@@ -9,13 +9,13 @@ namespace CoreEngine
 class Timestep
 {
 private:
-    int64          m_CounterElapsed;
-    uint64         m_CyclesElapsed;
-    uint64         m_LastCycleCount;
-    uint64         m_EndCycleCount;
-    int64          m_PerfCountFrequency;
-    LARGE_INTEGER  m_EndCounter;
-    LARGE_INTEGER  m_LastCounter;
+    int64          m_counterElapsed;
+    uint64         m_cyclesElapsed;
+    uint64         m_lastCycleCount;
+    uint64         m_endCycleCount;
+    int64          m_perfCountFrequency;
+    LARGE_INTEGER  m_endCounter;
+    LARGE_INTEGER  m_lastCounter;
 
 public:
     Timestep();

@@ -40,38 +40,38 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
     // Camera
     /////////////////////////////////////
 
-    GraphicsEngine::Camera* camera = &scene->m_Camera;
+    GraphicsEngine::Camera* camera = &scene->m_camera;
     SerializeBeginTagXMLAttributes(fileOut, 1, "Camera", XMLAttribute{ 1, {"id"}, {++id} });
     
     SerializeBeginTagXML(fileOut, 2, "Position");
-    SerializeItemXML(fileOut, 3, "x", camera->m_Position.x);
-    SerializeItemXML(fileOut, 3, "y", camera->m_Position.y);
-    SerializeItemXML(fileOut, 3, "z", camera->m_Position.z);
+    SerializeItemXML(fileOut, 3, "x", camera->m_position.x);
+    SerializeItemXML(fileOut, 3, "y", camera->m_position.y);
+    SerializeItemXML(fileOut, 3, "z", camera->m_position.z);
     SerializeEndTagXML(fileOut, 2, "Position");
 
     SerializeBeginTagXML(fileOut, 2, "Front");
-    SerializeItemXML(fileOut, 3, "x", camera->m_Front.x);
-    SerializeItemXML(fileOut, 3, "y", camera->m_Front.y);
-    SerializeItemXML(fileOut, 3, "z", camera->m_Front.z);
+    SerializeItemXML(fileOut, 3, "x", camera->m_front.x);
+    SerializeItemXML(fileOut, 3, "y", camera->m_front.y);
+    SerializeItemXML(fileOut, 3, "z", camera->m_front.z);
     SerializeEndTagXML(fileOut, 2, "Front");
 
     SerializeBeginTagXML(fileOut, 2, "Up");
-    SerializeItemXML(fileOut, 3, "x", camera->m_Up.x);
-    SerializeItemXML(fileOut, 3, "y", camera->m_Up.y);
-    SerializeItemXML(fileOut, 3, "z", camera->m_Up.z);
+    SerializeItemXML(fileOut, 3, "x", camera->m_up.x);
+    SerializeItemXML(fileOut, 3, "y", camera->m_up.y);
+    SerializeItemXML(fileOut, 3, "z", camera->m_up.z);
     SerializeEndTagXML(fileOut, 2, "Up");
 
     SerializeBeginTagXML(fileOut, 2, "Right");
-    SerializeItemXML(fileOut, 3, "x", camera->m_Right.x);
-    SerializeItemXML(fileOut, 3, "y", camera->m_Right.y);
-    SerializeItemXML(fileOut, 3, "z", camera->m_Right.z);
+    SerializeItemXML(fileOut, 3, "x", camera->m_right.x);
+    SerializeItemXML(fileOut, 3, "y", camera->m_right.y);
+    SerializeItemXML(fileOut, 3, "z", camera->m_right.z);
     SerializeEndTagXML(fileOut, 2, "Right");
 
-    SerializeItemXML(fileOut, 2, "Yaw", camera->m_Yaw);
-    SerializeItemXML(fileOut, 2, "Pitch", camera->m_Pitch);
-    SerializeItemXML(fileOut, 2, "Fov", camera->m_Fov);
-    SerializeItemXML(fileOut, 2, "MovementSpeed", camera->m_MovementSpeed);
-    SerializeItemXML(fileOut, 2, "Sensitivity", camera->m_Sensitivity);
+    SerializeItemXML(fileOut, 2, "Yaw", camera->m_yaw);
+    SerializeItemXML(fileOut, 2, "Pitch", camera->m_pitch);
+    SerializeItemXML(fileOut, 2, "Fov", camera->m_fov);
+    SerializeItemXML(fileOut, 2, "MovementSpeed", camera->m_movementSpeed);
+    SerializeItemXML(fileOut, 2, "Sensitivity", camera->m_sensitivity);
 
     SerializeEndTagXML(fileOut, 1, "Camera");
 
@@ -79,21 +79,21 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
     // Models
     /////////////////////////////////////
 
-    for (uint32 modelIndex = 0; modelIndex < scene->m_Models.size(); modelIndex++)
+    for (uint32 modelIndex = 0; modelIndex < scene->m_models.size(); modelIndex++)
     {
         SerializeBeginTagXMLAttributes(fileOut, 1, "Model", XMLAttribute{ 1, {"id"}, {++id} });
-        SerializeBeginTagXMLAttributes(fileOut, 2, "Array", XMLAttribute{ 1, {"size"}, {static_cast<int32>(scene->m_Models[modelIndex].m_Meshes.size())} });
+        SerializeBeginTagXMLAttributes(fileOut, 2, "Array", XMLAttribute{ 1, {"size"}, {static_cast<int32>(scene->m_models[modelIndex].m_meshes.size())} });
 
-        for (uint32 meshIndex = 0; meshIndex < scene->m_Models[modelIndex].m_Meshes.size(); meshIndex++)
+        for (uint32 meshIndex = 0; meshIndex < scene->m_models[modelIndex].m_meshes.size(); meshIndex++)
         {
-            GraphicsEngine::Mesh *mesh = &scene->m_Models[modelIndex].m_Meshes[meshIndex];
+            GraphicsEngine::Mesh *mesh = &scene->m_models[modelIndex].m_meshes[meshIndex];
 
             SerializeBeginTagXMLAttributes(fileOut, 3, "Mesh", XMLAttribute{ 1, {"id"}, {++id} });
 
-            SerializeItemXML(fileOut, 4, "Name", mesh->m_Name);
+            SerializeItemXML(fileOut, 4, "Name", mesh->m_name);
 
             SerializeBeginTagXML(fileOut, 4, "Vertices");
-            for (const auto& vertex : mesh->m_Vertices)
+            for (const auto& vertex : mesh->m_vertices)
             {
                 SerializeBeginTagXML(fileOut, 5, "Vertex");
 
@@ -120,51 +120,51 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
 
             SerializeBeginTagXML(fileOut, 4, "Indices");
             for (uint32 indicesIndex = 0; 
-                 indicesIndex < mesh->m_Indices.size();
+                 indicesIndex < mesh->m_indices.size();
                  indicesIndex++)
             {
-                SerializeItemXML(fileOut, 5, "Item", mesh->m_Indices[indicesIndex]);
+                SerializeItemXML(fileOut, 5, "Item", mesh->m_indices[indicesIndex]);
             }
             SerializeEndTagXML(fileOut, 4, "Indices");
 
             // Material
             SerializeBeginTagXML(fileOut, 4, "Material");
 
-            SerializeItemXML(fileOut, 5, "Name", mesh->m_Material.m_Name);
+            SerializeItemXML(fileOut, 5, "Name", mesh->m_material.m_name);
 
             SerializeBeginTagXML(fileOut, 5, "Ambient");
-            SerializeItemXML(fileOut, 6, "x", mesh->m_Material.m_Ambient.x);
-            SerializeItemXML(fileOut, 6, "y", mesh->m_Material.m_Ambient.y);
-            SerializeItemXML(fileOut, 6, "z", mesh->m_Material.m_Ambient.z);
+            SerializeItemXML(fileOut, 6, "x", mesh->m_material.m_ambient.x);
+            SerializeItemXML(fileOut, 6, "y", mesh->m_material.m_ambient.y);
+            SerializeItemXML(fileOut, 6, "z", mesh->m_material.m_ambient.z);
             SerializeEndTagXML(fileOut, 5, "Ambient");
 
             SerializeBeginTagXML(fileOut, 5, "Diffuse");
-            SerializeItemXML(fileOut, 6, "x", mesh->m_Material.m_Diffuse.x);
-            SerializeItemXML(fileOut, 6, "y", mesh->m_Material.m_Diffuse.y);
-            SerializeItemXML(fileOut, 6, "z", mesh->m_Material.m_Diffuse.z);
+            SerializeItemXML(fileOut, 6, "x", mesh->m_material.m_diffuse.x);
+            SerializeItemXML(fileOut, 6, "y", mesh->m_material.m_diffuse.y);
+            SerializeItemXML(fileOut, 6, "z", mesh->m_material.m_diffuse.z);
             SerializeEndTagXML(fileOut, 5, "Diffuse");
 
             SerializeBeginTagXML(fileOut, 5, "Specular");
-            SerializeItemXML(fileOut, 6, "x", mesh->m_Material.m_Specular.x);
-            SerializeItemXML(fileOut, 6, "y", mesh->m_Material.m_Specular.y);
-            SerializeItemXML(fileOut, 6, "z", mesh->m_Material.m_Specular.z);
+            SerializeItemXML(fileOut, 6, "x", mesh->m_material.m_specular.x);
+            SerializeItemXML(fileOut, 6, "y", mesh->m_material.m_specular.y);
+            SerializeItemXML(fileOut, 6, "z", mesh->m_material.m_specular.z);
             SerializeEndTagXML(fileOut, 5, "Specular");
 
             SerializeBeginTagXML(fileOut, 5, "Emissive");
-            SerializeItemXML(fileOut, 6, "x", mesh->m_Material.m_Emissive.x);
-            SerializeItemXML(fileOut, 6, "y", mesh->m_Material.m_Emissive.y);
-            SerializeItemXML(fileOut, 6, "z", mesh->m_Material.m_Emissive.z);
+            SerializeItemXML(fileOut, 6, "x", mesh->m_material.m_emissive.x);
+            SerializeItemXML(fileOut, 6, "y", mesh->m_material.m_emissive.y);
+            SerializeItemXML(fileOut, 6, "z", mesh->m_material.m_emissive.z);
             SerializeEndTagXML(fileOut, 5, "Emissive");
 
-            SerializeItemXML(fileOut, 5, "Shininess", mesh->m_Material.m_Shininess);
+            SerializeItemXML(fileOut, 5, "Shininess", mesh->m_material.m_shininess);
 
             for (uint32 textureIndex = 0; 
-                 textureIndex < mesh->m_Material.m_Textures.size(); 
+                 textureIndex < mesh->m_material.m_textures.size(); 
                  textureIndex++)
             {
                 SerializeBeginTagXML(fileOut, 5, "Texture");
-                SerializeItemXML(fileOut, 6, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type);
-                SerializeItemXML(fileOut, 6, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath);
+                SerializeItemXML(fileOut, 6, "Type", mesh->m_material.m_textures[textureIndex].m_type);
+                SerializeItemXML(fileOut, 6, "FilePath", mesh->m_material.m_textures[textureIndex].m_filePath);
                 SerializeEndTagXML(fileOut, 5, "Texture");
             }
             SerializeEndTagXML(fileOut, 4, "Material");
@@ -289,8 +289,8 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
 
     std::string currentScope = "";
 
-    if (scene->m_Models.size() > 0)
-        scene->m_Models.clear();
+    if (scene->m_models.size() > 0)
+        scene->m_models.clear();
     
     // Parse each line and de-serialize data
     while(!fileStream.eof())
@@ -370,69 +370,69 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    scene->m_Camera.m_Position[0] = value;
+                    scene->m_camera.m_position[0] = value;
                 else if (tag.compare("y") == 0)
-                    scene->m_Camera.m_Position[1] = value;
+                    scene->m_camera.m_position[1] = value;
                 else if (tag.compare("z") == 0)
-                    scene->m_Camera.m_Position[2] = value;
+                    scene->m_camera.m_position[2] = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Front") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    scene->m_Camera.m_Front[0] = value;
+                    scene->m_camera.m_front[0] = value;
                 else if (tag.compare("y") == 0)
-                    scene->m_Camera.m_Front[1] = value;
+                    scene->m_camera.m_front[1] = value;
                 else if (tag.compare("z") == 0)
-                    scene->m_Camera.m_Front[2] = value;
+                    scene->m_camera.m_front[2] = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Up") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    scene->m_Camera.m_Up[0] = value;
+                    scene->m_camera.m_up[0] = value;
                 else if (tag.compare("y") == 0)
-                    scene->m_Camera.m_Up[1] = value;
+                    scene->m_camera.m_up[1] = value;
                 else if (tag.compare("z") == 0)
-                    scene->m_Camera.m_Up[2] = value;
+                    scene->m_camera.m_up[2] = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Right") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    scene->m_Camera.m_Right[0] = value;
+                    scene->m_camera.m_right[0] = value;
                 else if (tag.compare("y") == 0)
-                    scene->m_Camera.m_Right[1] = value;
+                    scene->m_camera.m_right[1] = value;
                 else if (tag.compare("z") == 0)
-                    scene->m_Camera.m_Right[2] = value;
+                    scene->m_camera.m_right[2] = value;
                 stack->Pop();
             }
             else if (tag.compare("Yaw") == 0)
             {
-                scene->m_Camera.m_Yaw = std::stof(tokens[1]);
+                scene->m_camera.m_yaw = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (tag.compare("Pitch") == 0)
             {
-                scene->m_Camera.m_Pitch = std::stof(tokens[1]);
+                scene->m_camera.m_pitch = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (tag.compare("Fov") == 0)
             {
-                scene->m_Camera.m_Fov = std::stof(tokens[1]);
+                scene->m_camera.m_fov = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (tag.compare("MovementSpeed") == 0)
             {
-                scene->m_Camera.m_MovementSpeed = std::stof(tokens[1]);
+                scene->m_camera.m_movementSpeed = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (tag.compare("Sensitivity") == 0)
             {
-                scene->m_Camera.m_Sensitivity = std::stof(tokens[1]);
+                scene->m_camera.m_sensitivity = std::stof(tokens[1]);
                 stack->Pop();
             }            
         }   // end of Camera
@@ -453,13 +453,13 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
             }
             else if (tag.compare("/Texture") == 0)
             {
-                tempMaterial.m_Textures.push_back(tempTexture);
+                tempMaterial.m_textures.push_back(tempTexture);
                 stack->Pop(2);
             }
             else if (tag.compare("/Material") == 0)
             {
                 meshMaterials.push_back(tempMaterial);
-                tempMaterial.m_Textures.clear();
+                tempMaterial.m_textures.clear();
                 stack->Pop(2);
             }
             else if (tag.compare("/Vertex") == 0)
@@ -524,69 +524,69 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
             else if ((tag.compare("Name") == 0) && 
                      (stack->Parent().compare("Material") == 0))
             {
-                tempMaterial.m_Name = tokens[1];
+                tempMaterial.m_name = tokens[1];
                 stack->Pop();
             }
             else if (stack->Parent().compare("Ambient") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    tempMaterial.m_Ambient.x = value;
+                    tempMaterial.m_ambient.x = value;
                 else if (tag.compare("y") == 0)
-                    tempMaterial.m_Ambient.y = value;
+                    tempMaterial.m_ambient.y = value;
                 else if (tag.compare("z") == 0)
-                    tempMaterial.m_Ambient.z = value;
+                    tempMaterial.m_ambient.z = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Diffuse") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    tempMaterial.m_Diffuse.x = value;
+                    tempMaterial.m_diffuse.x = value;
                 else if (tag.compare("y") == 0)
-                    tempMaterial.m_Diffuse.y = value;
+                    tempMaterial.m_diffuse.y = value;
                 else if (tag.compare("z") == 0)
-                    tempMaterial.m_Diffuse.z = value;
+                    tempMaterial.m_diffuse.z = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Specular") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    tempMaterial.m_Specular.x = value;
+                    tempMaterial.m_specular.x = value;
                 else if (tag.compare("y") == 0)
-                    tempMaterial.m_Specular.y = value;
+                    tempMaterial.m_specular.y = value;
                 else if (tag.compare("z") == 0)
-                    tempMaterial.m_Specular.z = value;
+                    tempMaterial.m_specular.z = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Emissive") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (tag.compare("x") == 0)
-                    tempMaterial.m_Emissive.x = value;
+                    tempMaterial.m_emissive.x = value;
                 else if (tag.compare("y") == 0)
-                    tempMaterial.m_Emissive.y = value;
+                    tempMaterial.m_emissive.y = value;
                 else if (tag.compare("z") == 0)
-                    tempMaterial.m_Emissive.z = value;
+                    tempMaterial.m_emissive.z = value;
                 stack->Pop();
             }
             else if ((tag.compare("Shininess") == 0) && 
                      (stack->Parent().compare("Material") == 0))
             {
-                tempMaterial.m_Shininess = std::stof(tokens[1]);
+                tempMaterial.m_shininess = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if ((tag.compare("Type") == 0) && 
                      (stack->Parent().compare("Texture") == 0))
             {
-                tempTexture.m_Type = tokens[1];
+                tempTexture.m_type = tokens[1];
                 stack->Pop();
             }
             else if ((tag.compare("FilePath") == 0) && 
                      (stack->Parent().compare("Texture") == 0))
             {
-                tempTexture.m_FilePath = tokens[1];
+                tempTexture.m_filePath = tokens[1];
                 stack->Pop();
             }            
         }   // end of Mesh
@@ -607,9 +607,9 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
             for(int32 i = 0; i < meshCount; i++)
             {
                 GraphicsEngine::Mesh mesh{meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i]};
-                model.m_Meshes.push_back(mesh);
+                model.m_meshes.push_back(mesh);
             }
-            scene->m_Models.push_back(model);
+            scene->m_models.push_back(model);
             stack->Pop();
 
             // Reset
@@ -623,7 +623,7 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
     }   // end of fileStream 
 
     delete stack;
-    scene->m_IsModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+    scene->m_isModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
     fileStream.close();
     return true;
 }
@@ -655,41 +655,41 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
     // Camera
     /////////////////////////////////////
 
-    GraphicsEngine::Camera* camera = &scene->m_Camera;
+    GraphicsEngine::Camera* camera = &scene->m_camera;
     
     SerializeBeginObjectJSON(fileOut, 1, "Camera", CURLY_BRACKET_START);
 
     SerializeItemJSON(fileOut, 2, "Id", id++, true);
 
     SerializeBeginObjectJSON(fileOut, 2, "Position", CURLY_BRACKET_START);
-    SerializeItemJSON(fileOut, 3, "x", camera->m_Position.x, true);
-    SerializeItemJSON(fileOut, 3, "y", camera->m_Position.y, true);
-    SerializeItemJSON(fileOut, 3, "z", camera->m_Position.z, false);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_position.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_position.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_position.z, false);
     SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Position
 
     SerializeBeginObjectJSON(fileOut, 2, "Front", CURLY_BRACKET_START);
-    SerializeItemJSON(fileOut, 3, "x", camera->m_Front.x, true);
-    SerializeItemJSON(fileOut, 3, "y", camera->m_Front.y, true);
-    SerializeItemJSON(fileOut, 3, "z", camera->m_Front.z, false);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_front.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_front.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_front.z, false);
     SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Front
 
     SerializeBeginObjectJSON(fileOut, 2, "Up", CURLY_BRACKET_START);
-    SerializeItemJSON(fileOut, 3, "x", camera->m_Up.x, true);
-    SerializeItemJSON(fileOut, 3, "y", camera->m_Up.y, true);
-    SerializeItemJSON(fileOut, 3, "z", camera->m_Up.z, false);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_up.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_up.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_up.z, false);
     SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Up
 
     SerializeBeginObjectJSON(fileOut, 2, "Right", CURLY_BRACKET_START);
-    SerializeItemJSON(fileOut, 3, "x", camera->m_Right.x, true);
-    SerializeItemJSON(fileOut, 3, "y", camera->m_Right.y, true);
-    SerializeItemJSON(fileOut, 3, "z", camera->m_Right.z, false);
+    SerializeItemJSON(fileOut, 3, "x", camera->m_right.x, true);
+    SerializeItemJSON(fileOut, 3, "y", camera->m_right.y, true);
+    SerializeItemJSON(fileOut, 3, "z", camera->m_right.z, false);
     SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // Right
 
-    SerializeItemJSON(fileOut, 2, "Yaw", camera->m_Yaw, true);
-    SerializeItemJSON(fileOut, 2, "Pitch", camera->m_Pitch, true);
-    SerializeItemJSON(fileOut, 2, "Fov", camera->m_Fov, true);
-    SerializeItemJSON(fileOut, 2, "MovementSpeed", camera->m_MovementSpeed, true);
-    SerializeItemJSON(fileOut, 2, "Sensitivity", camera->m_Sensitivity, false);
+    SerializeItemJSON(fileOut, 2, "Yaw", camera->m_yaw, true);
+    SerializeItemJSON(fileOut, 2, "Pitch", camera->m_pitch, true);
+    SerializeItemJSON(fileOut, 2, "Fov", camera->m_fov, true);
+    SerializeItemJSON(fileOut, 2, "MovementSpeed", camera->m_movementSpeed, true);
+    SerializeItemJSON(fileOut, 2, "Sensitivity", camera->m_sensitivity, false);
 
     SerializeEndJSON(fileOut, 1, CURLY_BRACKET_END, true); // Camera
 
@@ -699,44 +699,44 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
 
     SerializeBeginObjectJSON(fileOut, 1, "Model", SQUARE_BRACKET_START);
 
-    for (uint32 modelIndex = 0; modelIndex < scene->m_Models.size(); modelIndex++)
+    for (uint32 modelIndex = 0; modelIndex < scene->m_models.size(); modelIndex++)
     {
         SerializeBeginJSON(fileOut, 2, CURLY_BRACKET_START);
         SerializeItemJSON(fileOut, 3, "Id", id++, true);
-        SerializeItemJSON(fileOut, 3, "Size", static_cast<uint32>(scene->m_Models[modelIndex].m_Meshes.size()), true);
+        SerializeItemJSON(fileOut, 3, "Size", static_cast<uint32>(scene->m_models[modelIndex].m_meshes.size()), true);
 
         SerializeBeginObjectJSON(fileOut, 3, "Mesh", SQUARE_BRACKET_START);
-        for (uint32 meshIndex = 0; meshIndex < scene->m_Models[modelIndex].m_Meshes.size(); meshIndex++)
+        for (uint32 meshIndex = 0; meshIndex < scene->m_models[modelIndex].m_meshes.size(); meshIndex++)
         {
-            GraphicsEngine::Mesh *mesh = &scene->m_Models[modelIndex].m_Meshes[meshIndex];
+            GraphicsEngine::Mesh *mesh = &scene->m_models[modelIndex].m_meshes[meshIndex];
             
             SerializeBeginJSON(fileOut, 4, CURLY_BRACKET_START);
             SerializeItemJSON(fileOut, 5, "Id", id++, true);
-            SerializeItemJSON(fileOut, 5, "Name", mesh->m_Name, true);
+            SerializeItemJSON(fileOut, 5, "Name", mesh->m_name, true);
 
             SerializeBeginObjectJSON(fileOut, 5, "Vertices", SQUARE_BRACKET_START);
-            for (int vIndex = 0; vIndex < mesh->m_Vertices.size(); vIndex++)
+            for (int vIndex = 0; vIndex < mesh->m_vertices.size(); vIndex++)
             {
                 SerializeBeginJSON(fileOut, 6, CURLY_BRACKET_START);
 
                 SerializeBeginObjectJSON(fileOut, 7, "Position", CURLY_BRACKET_START);
-                SerializeItemJSON(fileOut, 8, "x", mesh->m_Vertices[vIndex].position.x, true);
-                SerializeItemJSON(fileOut, 8, "y", mesh->m_Vertices[vIndex].position.y, true);
-                SerializeItemJSON(fileOut, 8, "z", mesh->m_Vertices[vIndex].position.z, false);
+                SerializeItemJSON(fileOut, 8, "x", mesh->m_vertices[vIndex].position.x, true);
+                SerializeItemJSON(fileOut, 8, "y", mesh->m_vertices[vIndex].position.y, true);
+                SerializeItemJSON(fileOut, 8, "z", mesh->m_vertices[vIndex].position.z, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
 
                 SerializeBeginObjectJSON(fileOut, 7, "Normal", CURLY_BRACKET_START);
-                SerializeItemJSON(fileOut, 8, "x", mesh->m_Vertices[vIndex].normal.x, true);
-                SerializeItemJSON(fileOut, 8, "y", mesh->m_Vertices[vIndex].normal.y, true);
-                SerializeItemJSON(fileOut, 8, "z", mesh->m_Vertices[vIndex].normal.z, false);
+                SerializeItemJSON(fileOut, 8, "x", mesh->m_vertices[vIndex].normal.x, true);
+                SerializeItemJSON(fileOut, 8, "y", mesh->m_vertices[vIndex].normal.y, true);
+                SerializeItemJSON(fileOut, 8, "z", mesh->m_vertices[vIndex].normal.z, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
 
                 SerializeBeginObjectJSON(fileOut, 7, "TextureUV", CURLY_BRACKET_START);
-                SerializeItemJSON(fileOut, 8, "x", mesh->m_Vertices[vIndex].textureUV.x, true);
-                SerializeItemJSON(fileOut, 8, "y", mesh->m_Vertices[vIndex].textureUV.y, false);
+                SerializeItemJSON(fileOut, 8, "x", mesh->m_vertices[vIndex].textureUV.x, true);
+                SerializeItemJSON(fileOut, 8, "y", mesh->m_vertices[vIndex].textureUV.y, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, false);
 
-                if (vIndex != mesh->m_Vertices.size()-1)
+                if (vIndex != mesh->m_vertices.size()-1)
                     SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true);
                 else
                     SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, false);
@@ -746,71 +746,71 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
             // Indices
             SerializeBeginObjectJSON(fileOut, 5, "Indices", SQUARE_BRACKET_START);
             for (uint32 indicesIndex = 0;
-                 indicesIndex < mesh->m_Indices.size()-1;
+                 indicesIndex < mesh->m_indices.size()-1;
                  indicesIndex++)
             {
-                SerializeItemNoKeyJSON(fileOut, 6, mesh->m_Indices[indicesIndex], true);
+                SerializeItemNoKeyJSON(fileOut, 6, mesh->m_indices[indicesIndex], true);
             }
             // Last index
-            SerializeItemNoKeyJSON(fileOut, 6, mesh->m_Indices[mesh->m_Indices.size()-1], false);
+            SerializeItemNoKeyJSON(fileOut, 6, mesh->m_indices[mesh->m_indices.size()-1], false);
             SerializeEndJSON(fileOut, 5, SQUARE_BRACKET_END, true); // indices
 
             // Material
             SerializeBeginObjectJSON(fileOut, 5, "Material", CURLY_BRACKET_START);
-            SerializeItemJSON(fileOut, 6, "Name", mesh->m_Material.m_Name, true);
+            SerializeItemJSON(fileOut, 6, "Name", mesh->m_material.m_name, true);
 
             SerializeBeginObjectJSON(fileOut, 6, "Ambient", CURLY_BRACKET_START);
-            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Ambient.x, true);
-            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Ambient.y, true);
-            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Ambient.z, false);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_material.m_ambient.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_material.m_ambient.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_material.m_ambient.z, false);
             SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Ambient
 
             SerializeBeginObjectJSON(fileOut, 6, "Diffuse", CURLY_BRACKET_START);
-            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Diffuse.x, true);
-            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Diffuse.y, true);
-            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Diffuse.z, false);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_material.m_diffuse.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_material.m_diffuse.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_material.m_diffuse.z, false);
             SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Diffuse
 
             SerializeBeginObjectJSON(fileOut, 6, "Specular", CURLY_BRACKET_START);
-            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Specular.x, true);
-            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Specular.y, true);
-            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Specular.z, false);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_material.m_specular.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_material.m_specular.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_material.m_specular.z, false);
             SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Specular
 
             SerializeBeginObjectJSON(fileOut, 6, "Emissive", CURLY_BRACKET_START);
-            SerializeItemJSON(fileOut, 7, "x", mesh->m_Material.m_Emissive.x, true);
-            SerializeItemJSON(fileOut, 7, "y", mesh->m_Material.m_Emissive.y, true);
-            SerializeItemJSON(fileOut, 7, "z", mesh->m_Material.m_Emissive.z, false);
+            SerializeItemJSON(fileOut, 7, "x", mesh->m_material.m_emissive.x, true);
+            SerializeItemJSON(fileOut, 7, "y", mesh->m_material.m_emissive.y, true);
+            SerializeItemJSON(fileOut, 7, "z", mesh->m_material.m_emissive.z, false);
             SerializeEndJSON(fileOut, 6, CURLY_BRACKET_END, true); // Emissive
 
-            SerializeItemJSON(fileOut, 6, "Shininess", mesh->m_Material.m_Shininess, true);
+            SerializeItemJSON(fileOut, 6, "Shininess", mesh->m_material.m_shininess, true);
 
             SerializeBeginObjectJSON(fileOut, 6, "Textures", SQUARE_BRACKET_START);
             for (uint32 textureIndex = 0;
-                 textureIndex < mesh->m_Material.m_Textures.size()-1;
+                 textureIndex < mesh->m_material.m_textures.size()-1;
                  textureIndex++)
             {
                 SerializeBeginJSON(fileOut, 7, CURLY_BRACKET_START);
-                SerializeItemJSON(fileOut, 8, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type, true);
-                SerializeItemJSON(fileOut, 8, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath, false);
+                SerializeItemJSON(fileOut, 8, "Type", mesh->m_material.m_textures[textureIndex].m_type, true);
+                SerializeItemJSON(fileOut, 8, "FilePath", mesh->m_material.m_textures[textureIndex].m_filePath, false);
                 SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, true);
             }
             // Last index
             SerializeBeginJSON(fileOut, 7, CURLY_BRACKET_START);
-            SerializeItemJSON(fileOut, 8, "Type", mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_Type, true);
-            SerializeItemJSON(fileOut, 8, "FilePath", mesh->m_Material.m_Textures[mesh->m_Material.m_Textures.size()-1].m_FilePath, false);
+            SerializeItemJSON(fileOut, 8, "Type", mesh->m_material.m_textures[mesh->m_material.m_textures.size()-1].m_type, true);
+            SerializeItemJSON(fileOut, 8, "FilePath", mesh->m_material.m_textures[mesh->m_material.m_textures.size()-1].m_filePath, false);
             SerializeEndJSON(fileOut, 7, CURLY_BRACKET_END, false);
 
             SerializeEndJSON(fileOut, 6, SQUARE_BRACKET_END, false); // textures
             SerializeEndJSON(fileOut, 5, CURLY_BRACKET_END, false); // material
 
-            if (meshIndex != scene->m_Models[modelIndex].m_Meshes.size()-1)
+            if (meshIndex != scene->m_models[modelIndex].m_meshes.size()-1)
                 SerializeEndJSON(fileOut, 4, CURLY_BRACKET_END, true); // mesh
             else
                 SerializeEndJSON(fileOut, 4, CURLY_BRACKET_END, false); // mesh
         }
         SerializeEndJSON(fileOut, 3, SQUARE_BRACKET_END, false); // model
-        if (modelIndex != scene->m_Models.size()-1)
+        if (modelIndex != scene->m_models.size()-1)
             SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, true); // model
         else
             SerializeEndJSON(fileOut, 2, CURLY_BRACKET_END, false); // model
@@ -947,8 +947,8 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
 
     std::string currentScope = "";
 
-    if (scene->m_Models.size() > 0)
-        scene->m_Models.clear();
+    if (scene->m_models.size() > 0)
+        scene->m_models.clear();
 
     // Parse each line and de-serialize data
     while(!fileStream.eof())
@@ -1054,69 +1054,69 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    scene->m_Camera.m_Position[0] = value;
+                    scene->m_camera.m_position[0] = value;
                 else if (key.compare("y") == 0)
-                    scene->m_Camera.m_Position[1] = value;
+                    scene->m_camera.m_position[1] = value;
                 else if (key.compare("z") == 0)
-                    scene->m_Camera.m_Position[2] = value;
+                    scene->m_camera.m_position[2] = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Front") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    scene->m_Camera.m_Front[0] = value;
+                    scene->m_camera.m_front[0] = value;
                 else if (key.compare("y") == 0)
-                    scene->m_Camera.m_Front[1] = value;
+                    scene->m_camera.m_front[1] = value;
                 else if (key.compare("z") == 0)
-                    scene->m_Camera.m_Front[2] = value;
+                    scene->m_camera.m_front[2] = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Up") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    scene->m_Camera.m_Up[0] = value;
+                    scene->m_camera.m_up[0] = value;
                 else if (key.compare("y") == 0)
-                    scene->m_Camera.m_Up[1] = value;
+                    scene->m_camera.m_up[1] = value;
                 else if (key.compare("z") == 0)
-                    scene->m_Camera.m_Up[2] = value;
+                    scene->m_camera.m_up[2] = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Right") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    scene->m_Camera.m_Right[0] = value;
+                    scene->m_camera.m_right[0] = value;
                 else if (key.compare("y") == 0)
-                    scene->m_Camera.m_Right[1] = value;
+                    scene->m_camera.m_right[1] = value;
                 else if (key.compare("z") == 0)
-                    scene->m_Camera.m_Right[2] = value;
+                    scene->m_camera.m_right[2] = value;
                 stack->Pop();
             }
             else if (key.compare("Yaw") == 0)
             {
-                scene->m_Camera.m_Yaw = std::stof(tokens[1]);
+                scene->m_camera.m_yaw = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("Pitch") == 0)
             {
-                scene->m_Camera.m_Pitch = std::stof(tokens[1]);
+                scene->m_camera.m_pitch = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("Fov") == 0)
             {
-                scene->m_Camera.m_Fov = std::stof(tokens[1]);
+                scene->m_camera.m_fov = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("MovementSpeed") == 0)
             {
-                scene->m_Camera.m_MovementSpeed = std::stof(tokens[1]);
+                scene->m_camera.m_movementSpeed = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("Sensitivity") == 0)
             {
-                scene->m_Camera.m_Sensitivity = std::stof(tokens[1]);
+                scene->m_camera.m_sensitivity = std::stof(tokens[1]);
                 stack->Pop();
             }            
         }   // end of Camera
@@ -1139,7 +1139,7 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
                      (key.compare("}") == 0)
                 )
             {
-                tempMaterial.m_Textures.push_back(tempTexture);
+                tempMaterial.m_textures.push_back(tempTexture);
                 stack->Pop();
             }
             else if ((stack->Parent().compare("Textures") == 0) &&
@@ -1153,7 +1153,7 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
                     )
             {
                 meshMaterials.push_back(tempMaterial);
-                tempMaterial.m_Textures.clear();
+                tempMaterial.m_textures.clear();
                 stack->Pop(2);
             }
             else if ((stack->Parent().compare("Vertices") == 0) &&
@@ -1224,69 +1224,69 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
             else if ((key.compare("Name") == 0) && 
                      (stack->Parent().compare("Material") == 0))
             {
-                tempMaterial.m_Name = tokens[1];
+                tempMaterial.m_name = tokens[1];
                 stack->Pop();
             }
             else if (stack->Parent().compare("Ambient") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    tempMaterial.m_Ambient.x = value;
+                    tempMaterial.m_ambient.x = value;
                 else if (key.compare("y") == 0)
-                    tempMaterial.m_Ambient.y = value;
+                    tempMaterial.m_ambient.y = value;
                 else if (key.compare("z") == 0)
-                    tempMaterial.m_Ambient.z = value;
+                    tempMaterial.m_ambient.z = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Diffuse") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    tempMaterial.m_Diffuse.x = value;
+                    tempMaterial.m_diffuse.x = value;
                 else if (key.compare("y") == 0)
-                    tempMaterial.m_Diffuse.y = value;
+                    tempMaterial.m_diffuse.y = value;
                 else if (key.compare("z") == 0)
-                    tempMaterial.m_Diffuse.z = value;
+                    tempMaterial.m_diffuse.z = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Specular") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    tempMaterial.m_Specular.x = value;
+                    tempMaterial.m_specular.x = value;
                 else if (key.compare("y") == 0)
-                    tempMaterial.m_Specular.y = value;
+                    tempMaterial.m_specular.y = value;
                 else if (key.compare("z") == 0)
-                    tempMaterial.m_Specular.z = value;
+                    tempMaterial.m_specular.z = value;
                 stack->Pop();
             }
             else if (stack->Parent().compare("Emissive") == 0)
             {
                 real32 value = std::stof(tokens[1]);
                 if (key.compare("x") == 0)
-                    tempMaterial.m_Emissive.x = value;
+                    tempMaterial.m_emissive.x = value;
                 else if (key.compare("y") == 0)
-                    tempMaterial.m_Emissive.y = value;
+                    tempMaterial.m_emissive.y = value;
                 else if (key.compare("z") == 0)
-                    tempMaterial.m_Emissive.z = value;
+                    tempMaterial.m_emissive.z = value;
                 stack->Pop();
             }
             else if ((key.compare("Shininess") == 0) && 
                      (stack->Parent().compare("Material") == 0))
             {
-                tempMaterial.m_Shininess = std::stof(tokens[1]);
+                tempMaterial.m_shininess = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if ((key.compare("Type") == 0) && 
                      (stack->Parent().compare("Textures") == 0))
             {
-                tempTexture.m_Type = tokens[1];
+                tempTexture.m_type = tokens[1];
                 stack->Pop();
             }
             else if ((key.compare("FilePath") == 0) && 
                      (stack->Parent().compare("Textures") == 0))
             {
-                tempTexture.m_FilePath = tokens[1];
+                tempTexture.m_filePath = tokens[1];
                 stack->Pop();
             }            
         }   // end of Mesh
@@ -1301,9 +1301,9 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
             for(int32 i = 0; i < meshCount; i++)
             {
                 GraphicsEngine::Mesh mesh{meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i]};
-                model.m_Meshes.push_back(mesh);
+                model.m_meshes.push_back(mesh);
             }
-            scene->m_Models.push_back(model);
+            scene->m_models.push_back(model);
             stack->Pop();
 
             // Reset
@@ -1317,7 +1317,7 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
     } // end of fileStream
     
     delete stack;
-    scene->m_IsModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+    scene->m_isModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
     fileStream.close();
     return true;
 }
@@ -1351,50 +1351,50 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
     SerializeBeginYAML(fileOut, 0, "Camera");
     SerializeItemYAML(fileOut, 1, "Id", id++, YAML_DASH_START);
 
-    SerializeVector3DYAML(fileOut, 1, "Position", scene->m_Camera.m_Position.x, 
-                                                  scene->m_Camera.m_Position.y, 
-                                                  scene->m_Camera.m_Position.z, 
+    SerializeVector3DYAML(fileOut, 1, "Position", scene->m_camera.m_position.x, 
+                                                  scene->m_camera.m_position.y, 
+                                                  scene->m_camera.m_position.z, 
                                                   YAML_DASH_START);
-    SerializeVector3DYAML(fileOut, 1, "Front", scene->m_Camera.m_Front.x, 
-                                               scene->m_Camera.m_Front.y, 
-                                               scene->m_Camera.m_Front.z, 
+    SerializeVector3DYAML(fileOut, 1, "Front", scene->m_camera.m_front.x, 
+                                               scene->m_camera.m_front.y, 
+                                               scene->m_camera.m_front.z, 
                                                YAML_DASH_START);
-    SerializeVector3DYAML(fileOut, 1, "Up", scene->m_Camera.m_Up.x, 
-                                            scene->m_Camera.m_Up.y, 
-                                            scene->m_Camera.m_Up.z, 
+    SerializeVector3DYAML(fileOut, 1, "Up", scene->m_camera.m_up.x, 
+                                            scene->m_camera.m_up.y, 
+                                            scene->m_camera.m_up.z, 
                                             YAML_DASH_START);
-    SerializeVector3DYAML(fileOut, 1, "Right", scene->m_Camera.m_Right.x, 
-                                               scene->m_Camera.m_Right.y, 
-                                               scene->m_Camera.m_Right.z, 
+    SerializeVector3DYAML(fileOut, 1, "Right", scene->m_camera.m_right.x, 
+                                               scene->m_camera.m_right.y, 
+                                               scene->m_camera.m_right.z, 
                                                YAML_DASH_START);
 
-    SerializeItemYAML(fileOut, 1, "Yaw", scene->m_Camera.m_Yaw, YAML_DASH_START);
-    SerializeItemYAML(fileOut, 1, "Pitch", scene->m_Camera.m_Pitch, YAML_DASH_START);
-    SerializeItemYAML(fileOut, 1, "Fov", scene->m_Camera.m_Fov, YAML_DASH_START);
-    SerializeItemYAML(fileOut, 1, "MovementSpeed", scene->m_Camera.m_MovementSpeed, YAML_DASH_START);
-    SerializeItemYAML(fileOut, 1, "Sensitivity", scene->m_Camera.m_Sensitivity, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "Yaw", scene->m_camera.m_yaw, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "Pitch", scene->m_camera.m_pitch, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "Fov", scene->m_camera.m_fov, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "MovementSpeed", scene->m_camera.m_movementSpeed, YAML_DASH_START);
+    SerializeItemYAML(fileOut, 1, "Sensitivity", scene->m_camera.m_sensitivity, YAML_DASH_START);
 
     /////////////////////////////////////
     // Models
     /////////////////////////////////////
 
 
-    for (uint32 modelIndex = 0; modelIndex < scene->m_Models.size(); modelIndex++)
+    for (uint32 modelIndex = 0; modelIndex < scene->m_models.size(); modelIndex++)
     {
         SerializeBeginYAML(fileOut, 0, "Model");
         SerializeItemYAML(fileOut, 1, "Id", id++, YAML_DASH_START);
-        SerializeItemYAML(fileOut, 1, "Size", static_cast<uint32>(scene->m_Models[modelIndex].m_Meshes.size()), YAML_DASH_START);
+        SerializeItemYAML(fileOut, 1, "Size", static_cast<uint32>(scene->m_models[modelIndex].m_meshes.size()), YAML_DASH_START);
 
-        for (uint32 meshIndex = 0; meshIndex < scene->m_Models[modelIndex].m_Meshes.size(); meshIndex++)
+        for (uint32 meshIndex = 0; meshIndex < scene->m_models[modelIndex].m_meshes.size(); meshIndex++)
         {
-            GraphicsEngine::Mesh *mesh = &scene->m_Models[modelIndex].m_Meshes[meshIndex];
+            GraphicsEngine::Mesh *mesh = &scene->m_models[modelIndex].m_meshes[meshIndex];
 
             SerializeBeginYAML(fileOut, 1, "Mesh");
             SerializeItemYAML(fileOut, 2, "Id", id++, YAML_DASH_START);
-            SerializeItemYAML(fileOut, 2, "Name", mesh->m_Name, YAML_DASH_START);
+            SerializeItemYAML(fileOut, 2, "Name", mesh->m_name, YAML_DASH_START);
             
             SerializeBeginYAML(fileOut, 2, "Vertices");
-            for (const auto& vertex : mesh->m_Vertices)
+            for (const auto& vertex : mesh->m_vertices)
             {
                 SerializeVector3DYAML(fileOut, 3, "Position", vertex.position.x, vertex.position.y, vertex.position.z, YAML_DASH_START);
                 SerializeVector3DYAML(fileOut, 3, "Normal", vertex.normal.x, vertex.normal.y, vertex.normal.z, YAML_SPACE_START);
@@ -1404,41 +1404,41 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
             // Indices
             fileOut << "    " << "- Indices: [";
             for (uint32 indicesIndex = 0;
-                 indicesIndex < mesh->m_Indices.size()-1;
+                 indicesIndex < mesh->m_indices.size()-1;
                  indicesIndex++)
             {
-                fileOut << mesh->m_Indices[indicesIndex] << ", ";
+                fileOut << mesh->m_indices[indicesIndex] << ", ";
             }
-            fileOut << mesh->m_Indices[mesh->m_Indices.size()-1];
+            fileOut << mesh->m_indices[mesh->m_indices.size()-1];
             fileOut << "]" << std::endl;
 
             SerializeBeginYAML(fileOut, 2, "Material");
-            SerializeItemYAML(fileOut, 3, "Name", mesh->m_Material.m_Name, YAML_DASH_START);
-            SerializeVector3DYAML(fileOut, 3, "Ambient", mesh->m_Material.m_Ambient.x, 
-                                                         mesh->m_Material.m_Ambient.y, 
-                                                         mesh->m_Material.m_Ambient.z, 
+            SerializeItemYAML(fileOut, 3, "Name", mesh->m_material.m_name, YAML_DASH_START);
+            SerializeVector3DYAML(fileOut, 3, "Ambient", mesh->m_material.m_ambient.x, 
+                                                         mesh->m_material.m_ambient.y, 
+                                                         mesh->m_material.m_ambient.z, 
                                                          YAML_DASH_START);
-            SerializeVector3DYAML(fileOut, 3, "Diffuse", mesh->m_Material.m_Diffuse.x, 
-                                                         mesh->m_Material.m_Diffuse.y, 
-                                                         mesh->m_Material.m_Diffuse.z, 
+            SerializeVector3DYAML(fileOut, 3, "Diffuse", mesh->m_material.m_diffuse.x, 
+                                                         mesh->m_material.m_diffuse.y, 
+                                                         mesh->m_material.m_diffuse.z, 
                                                          YAML_DASH_START);
-            SerializeVector3DYAML(fileOut, 3, "Specular", mesh->m_Material.m_Specular.x, 
-                                                          mesh->m_Material.m_Specular.y, 
-                                                          mesh->m_Material.m_Specular.z, 
+            SerializeVector3DYAML(fileOut, 3, "Specular", mesh->m_material.m_specular.x, 
+                                                          mesh->m_material.m_specular.y, 
+                                                          mesh->m_material.m_specular.z, 
                                                           YAML_DASH_START);
-            SerializeVector3DYAML(fileOut, 3, "Emissive", mesh->m_Material.m_Emissive.x, 
-                                                          mesh->m_Material.m_Emissive.y, 
-                                                          mesh->m_Material.m_Emissive.z, 
+            SerializeVector3DYAML(fileOut, 3, "Emissive", mesh->m_material.m_emissive.x, 
+                                                          mesh->m_material.m_emissive.y, 
+                                                          mesh->m_material.m_emissive.z, 
                                                           YAML_DASH_START);
-            SerializeItemYAML(fileOut, 3, "Shininess", mesh->m_Material.m_Shininess, YAML_DASH_START);
+            SerializeItemYAML(fileOut, 3, "Shininess", mesh->m_material.m_shininess, YAML_DASH_START);
 
             SerializeBeginYAML(fileOut, 3, "Textures");
             for (uint32 textureIndex = 0;
-                 textureIndex < mesh->m_Material.m_Textures.size();
+                 textureIndex < mesh->m_material.m_textures.size();
                  textureIndex++)
             {
-                SerializeItemYAML(fileOut, 4, "Type", mesh->m_Material.m_Textures[textureIndex].m_Type, YAML_DASH_START);
-                SerializeItemYAML(fileOut, 4, "FilePath", mesh->m_Material.m_Textures[textureIndex].m_FilePath, YAML_SPACE_START);
+                SerializeItemYAML(fileOut, 4, "Type", mesh->m_material.m_textures[textureIndex].m_type, YAML_DASH_START);
+                SerializeItemYAML(fileOut, 4, "FilePath", mesh->m_material.m_textures[textureIndex].m_filePath, YAML_SPACE_START);
             }
         }
     }
@@ -1565,8 +1565,8 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
 
     std::string currentScope = "";
 
-    if (scene->m_Models.size() > 0)
-        scene->m_Models.clear();
+    if (scene->m_models.size() > 0)
+        scene->m_models.clear();
 
     // Parse each line and de-serialize data
     while(!fileStream.eof())
@@ -1610,10 +1610,10 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
         if (line.empty())
         {
             // Special case where Mesh ended and nothing is left in file
-            if (!tempMaterial.m_Textures.empty())
+            if (!tempMaterial.m_textures.empty())
             {
                 meshMaterials.push_back(tempMaterial);
-                tempMaterial.m_Textures.clear();
+                tempMaterial.m_textures.clear();
                 stack->Pop(4);
             }
             continue;
@@ -1641,17 +1641,17 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
             stack->Pop();
         }
         // End of Previous Mesh
-        else if (!tokens.empty() && tokens[0].compare("Mesh") == 0 && !tempMaterial.m_Textures.empty())
+        else if (!tokens.empty() && tokens[0].compare("Mesh") == 0 && !tempMaterial.m_textures.empty())
         {
             meshMaterials.push_back(tempMaterial);
-            tempMaterial.m_Textures.clear();
+            tempMaterial.m_textures.clear();
             stack->Pop(3);
         }
         // End of Previous Model
-        else if (!tokens.empty() && tokens[0].compare("Model") == 0 && !tempMaterial.m_Textures.empty())
+        else if (!tokens.empty() && tokens[0].compare("Model") == 0 && !tempMaterial.m_textures.empty())
         {
             meshMaterials.push_back(tempMaterial);
-            tempMaterial.m_Textures.clear();
+            tempMaterial.m_textures.clear();
             stack->Pop(4);
         }
         // Push key on stack
@@ -1685,55 +1685,55 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
         {
             if (key.compare("Position") == 0)
             {
-                scene->m_Camera.m_Position[0] = std::stof(tokens[2]);
-                scene->m_Camera.m_Position[1] = std::stof(tokens[4]);
-                scene->m_Camera.m_Position[2] = std::stof(tokens[6]);
+                scene->m_camera.m_position[0] = std::stof(tokens[2]);
+                scene->m_camera.m_position[1] = std::stof(tokens[4]);
+                scene->m_camera.m_position[2] = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if (key.compare("Front") == 0)
             {
-                scene->m_Camera.m_Front[0] = std::stof(tokens[2]);
-                scene->m_Camera.m_Front[1] = std::stof(tokens[4]);
-                scene->m_Camera.m_Front[2] = std::stof(tokens[6]);
+                scene->m_camera.m_front[0] = std::stof(tokens[2]);
+                scene->m_camera.m_front[1] = std::stof(tokens[4]);
+                scene->m_camera.m_front[2] = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if (key.compare("Up") == 0)
             {
-                scene->m_Camera.m_Up[0] = std::stof(tokens[2]);
-                scene->m_Camera.m_Up[1] = std::stof(tokens[4]);
-                scene->m_Camera.m_Up[2] = std::stof(tokens[6]);
+                scene->m_camera.m_up[0] = std::stof(tokens[2]);
+                scene->m_camera.m_up[1] = std::stof(tokens[4]);
+                scene->m_camera.m_up[2] = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if (key.compare("Right") == 0)
             {
-                scene->m_Camera.m_Right[0] = std::stof(tokens[2]);
-                scene->m_Camera.m_Right[1] = std::stof(tokens[4]);
-                scene->m_Camera.m_Right[2] = std::stof(tokens[6]);
+                scene->m_camera.m_right[0] = std::stof(tokens[2]);
+                scene->m_camera.m_right[1] = std::stof(tokens[4]);
+                scene->m_camera.m_right[2] = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if (key.compare("Yaw") == 0)
             {
-                scene->m_Camera.m_Yaw = std::stof(tokens[1]);
+                scene->m_camera.m_yaw = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("Pitch") == 0)
             {
-                scene->m_Camera.m_Pitch = std::stof(tokens[1]);
+                scene->m_camera.m_pitch = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("Fov") == 0)
             {
-                scene->m_Camera.m_Fov = std::stof(tokens[1]);
+                scene->m_camera.m_fov = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("MovementSpeed") == 0)
             {
-                scene->m_Camera.m_MovementSpeed = std::stof(tokens[1]);
+                scene->m_camera.m_movementSpeed = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if (key.compare("Sensitivity") == 0)
             {
-                scene->m_Camera.m_Sensitivity = std::stof(tokens[1]);
+                scene->m_camera.m_sensitivity = std::stof(tokens[1]);
                 stack->Pop();
 
                 // Last parameter
@@ -1791,57 +1791,57 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
             else if ((key.compare("Name") == 0) && 
                      (stack->Parent().compare("Material") == 0))
             {
-                tempMaterial.m_Name = tokens[1];
+                tempMaterial.m_name = tokens[1];
                 stack->Pop();
             }
             else if (key.compare("Ambient") == 0)
             {
-                tempMaterial.m_Ambient.x = std::stof(tokens[2]);
-                tempMaterial.m_Ambient.y = std::stof(tokens[4]);
-                tempMaterial.m_Ambient.z = std::stof(tokens[6]);
+                tempMaterial.m_ambient.x = std::stof(tokens[2]);
+                tempMaterial.m_ambient.y = std::stof(tokens[4]);
+                tempMaterial.m_ambient.z = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if (key.compare("Diffuse") == 0)
             {
-                tempMaterial.m_Diffuse.x = std::stof(tokens[2]);
-                tempMaterial.m_Diffuse.y = std::stof(tokens[4]);
-                tempMaterial.m_Diffuse.z = std::stof(tokens[6]);
+                tempMaterial.m_diffuse.x = std::stof(tokens[2]);
+                tempMaterial.m_diffuse.y = std::stof(tokens[4]);
+                tempMaterial.m_diffuse.z = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if (key.compare("Specular") == 0)
             {
-                tempMaterial.m_Specular.x = std::stof(tokens[2]);
-                tempMaterial.m_Specular.y = std::stof(tokens[4]);
-                tempMaterial.m_Specular.z = std::stof(tokens[6]);
+                tempMaterial.m_specular.x = std::stof(tokens[2]);
+                tempMaterial.m_specular.y = std::stof(tokens[4]);
+                tempMaterial.m_specular.z = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if (key.compare("Emissive") == 0)
             {
-                tempMaterial.m_Emissive.x = std::stof(tokens[2]);
-                tempMaterial.m_Emissive.y = std::stof(tokens[4]);
-                tempMaterial.m_Emissive.z = std::stof(tokens[6]);
+                tempMaterial.m_emissive.x = std::stof(tokens[2]);
+                tempMaterial.m_emissive.y = std::stof(tokens[4]);
+                tempMaterial.m_emissive.z = std::stof(tokens[6]);
                 stack->Pop();
             }
             else if ((key.compare("Shininess") == 0) && 
                      (stack->Parent().compare("Material") == 0))
             {
-                tempMaterial.m_Shininess = std::stof(tokens[1]);
+                tempMaterial.m_shininess = std::stof(tokens[1]);
                 stack->Pop();
             }
             else if ((key.compare("Type") == 0) && 
                      (stack->Parent().compare("Textures") == 0))
             {
-                tempTexture.m_Type = tokens[1];
+                tempTexture.m_type = tokens[1];
                 stack->Pop();
             }
             else if ((key.compare("FilePath") == 0) && 
                      (stack->Parent().compare("Textures") == 0))
             {
-                tempTexture.m_FilePath = tokens[1];
+                tempTexture.m_filePath = tokens[1];
                 stack->Pop();
 
                 // End of Texture
-                tempMaterial.m_Textures.push_back(tempTexture);
+                tempMaterial.m_textures.push_back(tempTexture);
             }
         }
 
@@ -1855,9 +1855,9 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
             for(int32 i = 0; i < meshCount; i++)
             {
                 GraphicsEngine::Mesh mesh{meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i]};
-                model.m_Meshes.push_back(mesh);
+                model.m_meshes.push_back(mesh);
             }
-            scene->m_Models.push_back(model);
+            scene->m_models.push_back(model);
 
             // Reset
             meshCount = 0;
@@ -1876,13 +1876,13 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
         for (int32 i = 0; i < meshCount; i++)
         {
             GraphicsEngine::Mesh mesh{ meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i] };
-            model.m_Meshes.push_back(mesh);
+            model.m_meshes.push_back(mesh);
         }
-        scene->m_Models.push_back(model);
+        scene->m_models.push_back(model);
     }
 
     delete stack;
-    scene->m_IsModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+    scene->m_isModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
     fileStream.close();
     return true;
 }

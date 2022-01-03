@@ -4,12 +4,12 @@ namespace GraphicsEngine
 {
 
 Texture::Texture()
-    : m_RenderId(0), m_Type(""), m_FilePath("")
+    : m_renderId(0), m_type(""), m_filePath("")
 {
 }
 
 Texture::Texture(const std::string& type, const std::string& filePath)
-    : m_RenderId(0), m_Type(type), m_FilePath(filePath)
+    : m_renderId(0), m_type(type), m_filePath(filePath)
 {
 }
 
@@ -20,13 +20,13 @@ Texture::~Texture()
 void Texture::Bind(uint32 textureIndex) const
 {
     GLCALL(glActiveTexture(GL_TEXTURE0 + textureIndex));
-    GLCALL(glBindTexture(GL_TEXTURE_2D, m_RenderId));
+    GLCALL(glBindTexture(GL_TEXTURE_2D, m_renderId));
 }
 
 void Texture::UnBind() const
 {
     GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
-    GLCALL(glDeleteTextures(1, &m_RenderId));
+    GLCALL(glDeleteTextures(1, &m_renderId));
 }
 
 uint32 Texture::LoadBMPCustom(const char* imagepath)

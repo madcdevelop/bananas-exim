@@ -36,19 +36,19 @@ namespace BananasEditor
 
         #endregion
 
-        IntPtr RenderScene = IntPtr.Zero;
+        IntPtr m_renderScene = IntPtr.Zero;
 
         public Scene()
         {
             CreateScene();
-            RenderScene = GetScene();
+            m_renderScene = GetScene();
         }
 
         public void NewScene()
         {
             SceneShutdown();
             CreateScene();
-            RenderScene = GetScene();
+            m_renderScene = GetScene();
         }
 
         public void SaveScene(string fileName)

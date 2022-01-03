@@ -9,29 +9,29 @@
 // Windows stuff
 HWND            g_windowHandle = NULL;
 HINSTANCE       g_hInstance    = NULL;
-const wchar_t*  g_WindowTitle  = TEXT("Bananas Engine Test");
-DWORD           g_WindowStyle  = WS_VISIBLE;
-bool            g_Running      = false;
-int32           g_Width        = 800;
-int32           g_Height       = 600;
+const wchar_t*  g_windowTitle  = TEXT("Bananas Engine Test");
+DWORD           g_windowStyle  = WS_VISIBLE;
+bool            g_running      = false;
+int32           g_width        = 800;
+int32           g_height       = 600;
 
 // Movement
-bool  g_FirstResize = false;
-bool  g_FirstMouse = false;
-real32 g_LastX = 0.0f;
-real32 g_LastY = 0.0f;
+bool  g_firstResize = false;
+bool  g_firstMouse = false;
+real32 g_lastX = 0.0f;
+real32 g_lastY = 0.0f;
 
 // Timestep
-real32 g_DeltaTime = 0.0f;
+real32 g_deltaTime = 0.0f;
 
 // Graphics
-GraphicsEngine::Renderer* g_Renderer = NULL;
+GraphicsEngine::Renderer* g_renderer = NULL;
 // TODO(neil): replace with interface RenderDevice
-GraphicsEngine::RenderDeviceOpenGL* g_RenderDevice = NULL;
-GraphicsEngine::Scene* g_Scene = NULL;
+GraphicsEngine::RenderDeviceOpenGL* g_renderDevice = NULL;
+GraphicsEngine::Scene* g_scene = NULL;
 
 // Core
-CoreEngine::Timestep* g_Timestep = NULL;
+CoreEngine::Timestep* g_timestep = NULL;
 
 // Functions
 LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);
@@ -66,22 +66,22 @@ WinMain(HINSTANCE hInstance,
     if(!RegisterClass(&wc)) MessageBoxA(NULL, "The window class failed to register.", "Error", 0);
 
     // Adjust Window Rect for Client Size
-    RECT windowRect = {0, 0, (LONG)g_Width, (LONG)g_Height};
-    AdjustWindowRect((LPRECT)&wc, g_WindowStyle, FALSE);
+    RECT windowRect = {0, 0, (LONG)g_width, (LONG)g_height};
+    AdjustWindowRect((LPRECT)&wc, g_windowStyle, FALSE);
     int32 width  = windowRect.right - windowRect.left;
     int32 height = windowRect.bottom - windowRect.top;
     int32 x = GetSystemMetrics(SM_CXSCREEN)/2 - width/2;
     int32 y = GetSystemMetrics(SM_CYSCREEN)/2 - height/2;
 
     // Create Window
-    g_WindowStyle |= windowHandle ? WS_CHILD : WS_OVERLAPPEDWINDOW;
-    windowHandle = CreateWindow(wc.lpszClassName, g_WindowTitle, g_WindowStyle, x, y, width, height, windowHandle, NULL, hInstance, NULL);
+    g_windowStyle |= windowHandle ? WS_CHILD : WS_OVERLAPPEDWINDOW;
+    windowHandle = CreateWindow(wc.lpszClassName, g_windowTitle, g_windowStyle, x, y, width, height, windowHandle, NULL, hInstance, NULL);
     if(!windowHandle) MessageBoxA(NULL, "Failed to create window.", "Error", 0);
 
     // Show Window
     if (windowHandle) {
-        SetWindowLongPtr(windowHandle, GWL_STYLE, g_WindowStyle);
-        ShowWindow(windowHandle, g_WindowStyle);
+        SetWindowLongPtr(windowHandle, GWL_STYLE, g_windowStyle);
+        ShowWindow(windowHandle, g_windowStyle);
     }
 
     g_windowHandle = windowHandle;
@@ -89,33 +89,33 @@ WinMain(HINSTANCE hInstance,
     // Renderer startup (program startup) init renderer and device
     ProgramStartup();
 
-    g_Timestep = new CoreEngine::Timestep;
-    g_Timestep->StartCounter();
+    g_timestep = new CoreEngine::Timestep;
+    g_timestep->StartCounter();
     
-    g_Running = true;
-    while(g_Running)
+    g_running = true;
+    while(g_running)
     {
         MSG message;
         while(PeekMessage(&message, NULL, NULL, NULL, PM_REMOVE))
         {
             if(message.message == WM_QUIT)
             {
-                g_Running = false;
+                g_running = false;
             }
 
             TranslateMessage(&message);
             DispatchMessage(&message);
         }
         
-        if(g_RenderDevice)
+        if(g_renderDevice)
         {
-            if(g_RenderDevice->m_Running)
+            if(g_renderDevice->m_running)
             {
-                g_RenderDevice->Render();
+                g_renderDevice->Render();
             }
         }
 
-        g_DeltaTime = g_Timestep->GetTime();
+        g_deltaTime = g_timestep->GetTime();
     }
 
     ProgramShutdown();
@@ -142,25 +142,25 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM 
                 }
             }
             else {
-                g_FirstMouse = true;
+                g_firstMouse = true;
             }
         } break;
     case WM_SIZE:
         {
             // skip first call to resize window
-            if (g_FirstResize) g_RenderDevice->Resize();
-            else g_FirstResize = true;
+            if (g_firstResize) g_renderDevice->Resize();
+            else g_firstResize = true;
             
             return 0;
         } break;
     case WM_CLOSE:
         {
-            g_Running = false;
+            g_running = false;
             return 0;
         } break;
     case WM_DESTROY:
         {
-            g_Running = false;
+            g_running = false;
             PostQuitMessage(0);
             return 1;
         } break;
@@ -173,74 +173,74 @@ LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM 
 void CameraKeyboardCallback()
 {
     if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, g_DeltaTime);
+        g_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, g_deltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, g_DeltaTime);
+        g_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, g_deltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, g_DeltaTime);
+        g_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, g_deltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-        g_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, g_DeltaTime);
+        g_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, g_deltaTime);
 }
 
 void CameraMouseCallback(const POINT& pos)
 {
-    if(g_FirstMouse)
+    if(g_firstMouse)
     {
-        g_LastX = (real32)pos.x;
-        g_LastY = (real32)pos.y;
-        g_FirstMouse = false;
+        g_lastX = (real32)pos.x;
+        g_lastY = (real32)pos.y;
+        g_firstMouse = false;
     }
 
-    real32 xoffset = (real32)pos.x - g_LastX;
-    real32 yoffset = g_LastY - (real32)pos.y;
-    g_LastX = (real32)pos.x;
-    g_LastY = (real32)pos.y;
+    real32 xoffset = (real32)pos.x - g_lastX;
+    real32 yoffset = g_lastY - (real32)pos.y;
+    g_lastX = (real32)pos.x;
+    g_lastY = (real32)pos.y;
 
-    g_Scene->m_Camera.MouseMovement(xoffset, yoffset);
+    g_scene->m_camera.MouseMovement(xoffset, yoffset);
 }
 
 HRESULT ProgramStartup()
 {
     // Initialize Renderer
-    g_Renderer = new GraphicsEngine::Renderer{g_hInstance};
-    g_Renderer->CreateRenderDevice(g_RenderDevice);
+    g_renderer = new GraphicsEngine::Renderer{g_hInstance};
+    g_renderer->CreateRenderDevice(g_renderDevice);
     
     // Initialize RenderDevice
-    g_RenderDevice = g_Renderer->m_Device;
-    g_RenderDevice->m_hWnd    = g_windowHandle;
-    g_RenderDevice->m_Width   = g_Width;
-    g_RenderDevice->m_Height  = g_Height;
-    g_RenderDevice->m_Running = true;
-    g_RenderDevice->Init();
+    g_renderDevice = g_renderer->m_device;
+    g_renderDevice->m_hWnd    = g_windowHandle;
+    g_renderDevice->m_width   = g_width;
+    g_renderDevice->m_height  = g_height;
+    g_renderDevice->m_running = true;
+    g_renderDevice->Init();
 
     // Initialize Scene
-    g_Scene = new GraphicsEngine::Scene();
-    g_RenderDevice->m_Scene = g_Scene;
+    g_scene = new GraphicsEngine::Scene();
+    g_renderDevice->m_scene = g_scene;
 
     // Import and Export
-    g_Scene->LoadModels("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill.obj");
-    g_Scene->ExportModels("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill_export.obj");
+    g_scene->LoadModels("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill.obj");
+    g_scene->ExportModels("C:\\Code\\bananas-exim\\Content\\Models\\minecraft_hill_export.obj");
 
     return S_OK;
 }
 
 HRESULT ProgramShutdown()
 {
-    if (g_Timestep)
+    if (g_timestep)
     {
-        delete g_Timestep;
-        g_Timestep = NULL;
+        delete g_timestep;
+        g_timestep = NULL;
     }
 
-    if(g_RenderDevice)
+    if(g_renderDevice)
     {
-        g_RenderDevice->Shutdown();
+        g_renderDevice->Shutdown();
     }
 
-    if (g_Renderer)
+    if (g_renderer)
     {
-        delete g_Renderer;
-        g_Renderer = NULL;
+        delete g_renderer;
+        g_renderer = NULL;
     }
 
     return S_OK;

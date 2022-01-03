@@ -4,9 +4,9 @@ namespace GraphicsEngine
 {
 
 Camera::Camera(glm::vec3 position, real32 yaw, real32 pitch)
-    : m_Position(position), m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
-      m_Up(glm::vec3(0.0f, 1.0f, 0.0f)), m_Yaw(yaw), m_Pitch(pitch),
-      m_Fov(45.0f), m_MovementSpeed(0.02f), m_Sensitivity(0.1f)
+    : m_position(position), m_front(glm::vec3(0.0f, 0.0f, -1.0f)),
+      m_up(glm::vec3(0.0f, 1.0f, 0.0f)), m_yaw(yaw), m_pitch(pitch),
+      m_fov(45.0f), m_movementSpeed(0.02f), m_sensitivity(0.1f)
 {
     UpdateCameraVectors();
 }
@@ -17,30 +17,30 @@ Camera::~Camera()
 
 void Camera::KeyboardMovement(CameraMovement direction, real32 deltaTime)
 {
-    real32 velocity = m_MovementSpeed * deltaTime;
+    real32 velocity = m_movementSpeed * deltaTime;
     if(direction == FORWARD)
-        m_Position += velocity * m_Front;
+        m_position += velocity * m_front;
     if(direction == BACKWARD)
-        m_Position -= velocity * m_Front;
+        m_position -= velocity * m_front;
     if(direction == LEFT)
-        m_Position -= velocity * m_Right;
+        m_position -= velocity * m_right;
     if(direction == RIGHT)
-        m_Position += velocity * m_Right;
+        m_position += velocity * m_right;
 }
 
 void Camera::MouseMovement(real32 xoffset, real32 yoffset)
 {
-    xoffset *= m_Sensitivity;
-    yoffset *= m_Sensitivity;
+    xoffset *= m_sensitivity;
+    yoffset *= m_sensitivity;
 
-    m_Yaw   += xoffset;
-    m_Pitch += yoffset;
+    m_yaw   += xoffset;
+    m_pitch += yoffset;
 
     // if pitch is out of bounds, screen doesn't get flipped
-    if(m_Pitch > 89.0f)
-        m_Pitch = 89.0f;
-    if(m_Pitch < -89.0f)
-        m_Pitch = -89.0f;
+    if(m_pitch > 89.0f)
+        m_pitch = 89.0f;
+    if(m_pitch < -89.0f)
+        m_pitch = -89.0f;
 
     UpdateCameraVectors();
 }
@@ -48,12 +48,12 @@ void Camera::MouseMovement(real32 xoffset, real32 yoffset)
 void Camera::UpdateCameraVectors()
 {
     glm::vec3 direction;
-    direction.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-    direction.y = sin(glm::radians(m_Pitch));
-    direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+    direction.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    direction.y = sin(glm::radians(m_pitch));
+    direction.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
 
-    m_Front = glm::normalize(direction);
-    m_Right = glm::normalize(glm::cross(m_Front, m_Up));
+    m_front = glm::normalize(direction);
+    m_right = glm::normalize(glm::cross(m_front, m_up));
 }
 
 

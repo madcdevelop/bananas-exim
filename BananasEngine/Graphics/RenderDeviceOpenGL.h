@@ -19,13 +19,13 @@ public:
     HWND    m_hWnd;
     HDC     m_hDeviceContext;
     HGLRC   m_hRenderContext;
-    UINT    m_Width;
-    UINT    m_Height;
-    bool    m_Running;
+    UINT    m_width;
+    UINT    m_height;
+    bool    m_running;
 
-    Scene*  m_Scene;
-    std::thread m_LoadDataModelThread;
-    int32 m_MeshTexturesLoaded = 0;
+    Scene*  m_scene;
+    std::thread m_loadDataModelThread;
+    int32 m_meshTexturesLoaded = 0;
 
 public:
     RenderDeviceOpenGL();

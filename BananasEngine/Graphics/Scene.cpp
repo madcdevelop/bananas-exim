@@ -3,27 +3,29 @@
 #include "Importer.h"
 #include "Exporter.h"
 
+
+
+namespace GraphicsEngine
+{
+
 // Render data
-glm::vec3 g_PointLightPositions[] = {
+glm::vec3 g_pointLightPositions[] = {
     glm::vec3(0.0f, 5.0f, 0.0f),
     glm::vec3(-5.0f, 5.0f, -5.0f),
     glm::vec3(-5.0f, 5.0f, 0.0f),
     glm::vec3(0.0f, 5.0f, -5.0f)
 };
-const uint32 g_PointLightsCount = sizeof(g_PointLightPositions) / sizeof(*g_PointLightPositions);
+const uint32 g_pointLightsCount = sizeof(g_pointLightPositions) / sizeof(*g_pointLightPositions);
 
-const real32 g_Constant  = 1.0f;
-const real32 g_Linear    = 0.09f;
-const real32 g_Quadratic = 0.032f;
-
-namespace GraphicsEngine
-{
+const real32 g_constant = 1.0f;
+const real32 g_linear = 0.09f;
+const real32 g_quadratic = 0.032f;
 
 Scene::Scene()
-    : m_Camera(glm::vec3(5.0f, 10.0f, 10.0f), -120.0f, -30.0f),
-      m_Shader1("../../../Content/Shaders/test_vs.glsl", 
+    : m_camera(glm::vec3(5.0f, 10.0f, 10.0f), -120.0f, -30.0f),
+      m_shader1("../../../Content/Shaders/test_vs.glsl", 
                 "../../../Content/Shaders/test_fs.glsl"),
-      m_ShaderLight("../../../Content/Shaders/lighting_vs.glsl", 
+      m_shaderLight("../../../Content/Shaders/lighting_vs.glsl", 
                     "../../../Content/Shaders/lighting_fs.glsl")
 {
 }
@@ -36,31 +38,31 @@ Scene::~Scene()
 void Scene::CreateImportThread(const std::string& fileName)
 {
     OutputDebugString(L"INFO\t\tThread Started!\n");
-    m_ImportThread = std::thread(&Scene::LoadModels, this, fileName);
+    m_importThread = std::thread(&Scene::LoadModels, this, fileName);
     OutputDebugString(L"INFO\t\tThread Detached!\n");
-    m_ImportThread.detach();
+    m_importThread.detach();
 }
 
 void Scene::LoadModels(const std::string fileName)
 {
-    if(m_IsModelLoaded == ModelLoadState::DATA_LOADED)
-        m_IsModelLoaded = ModelLoadState::NOT_LOADED;
+    if(m_isModelLoaded == ModelLoadState::DATA_LOADED)
+        m_isModelLoaded = ModelLoadState::NOT_LOADED;
 
     // Clear Scene for next import
-    if(!m_Models.empty())
+    if(!m_models.empty())
     {
-        m_Models.clear();
+        m_models.clear();
     }
 
     Model model1;
     model1.LoadModel(fileName);
-    m_Models.push_back(model1);
+    m_models.push_back(model1);
 
     Model lightCube;
     lightCube.LoadModel("C:\\Code\\bananas-exim\\Content\\Models\\cube_example_triangle.obj");
-    m_Models.push_back(lightCube);
+    m_models.push_back(lightCube);
 
-    m_IsModelLoaded = ModelLoadState::FILE_LOADED;
+    m_isModelLoaded = ModelLoadState::FILE_LOADED;
 
     OutputDebugString(L"INFO\t\tThread Ended!\n");
 }
@@ -68,49 +70,49 @@ void Scene::LoadModels(const std::string fileName)
 void Scene::ExportModels(const std::string& fileName)
 {
     Exporter exporter;
-    exporter.ExportModel(fileName, m_Models);
+    exporter.ExportModel(fileName, m_models);
 }
 
 
 void Scene::Draw(real32 screenWidth, real32 screenHeight)
 {
     // Textured cube
-    m_Shader1.UseProgram();
-    m_Shader1.SetVec3("viewPos", m_Camera.m_Position);
+    m_shader1.UseProgram();
+    m_shader1.SetVec3("viewPos", m_camera.m_position);
 
     // Directional light properties
-    m_Shader1.SetVec3("dirLight.direction",  m_Camera.m_Front);
-    m_Shader1.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-    m_Shader1.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-    m_Shader1.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+    m_shader1.SetVec3("dirLight.direction",  m_camera.m_front);
+    m_shader1.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+    m_shader1.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+    m_shader1.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
     // Point light properties
-    for(uint32 i = 0; i < g_PointLightsCount; i++)
+    for(uint32 i = 0; i < g_pointLightsCount; i++)
     {
         std::string index = std::to_string(i);
-        m_Shader1.SetVec3("pointLights[" + index + "].position", g_PointLightPositions[0]);
-        m_Shader1.SetVec3("pointLights[" + index + "].ambient", 0.05f, 0.05f, 0.05f);
-        m_Shader1.SetVec3("pointLights[" + index + "].diffuse", 0.8f, 0.8f, 0.8f);
-        m_Shader1.SetVec3("pointLights[" + index + "].specular", 1.0f, 1.0f, 1.0f);
-        m_Shader1.SetFloat("pointLights[" + index + "].constant", g_Constant);
-        m_Shader1.SetFloat("pointLights[" + index + "].linear", g_Linear);
-        m_Shader1.SetFloat("pointLights[" + index + "].quadratic", g_Quadratic);
+        m_shader1.SetVec3("pointLights[" + index + "].position", g_pointLightPositions[0]);
+        m_shader1.SetVec3("pointLights[" + index + "].ambient", 0.05f, 0.05f, 0.05f);
+        m_shader1.SetVec3("pointLights[" + index + "].diffuse", 0.8f, 0.8f, 0.8f);
+        m_shader1.SetVec3("pointLights[" + index + "].specular", 1.0f, 1.0f, 1.0f);
+        m_shader1.SetFloat("pointLights[" + index + "].constant", g_constant);
+        m_shader1.SetFloat("pointLights[" + index + "].linear", g_linear);
+        m_shader1.SetFloat("pointLights[" + index + "].quadratic", g_quadratic);
     }
 
     // Spot light properties
-    m_Shader1.SetVec3("spotLight.position", m_Camera.m_Position);
-    m_Shader1.SetVec3("spotLight.direction", m_Camera.m_Front);
-    m_Shader1.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-    m_Shader1.SetVec3("spotLight.diffuse", 0.8f, 0.8f, 0.8f);
-    m_Shader1.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-    m_Shader1.SetFloat("spotLight.cutoff", glm::cos(glm::radians(12.5f)));
-    m_Shader1.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
-    m_Shader1.SetFloat("spotLight.constant", g_Constant);
-    m_Shader1.SetFloat("spotLight.linear", g_Linear);
-    m_Shader1.SetFloat("spotLight.quadratic", g_Quadratic);
+    m_shader1.SetVec3("spotLight.position", m_camera.m_position);
+    m_shader1.SetVec3("spotLight.direction", m_camera.m_front);
+    m_shader1.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+    m_shader1.SetVec3("spotLight.diffuse", 0.8f, 0.8f, 0.8f);
+    m_shader1.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+    m_shader1.SetFloat("spotLight.cutoff", glm::cos(glm::radians(12.5f)));
+    m_shader1.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
+    m_shader1.SetFloat("spotLight.constant", g_constant);
+    m_shader1.SetFloat("spotLight.linear", g_linear);
+    m_shader1.SetFloat("spotLight.quadratic", g_quadratic);
 
     // Camera
-    glm::mat4 view = glm::lookAt(m_Camera.m_Position, m_Camera.m_Position + m_Camera.m_Front, m_Camera.m_Up);
+    glm::mat4 view = glm::lookAt(m_camera.m_position, m_camera.m_position + m_camera.m_front, m_camera.m_up);
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), screenWidth/screenHeight, 0.1f, 100.0f);
 
     // World transformation
@@ -121,24 +123,24 @@ void Scene::Draw(real32 screenWidth, real32 screenHeight)
     // Render Model
     glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
     glm::mat4 mvp = projection * view * model;
-    m_Shader1.SetMatrix4("model", GL_FALSE, model);
-    m_Shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
-    m_Shader1.SetMatrix4("MVP", GL_FALSE, mvp);
+    m_shader1.SetMatrix4("model", GL_FALSE, model);
+    m_shader1.SetMatrix3("normalMatrix", GL_FALSE, normalMatrix);
+    m_shader1.SetMatrix4("MVP", GL_FALSE, mvp);
     // TODO: replace with function to draw multiple models from scene
-    m_Models[0].Draw(m_Shader1);
+    m_models[0].Draw(m_shader1);
 
     // Render Lights
-    m_ShaderLight.UseProgram();
+    m_shaderLight.UseProgram();
 
-    for(uint32 i = 0; i < g_PointLightsCount; i++)
+    for(uint32 i = 0; i < g_pointLightsCount; i++)
     {
         glm::mat4 lightModel = glm::mat4(1.0f);
-        lightModel = glm::translate(lightModel, g_PointLightPositions[i]);
+        lightModel = glm::translate(lightModel, g_pointLightPositions[i]);
         lightModel = glm::scale(lightModel, glm::vec3(0.2f));
         glm::mat4 lightMVP = projection * view * lightModel;
-        m_ShaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
+        m_shaderLight.SetMatrix4("MVP", GL_FALSE, lightMVP);
         // TODO: replace with function to draw multiple models from scene
-        m_Models[1].Draw(m_ShaderLight);
+        m_models[1].Draw(m_shaderLight);
     }
 }
 

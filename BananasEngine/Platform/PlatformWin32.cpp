@@ -18,18 +18,18 @@ namespace PlatformEngine
 
 PlatformWin32::PlatformWin32(HINSTANCE hInstance, HWND hwnd)
     : m_hInstance(hInstance), m_hWnd(hwnd), m_hDeviceContext(NULL), m_hRenderContext(NULL), 
-      m_Width(1280), m_Height(720), m_WindowTitle(L"Bananas Export/Import"), 
-      m_WindowStyle(WS_VISIBLE), m_Renderer(NULL), m_RenderDevice(NULL)
+      m_width(1280), m_height(720), m_windowTitle(L"Bananas Export/Import"), 
+      m_windowStyle(WS_VISIBLE), m_renderer(NULL), m_renderDevice(NULL)
 {
     g_PlatformWin32 = this;
-    m_Timestep = new CoreEngine::Timestep();
-    m_Timestep->StartCounter();
+    m_timestep = new CoreEngine::Timestep();
+    m_timestep->StartCounter();
 }
 
 PlatformWin32::~PlatformWin32()
 {
-    delete m_Timestep;
-    delete m_Renderer;
+    delete m_timestep;
+    delete m_renderer;
 }
 
 bool PlatformWin32::Win32CreateWindow()
@@ -44,16 +44,16 @@ bool PlatformWin32::Win32CreateWindow()
 
     // TODO(neil): Move this section out of function and into EngineDll.
     // Initialize Renderer
-    m_Renderer = new GraphicsEngine::Renderer{m_hInstance};
-    m_Renderer->CreateRenderDevice(m_RenderDevice);
+    m_renderer = new GraphicsEngine::Renderer{m_hInstance};
+    m_renderer->CreateRenderDevice(m_renderDevice);
 
     // Initialize RenderDevice
-    m_RenderDevice = m_Renderer->m_Device;
-    m_RenderDevice->m_hWnd    = m_hWnd;
-    m_RenderDevice->m_Width   = m_Width;
-    m_RenderDevice->m_Height  = m_Height;
-    m_RenderDevice->m_Running = true;
-    m_RenderDevice->Init();
+    m_renderDevice = m_renderer->m_device;
+    m_renderDevice->m_hWnd    = m_hWnd;
+    m_renderDevice->m_width   = m_width;
+    m_renderDevice->m_height  = m_height;
+    m_renderDevice->m_running = true;
+    m_renderDevice->Init();
 
     return true;    
 }
@@ -76,22 +76,22 @@ bool PlatformWin32::Init()
     if(!RegisterClass(&wc)) MessageBoxA(NULL, "The window class failed to register.", "Error", 0);
 
     // Adjust Window Rect for Client Size
-    RECT windowRect = {0, 0, (LONG)m_Width, (LONG)m_Height};
-    AdjustWindowRect((LPRECT)&wc, m_WindowStyle, FALSE);
+    RECT windowRect = {0, 0, (LONG)m_width, (LONG)m_height};
+    AdjustWindowRect((LPRECT)&wc, m_windowStyle, FALSE);
     int32 width  = windowRect.right - windowRect.left;
     int32 height = windowRect.bottom - windowRect.top;
     int32 x = GetSystemMetrics(SM_CXSCREEN)/2 - width/2;
     int32 y = GetSystemMetrics(SM_CYSCREEN)/2 - height/2;
 
     // Create Window
-    m_WindowStyle |=  m_hWnd ? WS_CHILD : WS_OVERLAPPEDWINDOW;
-    m_hWnd = CreateWindow(wc.lpszClassName, m_WindowTitle, m_WindowStyle, x, y, width, height, m_hWnd, NULL, m_hInstance, NULL);
+    m_windowStyle |=  m_hWnd ? WS_CHILD : WS_OVERLAPPEDWINDOW;
+    m_hWnd = CreateWindow(wc.lpszClassName, m_windowTitle, m_windowStyle, x, y, width, height, m_hWnd, NULL, m_hInstance, NULL);
     if(!m_hWnd) MessageBoxA(NULL, "Failed to create window.", "Error", 0);
 
     // Show Window
     if (m_hWnd) {
-        SetWindowLongPtr(m_hWnd, GWL_STYLE, m_WindowStyle);
-        ShowWindow(m_hWnd, m_WindowStyle);
+        SetWindowLongPtr(m_hWnd, GWL_STYLE, m_windowStyle);
+        ShowWindow(m_hWnd, m_windowStyle);
     }
 
     return true;
@@ -105,12 +105,12 @@ int32 PlatformWin32::Run()
         TranslateMessage(&message);
         DispatchMessage(&message);
     }
-    if(m_RenderDevice)
+    if(m_renderDevice)
     {
-        m_RenderDevice->Render();
+        m_renderDevice->Render();
     }
 
-    m_DeltaTime = m_Timestep->GetTime();
+    m_deltaTime = m_timestep->GetTime();
     
     return 0;
 }
@@ -133,7 +133,7 @@ LRESULT PlatformWin32::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
                 }
             }
             else {
-                m_FirstMouse = true;
+                m_firstMouse = true;
             }
         } break;
     case WM_SIZE:
@@ -159,30 +159,30 @@ LRESULT PlatformWin32::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 void PlatformWin32::CameraKeyboardCallback()
 {
     if(GetAsyncKeyState(BANANAS_KEY_W) & 0x8000)
-        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, m_DeltaTime);
+        m_renderDevice->m_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::FORWARD, m_deltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_S) & 0x8000)
-        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, m_DeltaTime);
+        m_renderDevice->m_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::BACKWARD, m_deltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_A) & 0x8000)
-        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, m_DeltaTime);
+        m_renderDevice->m_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::LEFT, m_deltaTime);
     if(GetAsyncKeyState(BANANAS_KEY_D) & 0x8000)
-        m_RenderDevice->m_Scene->m_Camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, m_DeltaTime);
+        m_renderDevice->m_scene->m_camera.KeyboardMovement(GraphicsEngine::CameraMovement::RIGHT, m_deltaTime);
 }
 
 void PlatformWin32::CameraMouseCallback(const POINT& pos)
 {
-    if(m_FirstMouse)
+    if(m_firstMouse)
     {
-        m_LastX = (real32)pos.x;
-        m_LastY = (real32)pos.y;
-        m_FirstMouse = false;
+        m_lastX = (real32)pos.x;
+        m_lastY = (real32)pos.y;
+        m_firstMouse = false;
     }
 
-    real32 xoffset = (real32)pos.x - m_LastX;
-    real32 yoffset = m_LastY - (real32)pos.y;
-    m_LastX = (real32)pos.x;
-    m_LastY = (real32)pos.y;
+    real32 xoffset = (real32)pos.x - m_lastX;
+    real32 yoffset = m_lastY - (real32)pos.y;
+    m_lastX = (real32)pos.x;
+    m_lastY = (real32)pos.y;
 
-    m_RenderDevice->m_Scene->m_Camera.MouseMovement(xoffset, yoffset);
+    m_renderDevice->m_scene->m_camera.MouseMovement(xoffset, yoffset);
 }
 
 }

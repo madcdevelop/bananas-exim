@@ -45,16 +45,16 @@ struct Face {
 class Mesh 
 {
 public:
-    std::string m_Name;
-    std::vector<Vertex> m_Vertices;
-    std::vector<uint32> m_Indices;
-    Material m_Material;
+    std::string m_name;
+    std::vector<Vertex> m_vertices;
+    std::vector<uint32> m_indices;
+    Material m_material;
 
 
 private:
-    uint32 m_VertexArrayObjectId;
-    uint32 m_VertexBufferId;
-    uint32 m_IndexBufferId;
+    uint32 m_vertexArrayObjectId;
+    uint32 m_vertexBufferId;
+    uint32 m_indexBufferId;
 
 public:
     Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32>& indices, Material& material);

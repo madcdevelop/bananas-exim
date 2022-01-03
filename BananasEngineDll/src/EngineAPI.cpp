@@ -1,4 +1,4 @@
-#include "Common.h"
+#include "../Core/Common.h"
 #include "../Platform/PlatformWin32.h"
 #include "Serialize.h"
 
@@ -10,8 +10,8 @@
 #endif
 
 // Graphics
-PlatformEngine::PlatformWin32* g_Window;
-GraphicsEngine::Scene* g_Scene;
+PlatformEngine::PlatformWin32* g_window;
+GraphicsEngine::Scene* g_scene;
 
 namespace BananasEngineDll
 {
@@ -19,10 +19,10 @@ namespace BananasEngineDll
 EDITOR_INTERFACE
 bool Win32CreateWindow(HINSTANCE hInstance, HWND hwnd)
 {
-    g_Window = new PlatformEngine::PlatformWin32(hInstance, hwnd);
-    if (g_Window) 
+    g_window = new PlatformEngine::PlatformWin32(hInstance, hwnd);
+    if (g_window) 
     {
-        g_Window->Win32CreateWindow();
+        g_window->Win32CreateWindow();
         return true;
     }
     else
@@ -32,38 +32,38 @@ bool Win32CreateWindow(HINSTANCE hInstance, HWND hwnd)
 EDITOR_INTERFACE
 HWND Win32GetWindowHandle()
 {
-    return g_Window->m_hWnd;
+    return g_window->m_hWnd;
 }
 
 EDITOR_INTERFACE
 int32 Win32Run()
 {
-    return g_Window->Run();
+    return g_window->Run();
 }
 
 EDITOR_INTERFACE
 void Win32Resize()
 {
-    g_Window->m_RenderDevice->Resize();
+    g_window->m_renderDevice->Resize();
 }
 
 EDITOR_INTERFACE
 void Win32KeyboardCameraMove()
 {
-    return g_Window->CameraKeyboardCallback();
+    return g_window->CameraKeyboardCallback();
 }
 
 EDITOR_INTERFACE
 void Win32Shutdown()
 {
-    delete g_Window;
+    delete g_window;
 }
 
 EDITOR_INTERFACE
 void CreateScene()
 {
-    g_Scene = new GraphicsEngine::Scene();
-    g_Window->m_RenderDevice->m_Scene = g_Scene;
+    g_scene = new GraphicsEngine::Scene();
+    g_window->m_renderDevice->m_scene = g_scene;
 }
 
 EDITOR_INTERFACE
@@ -73,7 +73,7 @@ void SceneSaveScene(const char* fileName)
 
     // CoreEngine::SerializeToXML(std::string(fileName) + ".bxml", g_Scene);
     // CoreEngine::SerializeToJSON(std::string(fileName) + ".bjson", g_Scene);
-    CoreEngine::SerializeToYAML(std::string(fileName) + ".byaml", g_Scene);
+    CoreEngine::SerializeToYAML(std::string(fileName) + ".byaml", g_scene);
 
     auto end = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -89,7 +89,7 @@ void SceneLoadScene(const char* fileName)
 
     // CoreEngine::DeSerializeFromXML(std::string(fileName) + ".bxml", g_Scene);
     // CoreEngine::DeSerializeFromJSON(std::string(fileName) + ".bjson", g_Scene);
-    CoreEngine::DeSerializeFromYAML(std::string(fileName) + ".byaml", g_Scene);
+    CoreEngine::DeSerializeFromYAML(std::string(fileName) + ".byaml", g_scene);
 
     auto end = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -101,13 +101,13 @@ void SceneLoadScene(const char* fileName)
 EDITOR_INTERFACE
 GraphicsEngine::Scene* GetScene()
 {
-    return g_Scene;
+    return g_scene;
 } 
 
 EDITOR_INTERFACE
 void SceneImportModels(const char* fileName)
 {
-    g_Window->m_RenderDevice->m_Scene->CreateImportThread(std::string(fileName));
+    g_window->m_renderDevice->m_scene->CreateImportThread(std::string(fileName));
 }
 
 }
@@ -115,11 +115,11 @@ void SceneImportModels(const char* fileName)
 EDITOR_INTERFACE
 void SceneExportModels(const char* fileName)
 {
-    g_Window->m_RenderDevice->m_Scene->ExportModels(std::string(fileName));
+    g_window->m_renderDevice->m_scene->ExportModels(std::string(fileName));
 }
 
 EDITOR_INTERFACE
 void SceneShutdown()
 {
-    delete g_Scene;
+    delete g_scene;
 }

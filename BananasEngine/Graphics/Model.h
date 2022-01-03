@@ -11,7 +11,7 @@ namespace GraphicsEngine
 class Model
 {
 public:
-    std::vector<Mesh> m_Meshes;
+    std::vector<Mesh> m_meshes;
 
 public:
     Model();

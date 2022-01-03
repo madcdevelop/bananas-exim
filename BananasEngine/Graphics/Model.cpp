@@ -17,9 +17,9 @@ Model::~Model()
 
 void Model::Draw(Shader& shader)
 {
-    for(uint32 meshIndex = 0; meshIndex < m_Meshes.size(); meshIndex++)
+    for(uint32 meshIndex = 0; meshIndex < m_meshes.size(); meshIndex++)
     {
-        m_Meshes[meshIndex].Draw(shader);
+        m_meshes[meshIndex].Draw(shader);
     }
 }
 
@@ -41,26 +41,26 @@ void Model::LoadModel(const std::string& filePath)
     for(uint32 i = 0; i < outMeshSizes.size(); i++)
     {
         Mesh mesh{outNames[i], outVertices[i], outIndices[i], outMaterials[i]};
-        m_Meshes.push_back(mesh);
+        m_meshes.push_back(mesh);
     }
 }
 
 void Model::LoadMeshes()
 {
-    for(uint32 meshIndex = 0; meshIndex < m_Meshes.size(); meshIndex++)
+    for(uint32 meshIndex = 0; meshIndex < m_meshes.size(); meshIndex++)
     {
-        m_Meshes[meshIndex].SetupMesh();
+        m_meshes[meshIndex].SetupMesh();
     }
 }
 
 void Model::LoadTextures()
 {
-    for(uint32 meshIndex = 0; meshIndex < m_Meshes.size(); meshIndex++)
+    for(uint32 meshIndex = 0; meshIndex < m_meshes.size(); meshIndex++)
     {
-        for(uint32 texIndex = 0; texIndex < m_Meshes[meshIndex].m_Material.m_Textures.size(); texIndex++)
+        for(uint32 texIndex = 0; texIndex < m_meshes[meshIndex].m_material.m_textures.size(); texIndex++)
         {
-            Texture* texture = &m_Meshes[meshIndex].m_Material.m_Textures[texIndex];
-            texture->m_RenderId = texture->LoadBMPCustom(texture->m_FilePath.c_str());
+            Texture* texture = &m_meshes[meshIndex].m_material.m_textures[texIndex];
+            texture->m_renderId = texture->LoadBMPCustom(texture->m_filePath.c_str());
         }
     }
 }

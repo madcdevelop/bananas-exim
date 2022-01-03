@@ -9,7 +9,7 @@ namespace GraphicsEngine
 class Shader 
 {
 private:
-    uint32 m_ProgramId;
+    uint32 m_programId;
 
 public:
     Shader();

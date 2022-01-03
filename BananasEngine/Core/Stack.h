@@ -17,8 +17,8 @@ namespace CoreEngine
 class Stack
 {
 private:
-    int32 m_Top;
-    std::string m_Stack[MAX];
+    int32 m_top;
+    std::string m_stack[MAX];
 
 public:
     Stack();

@@ -16,16 +16,16 @@ enum CameraMovement {
 class Camera {
 
 public:
-    glm::vec3 m_Position;
-    glm::vec3 m_Front;
-    glm::vec3 m_Up;
-    glm::vec3 m_Right;
+    glm::vec3 m_position;
+    glm::vec3 m_front;
+    glm::vec3 m_up;
+    glm::vec3 m_right;
 
-    real32 m_Yaw;
-    real32 m_Pitch;
-    real32 m_Fov;
-    real32 m_MovementSpeed;
-    real32 m_Sensitivity;
+    real32 m_yaw;
+    real32 m_pitch;
+    real32 m_fov;
+    real32 m_movementSpeed;
+    real32 m_sensitivity;
 
 public:
     Camera(glm::vec3 position, real32 yaw, real32 pitch);

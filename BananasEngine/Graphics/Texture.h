@@ -9,9 +9,9 @@ namespace GraphicsEngine
 class Texture {
 
 public:
-    uint32 m_RenderId;
-    std::string m_Type;
-    std::string m_FilePath;
+    uint32 m_renderId;
+    std::string m_type;
+    std::string m_filePath;
 
 public:
     Texture();

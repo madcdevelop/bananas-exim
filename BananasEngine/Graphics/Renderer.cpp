@@ -12,14 +12,14 @@ Renderer::Renderer(HINSTANCE hInstance)
 
 Renderer::~Renderer()
 {
-    delete m_Device;
+    delete m_device;
 }
 
 void Renderer::CreateRenderDevice(RenderDeviceOpenGL* renderDevice)
 {
     if(!renderDevice)
     {
-        m_Device = new RenderDeviceOpenGL();
+        m_device = new RenderDeviceOpenGL();
     }
 }
 

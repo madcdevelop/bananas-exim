@@ -1,0 +1,7 @@
+-xc++
+-I
+BananasEngine/Extern/
+BananasEngine/Extern/include/
+BananasEngine/Core/
+BananasEngine/Graphics/
+BananasEngine/Platform/

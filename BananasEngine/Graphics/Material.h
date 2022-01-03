@@ -14,16 +14,16 @@ class Material
 {
 
 public:
-    std::string m_Name;
+    std::string m_name;
 
-    glm::vec3 m_Ambient;
-    glm::vec3 m_Diffuse;
-    glm::vec3 m_Specular;
-    glm::vec3 m_Emissive;
+    glm::vec3 m_ambient;
+    glm::vec3 m_diffuse;
+    glm::vec3 m_specular;
+    glm::vec3 m_emissive;
 
-    real32 m_Shininess;
+    real32 m_shininess;
 
-    std::vector<Texture> m_Textures;
+    std::vector<Texture> m_textures;
 
 public:
     Material();

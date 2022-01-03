@@ -25,50 +25,50 @@ Shader::Shader(const char* vertexShaderFilePath, const char* fragmentShaderFileP
     GLCALL(glShaderSource(fs, 1, &fragmentShader, NULL));
     GLCALL(glCompileShader(fs));
 
-    GLCALL(m_ProgramId = glCreateProgram());
-    GLCALL(glAttachShader(m_ProgramId, vs));
-    GLCALL(glAttachShader(m_ProgramId, fs));
-    GLCALL(glLinkProgram(m_ProgramId));
+    GLCALL(m_programId = glCreateProgram());
+    GLCALL(glAttachShader(m_programId, vs));
+    GLCALL(glAttachShader(m_programId, fs));
+    GLCALL(glLinkProgram(m_programId));
 }
 
 Shader::~Shader()
 {
-    GLCALL(glDeleteBuffers(1, &m_ProgramId));
+    GLCALL(glDeleteBuffers(1, &m_programId));
 }
 
 void Shader::UseProgram()
 {
-    GLCALL(glUseProgram(m_ProgramId));
+    GLCALL(glUseProgram(m_programId));
 }
 
 void Shader::SetFloat(const std::string& name, real32 v0)
 {
-    GLCALL(glUniform1f(glGetUniformLocation(m_ProgramId, name.c_str()), v0));
+    GLCALL(glUniform1f(glGetUniformLocation(m_programId, name.c_str()), v0));
 }
 
 void Shader::SetInt(const std::string& name, int32 v0)
 {
-    GLCALL(glUniform1i(glGetUniformLocation(m_ProgramId, name.c_str()), v0));
+    GLCALL(glUniform1i(glGetUniformLocation(m_programId, name.c_str()), v0));
 }
 
 void Shader::SetVec3(const std::string& name, real32 v0, real32 v1, real32 v2)
 {
-    GLCALL(glUniform3f(glGetUniformLocation(m_ProgramId, name.c_str()), v0, v1, v2));
+    GLCALL(glUniform3f(glGetUniformLocation(m_programId, name.c_str()), v0, v1, v2));
 }
 
 void Shader::SetVec3(const std::string& name, const glm::vec3& vec) const
 {
-    GLCALL(glUniform3fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, &vec[0]));
+    GLCALL(glUniform3fv(glGetUniformLocation(m_programId, name.c_str()), 1, &vec[0]));
 }
 
 void Shader::SetMatrix3(const std::string& name, const bool isTranspose, const glm::mat3& matrix) const
 {
-    GLCALL(glUniformMatrix3fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, isTranspose, &matrix[0][0]));
+    GLCALL(glUniformMatrix3fv(glGetUniformLocation(m_programId, name.c_str()), 1, isTranspose, &matrix[0][0]));
 }
 
 void Shader::SetMatrix4(const std::string& name, const bool isTranspose, const glm::mat4& matrix) const
 {
-    GLCALL(glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, isTranspose, &matrix[0][0]));
+    GLCALL(glUniformMatrix4fv(glGetUniformLocation(m_programId, name.c_str()), 1, isTranspose, &matrix[0][0]));
 }
 
 }   

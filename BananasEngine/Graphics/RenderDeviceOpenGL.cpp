@@ -18,7 +18,7 @@ RenderDeviceOpenGL::~RenderDeviceOpenGL()
 void RenderDeviceOpenGL::Render()
 {
     // Loading data for Rendering
-    if(m_Scene->m_IsModelLoaded == ModelLoadState::FILE_LOADED)
+    if(m_scene->m_isModelLoaded == ModelLoadState::FILE_LOADED)
     {
         #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
             // TODO(neil): sometimes not all meshes are rendered. Data is intact.
@@ -32,12 +32,12 @@ void RenderDeviceOpenGL::Render()
         #endif
     }
 
-    if(m_MeshTexturesLoaded == 1)
+    if(m_meshTexturesLoaded == 1)
     {
         if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
             MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
-        m_MeshTexturesLoaded = 0;
-        m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADED;
+        m_meshTexturesLoaded = 0;
+        m_scene->m_isModelLoaded = ModelLoadState::DATA_LOADED;
     }
     // OpenGL context is checked after the models are loaded so parts of the models are not missing
     else if (wglGetCurrentContext())
@@ -45,13 +45,13 @@ void RenderDeviceOpenGL::Render()
         GLCALL(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
         GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-        if (m_Scene)
+        if (m_scene)
         {
-            if (m_Scene->m_IsModelLoaded == ModelLoadState::DATA_LOADED)
+            if (m_scene->m_isModelLoaded == ModelLoadState::DATA_LOADED)
             {
-                if (m_Scene->m_Models.size() > 0)
+                if (m_scene->m_models.size() > 0)
                 {
-                    m_Scene->Draw((real32)m_Width, (real32)m_Height);
+                    m_scene->Draw((real32)m_width, (real32)m_height);
                 }
             }
         }
@@ -62,19 +62,19 @@ void RenderDeviceOpenGL::Render()
 
 int32 RenderDeviceOpenGL::InitMeshesTextures()
 {
-    m_Scene->m_IsModelLoaded = ModelLoadState::DATA_LOADING;
+    m_scene->m_isModelLoaded = ModelLoadState::DATA_LOADING;
     
     #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
         if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
             return MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
     #endif
 
-    for(auto& model : m_Scene->m_Models)
+    for(auto& model : m_scene->m_models)
     {
         model.LoadMeshes();
         model.LoadTextures();
     }
-    m_MeshTexturesLoaded = 1;
+    m_meshTexturesLoaded = 1;
     
     #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
         wglMakeCurrent(NULL, NULL);
@@ -110,7 +110,7 @@ bool RenderDeviceOpenGL::Init()
     // Initialize Glad
     if(!gladLoadGL())
         return MessageBoxA(NULL, "Failed to load Glad.", "Error", 0);
-    GLCALL(glViewport(0, 0, m_Width, m_Height));
+    GLCALL(glViewport(0, 0, m_width, m_height));
 
     // Z Buffer Init
     GLCALL(glEnable(GL_DEPTH_TEST));
@@ -124,7 +124,7 @@ void RenderDeviceOpenGL::Shutdown()
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(m_hRenderContext);
     ReleaseDC(m_hWnd, m_hDeviceContext);
-    m_Running = false;
+    m_running = false;
 }
 
 void RenderDeviceOpenGL::Resize()
@@ -132,9 +132,9 @@ void RenderDeviceOpenGL::Resize()
     RECT windowRect = {0};
     if(GetWindowRect(m_hWnd, &windowRect))
     {
-        m_Width  = windowRect.right - windowRect.left;
-        m_Height = windowRect.bottom - windowRect.top;
-        GLCALL(glViewport(0, 0, m_Width, m_Height));
+        m_width  = windowRect.right - windowRect.left;
+        m_height = windowRect.bottom - windowRect.top;
+        GLCALL(glViewport(0, 0, m_width, m_height));
     }
 }
 

@@ -74,20 +74,20 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
     uint32 positionFaceIndex  = 0;
     uint32 textureUVFaceIndex = 0;
     uint32 normalFaceIndex    = 0;
-    for(uint32 meshIndex = 0; meshIndex < models[0].m_Meshes.size(); meshIndex++)
+    for(uint32 meshIndex = 0; meshIndex < models[0].m_meshes.size(); meshIndex++)
     {
         // o name_of_object
-        fileOut << "o" << " " << models[0].m_Meshes[meshIndex].m_Name << std::endl;
+        fileOut << "o" << " " << models[0].m_meshes[meshIndex].m_name << std::endl;
 
         // v reverse the index and only output unique vertex positions
         std::map<std::string, int32> distinctPositions;
         int32 positionCount = 1;
         for(uint32 positionIndex = 0; 
-            positionIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
+            positionIndex < models[0].m_meshes[meshIndex].m_vertices.size(); 
             positionIndex++)
         {
             Vertex* vertex;
-            vertex = &models[0].m_Meshes[meshIndex].m_Vertices[positionIndex];
+            vertex = &models[0].m_meshes[meshIndex].m_vertices[positionIndex];
 
             // TODO(neil): write a compare function specific for struct. 
             // So no conversion to string has to happen.
@@ -117,11 +117,11 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
         std::map<std::string, int32> distinctTexturesUV;
         int32 textureUVCount = 1;
         for(uint32 textureUVIndex = 0; 
-            textureUVIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
+            textureUVIndex < models[0].m_meshes[meshIndex].m_vertices.size(); 
             textureUVIndex++)
         {
             Vertex* vertex;
-            vertex = &models[0].m_Meshes[meshIndex].m_Vertices[textureUVIndex];
+            vertex = &models[0].m_meshes[meshIndex].m_vertices[textureUVIndex];
 
             const std::string textureCoordKey = std::to_string(vertex->textureUV[0]) + " " + 
                                                 std::to_string(vertex->textureUV[1]);
@@ -148,11 +148,11 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
         std::map<std::string, int32> distinctNormals;
         int32 normalCount = 1;
         for(uint32 normalIndex = 0; 
-            normalIndex < models[0].m_Meshes[meshIndex].m_Vertices.size(); 
+            normalIndex < models[0].m_meshes[meshIndex].m_vertices.size(); 
             normalIndex++)
         {
             Vertex* vertex;
-            vertex = &models[0].m_Meshes[meshIndex].m_Vertices[normalIndex];
+            vertex = &models[0].m_meshes[meshIndex].m_vertices[normalIndex];
 
             const std::string normalKey = std::to_string(vertex->normal[0]) + " " + 
                                           std::to_string(vertex->normal[1]) + " " + 
@@ -177,7 +177,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
         }
 
         // usemtl name_of_material_for_mesh
-        fileOut << "usemtl" << " " << models[0].m_Meshes[meshIndex].m_Material.m_Name << std::endl;
+        fileOut << "usemtl" << " " << models[0].m_meshes[meshIndex].m_material.m_name << std::endl;
 
         // s off
         fileOut << "s" << " " << "off" << std::endl;
@@ -185,12 +185,12 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
         // f output with / in between to get face indices
         fileOut << "f" << " ";
         for(uint32 indicesIndex = 0; 
-            indicesIndex < models[0].m_Meshes[meshIndex].m_Indices.size(); 
+            indicesIndex < models[0].m_meshes[meshIndex].m_indices.size(); 
             indicesIndex++)     
         {
-            uint32 vertexIndex = models[0].m_Meshes[meshIndex].m_Indices[indicesIndex];
+            uint32 vertexIndex = models[0].m_meshes[meshIndex].m_indices[indicesIndex];
             Vertex* vertex;
-            vertex = &models[0].m_Meshes[meshIndex].m_Vertices[vertexIndex];
+            vertex = &models[0].m_meshes[meshIndex].m_vertices[vertexIndex];
 
             // Position
             std::string positionKey = std::to_string(vertex->position[0]) + " " + 
@@ -219,7 +219,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
             if((indicesIndex+1) % 3 == 0)
             {
                 fileOut << std::endl;
-                if(indicesIndex+1 == models[0].m_Meshes[meshIndex].m_Indices.size())
+                if(indicesIndex+1 == models[0].m_meshes[meshIndex].m_indices.size())
                 {
                     break;
                 }
@@ -257,35 +257,35 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
     fileOut << std::endl;
     
     for(uint32 meshIndex = 0; 
-        meshIndex < models[0].m_Meshes.size(); 
+        meshIndex < models[0].m_meshes.size(); 
         meshIndex++)
     {
-        fileOut << "newmtl" << " " << models[0].m_Meshes[meshIndex].m_Material.m_Name << std::endl;
+        fileOut << "newmtl" << " " << models[0].m_meshes[meshIndex].m_material.m_name << std::endl;
 
-        fileOut << "Ns" << " " << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Shininess) << std::endl;
+        fileOut << "Ns" << " " << std::to_string(models[0].m_meshes[meshIndex].m_material.m_shininess) << std::endl;
 
         fileOut << "Ka" << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Ambient[0]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Ambient[1]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Ambient[2]);
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_ambient[0]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_ambient[1]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_ambient[2]);
         fileOut << std::endl;
 
         fileOut << "Kd" << " "; 
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Diffuse[0]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Diffuse[1]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Diffuse[2]);
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_diffuse[0]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_diffuse[1]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_diffuse[2]);
         fileOut << std::endl;
 
         fileOut << "Ks" << " "; 
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Specular[0]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Specular[1]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Specular[2]);
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_specular[0]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_specular[1]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_specular[2]);
         fileOut << std::endl;
 
         fileOut << "Ke" << " "; 
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Emissive[0]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Emissive[1]) << " ";
-        fileOut << std::to_string(models[0].m_Meshes[meshIndex].m_Material.m_Emissive[2]);
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_emissive[0]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_emissive[1]) << " ";
+        fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_emissive[2]);
         fileOut << std::endl;
 
         // TODO(neil): add to material on import to be able to export the values
@@ -294,17 +294,17 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
         fileOut << "illum" << " " << "2" << std::endl;
 
         for(uint32 textureIndex = 0; 
-            textureIndex < models[0].m_Meshes[meshIndex].m_Material.m_Textures.size(); 
+            textureIndex < models[0].m_meshes[meshIndex].m_material.m_textures.size(); 
             textureIndex++)
         {
-            std::string materialType = models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_Type;
+            std::string materialType = models[0].m_meshes[meshIndex].m_material.m_textures[textureIndex].m_type;
             if(materialType == "texture_diffuse")
                 fileOut << "map_Kd" << " " 
-                        << models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath 
+                        << models[0].m_meshes[meshIndex].m_material.m_textures[textureIndex].m_filePath 
                         << std::endl;    
             else if(materialType == "texture_specular")
                 fileOut << "map_Ks" << " " 
-                        << models[0].m_Meshes[meshIndex].m_Material.m_Textures[textureIndex].m_FilePath 
+                        << models[0].m_meshes[meshIndex].m_material.m_textures[textureIndex].m_filePath 
                         << std::endl;
         }
         fileOut << std::endl;

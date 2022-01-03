@@ -26,10 +26,10 @@ void Timestep::StartCounter()
     if(!QueryPerformanceFrequency(&perfCountFrequencyResult))
         OutputDebugStringA("QueryPerformanceFrequency failed!\n");
     else
-        m_PerfCountFrequency = perfCountFrequencyResult.QuadPart;
+        m_perfCountFrequency = perfCountFrequencyResult.QuadPart;
 
-    m_LastCycleCount = __rdtsc();
-    QueryPerformanceCounter(&m_LastCounter);
+    m_lastCycleCount = __rdtsc();
+    QueryPerformanceCounter(&m_lastCounter);
 }
 
 /* 
@@ -37,21 +37,21 @@ void Timestep::StartCounter()
 */
 real32 Timestep::GetTime()
 {
-    m_EndCycleCount = __rdtsc();
-    QueryPerformanceCounter(&m_EndCounter);
+    m_endCycleCount = __rdtsc();
+    QueryPerformanceCounter(&m_endCounter);
 
-    m_CyclesElapsed  = m_EndCycleCount - m_LastCycleCount;
-    m_CounterElapsed = m_EndCounter.QuadPart - m_LastCounter.QuadPart;
+    m_cyclesElapsed  = m_endCycleCount - m_lastCycleCount;
+    m_counterElapsed = m_endCounter.QuadPart - m_lastCounter.QuadPart;
 
-    real32 msPerFrame = ((1000.0f*(real32)m_CounterElapsed) / (real32)m_PerfCountFrequency);
-    real32 fps = (real32)m_PerfCountFrequency / (real32)m_CounterElapsed;
-    real32 megaCyclesPerFrame = (real32)m_CyclesElapsed / (1000.0f * 1000.0f);
+    real32 msPerFrame = ((1000.0f*(real32)m_counterElapsed) / (real32)m_perfCountFrequency);
+    real32 fps = (real32)m_perfCountFrequency / (real32)m_counterElapsed;
+    real32 megaCyclesPerFrame = (real32)m_cyclesElapsed / (1000.0f * 1000.0f);
 #if 0
     Print(msPerFrame, fps, megaCyclesPerFrame);
 #endif
 
-    m_LastCounter = m_EndCounter;
-    m_LastCycleCount = m_EndCycleCount;
+    m_lastCounter = m_endCounter;
+    m_lastCycleCount = m_endCycleCount;
 
     return msPerFrame;
 }

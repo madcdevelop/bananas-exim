@@ -19,19 +19,19 @@ namespace BananasEditor
             WM_SIZE = 0x0005
         }
 
-        private Application mainApp;
-        private Window parentWindow;
-        private ControlHost windowHost;
-        private Scene renderScene;
+        private Application m_mainApp;
+        private Window m_parentWindow;
+        private ControlHost m_windowHost;
+        private Scene m_renderScene;
 
-        private readonly string untitled = "Bananas Import/Export " + "[Untitled.bscene]";
+        private readonly string m_untitled = "Bananas Import/Export " + "[Untitled.bscene]";
         private string m_fileName;
 
         public string FileName { get { return m_fileName; } set { m_fileName = value; } }
 
         public Scene RenderScene
         {
-            get { return renderScene; } set { renderScene = value; }
+            get { return m_renderScene; } set { m_renderScene = value; }
         }
 
         public MainWindow()
@@ -42,19 +42,19 @@ namespace BananasEditor
 
         private void On_UIReady(object sender, EventArgs e)
         {
-            this.Title = untitled;
+            this.Title = m_untitled;
             Loaded -= On_UIReady;
 
             // Init Window
-            mainApp = System.Windows.Application.Current;
-            parentWindow = mainApp.MainWindow;
-            parentWindow.SizeToContent = SizeToContent.WidthAndHeight;
+            m_mainApp = System.Windows.Application.Current;
+            m_parentWindow = m_mainApp.MainWindow;
+            m_parentWindow.SizeToContent = SizeToContent.WidthAndHeight;
 
             // Host win32 Window inside WPF
-            windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
-            windowHost.MessageHook += new HwndSourceHook(MsgProc);
-            ControlHostElement.Child = windowHost;
-            renderScene = new Scene();
+            m_windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
+            m_windowHost.MessageHook += new HwndSourceHook(MsgProc);
+            ControlHostElement.Child = m_windowHost;
+            m_renderScene = new Scene();
             CompositionTarget.Rendering += new EventHandler(Render);
         }
 
@@ -65,7 +65,7 @@ namespace BananasEditor
                 case Win32Msg.WM_SIZE:
                 {
                     Debug.WriteLine("Resize Window");
-                    windowHost.Resize();
+                    m_windowHost.Resize();
                 }break;
                 default:
                     break;
@@ -75,13 +75,13 @@ namespace BananasEditor
 
         private void Render(object sender, EventArgs e)
         {
-            windowHost.Run();
+            m_windowHost.Run();
         }
 
         private void menuNewScene_Click(object sender, RoutedEventArgs e)
         {
-            renderScene.NewScene();
-            this.Title = untitled;
+            m_renderScene.NewScene();
+            this.Title = m_untitled;
         }
 
         private void menuOpenScene_Click(object sender, RoutedEventArgs e)
@@ -97,14 +97,14 @@ namespace BananasEditor
             {
                 m_fileName = openFileDlg.FileName;
                 string[] tokens = m_fileName.Split(".");
-                renderScene.LoadScene(tokens[0]);
+                m_renderScene.LoadScene(tokens[0]);
                 this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
         }
 
         private void menuSaveScene_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Title == untitled)
+            if (this.Title == m_untitled)
             {
                 Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog
                 {
@@ -117,7 +117,7 @@ namespace BananasEditor
                 {
                     m_fileName = saveFileDlg.FileName;
                     string[] tokens = m_fileName.Split(".");
-                    renderScene.SaveScene(tokens[0]);
+                    m_renderScene.SaveScene(tokens[0]);
                     File.Create(m_fileName);
                     this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
                 }
@@ -125,7 +125,7 @@ namespace BananasEditor
             else
             {
                 string[] tokens = m_fileName.Split(".");
-                renderScene.SaveScene(tokens[0]);
+                m_renderScene.SaveScene(tokens[0]);
                 File.Create(m_fileName);
             }
         }
@@ -143,7 +143,7 @@ namespace BananasEditor
             {
                 m_fileName = saveFileDlg.FileName;
                 string[] tokens = m_fileName.Split(".");
-                renderScene.SaveScene(tokens[0]);
+                m_renderScene.SaveScene(tokens[0]);
                 File.Create(m_fileName);
                 this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
@@ -161,7 +161,7 @@ namespace BananasEditor
             if(result == true)
             {
                 string filename = openFileDlg.FileName;
-                renderScene.ImportModels(filename);
+                m_renderScene.ImportModels(filename);
             }
         }
 
@@ -177,7 +177,7 @@ namespace BananasEditor
             if(result == true)
             {
                 string filename = saveFileDlg.FileName;
-                renderScene.ExportModels(filename);
+                m_renderScene.ExportModels(filename);
             }
         }
 
@@ -195,7 +195,7 @@ namespace BananasEditor
                e.Key == Key.D)
             {
                 e.Handled = true;
-                windowHost.KeyboardCameraMove();
+                m_windowHost.KeyboardCameraMove();
             }
         }
     }
