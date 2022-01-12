@@ -6,7 +6,6 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using System.Diagnostics;
 
-
 namespace BananasEditor
 {
     /// <summary>
@@ -21,7 +20,7 @@ namespace BananasEditor
 
         private Application m_mainApp;
         private Window m_parentWindow;
-        private ControlHost m_windowHost;
+        private SceneView m_windowHost;
         private Scene m_renderScene;
 
         private readonly string m_untitled = "Bananas Import/Export " + "[Untitled.bscene]";
@@ -51,7 +50,7 @@ namespace BananasEditor
             m_parentWindow.SizeToContent = SizeToContent.WidthAndHeight;
 
             // Host win32 Window inside WPF
-            m_windowHost = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
+            m_windowHost = new SceneView(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
             m_windowHost.MessageHook += new HwndSourceHook(MsgProc);
             ControlHostElement.Child = m_windowHost;
             m_renderScene = new Scene();

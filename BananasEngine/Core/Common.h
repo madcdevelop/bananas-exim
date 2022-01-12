@@ -9,9 +9,9 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "../Extern/glad/glad.h"
+#include "../Extern/glm/glm.hpp"
+#include "../Extern/glm/gtc/matrix_transform.hpp"
     
 // Turns on Visual Studio specific memory leak check with DBG_NEW defines set
 // https://docs.microsoft.com/en-us/visualstudio/debugger/finding-memory-leaks-using-the-crt-library?view=vs-2019

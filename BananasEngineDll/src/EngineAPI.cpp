@@ -1,6 +1,6 @@
-#include "../Core/Common.h"
-#include "../Platform/PlatformWin32.h"
-#include "Serialize.h"
+#include "../../BananasEngine/Core/Common.h"
+#include "../../BananasEngine/Platform/PlatformWin32.h"
+#include "../../BananasEngine/Core/Serialize.h"
 
 #include <chrono>
 #include <thread>

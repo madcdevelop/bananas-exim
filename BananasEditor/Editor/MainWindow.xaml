@@ -1,0 +1,85 @@
+﻿<Window x:Class="BananasEditor.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:BananasEditor.Editor"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    mc:Ignorable="d"
+    Name="mainWindow"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    ShowInTaskbar="True"
+    Keyboard.KeyDown="window_KeyDown"
+    WindowStartupLocation="CenterScreen">
+
+    <DockPanel Background="LightGray">
+        
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File" 
+                      BorderThickness="0">
+                <MenuItem Header="_New" Click="menuNewScene_Click"/>
+                <MenuItem Header="_Open" Click="menuOpenScene_Click"/>
+                <Separator></Separator>
+                <MenuItem Header="_Save" Click="menuSaveScene_Click"/>
+                <MenuItem Header="Save _As..." Click="menuSaveAsScene_Click" />
+                <Separator></Separator>
+                <MenuItem Header="_Import">
+                    <MenuItem Header="_Wavefront(.obj)" Click="menuImportWavefrontOBJ_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Export">
+                    <MenuItem Header="_Wavefront(.obj)" Click="menuExportWavefrontOBJ_Click"/>
+                </MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="_Exit" Click="menuExit_Click"/>
+            </MenuItem>
+            
+        </Menu>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="85*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="15*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Name="ControlHostElement"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+            BorderThickness="1"
+                BorderBrush="LightGray"
+                DockPanel.Dock="Left"
+                Grid.Column="0" />
+
+            <GridSplitter Grid.Column="1"
+                Width="5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />
+
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <local:PropertyGrid Grid.Column="0" />
+
+                <!-- <Label Content="Name" -->
+                <!--     Grid.Column="0" -->
+                <!--     Height="25" -->
+                <!--     Margin="5" -->
+                <!--     Padding="5" -->
+                <!--     VerticalAlignment="Top" /> -->
+
+                <TextBox Grid.Column="1" 
+                    Height="25"
+                    Margin="5"
+                    Padding="5"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center" > 
+                    Placeholder_Name
+                </TextBox>
+            </Grid>
+
+        </Grid>
+    </DockPanel>
+</Window>

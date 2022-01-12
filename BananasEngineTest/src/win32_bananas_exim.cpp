@@ -2,9 +2,12 @@
 #define UNICODE
 #endif
 
-#include "Common.h"
-#include "Renderer.h"
-#include "Timestep.h"
+#ifndef ENGINE_TEST_WIN32_BANANAS_EXIM_H
+#define ENGINE_TEST_WIN32_BANANAS_EXIM_H
+
+#include "../../BananasEngine/Core/Common.h"
+#include "../../BananasEngine/Core/Timestep.h"
+#include "../../BananasEngine/Graphics/Renderer.h"
 
 // Windows stuff
 HWND            g_windowHandle = NULL;
@@ -245,3 +248,5 @@ HRESULT ProgramShutdown()
 
     return S_OK;
 }
+
+#endif

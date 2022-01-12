@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace BananasEditor
 {
-    public class ControlHost : HwndHost
+    public class SceneView : HwndHost
     {
         #region PInvoke
         //PInvoke declarations
@@ -46,7 +46,7 @@ namespace BananasEditor
         private readonly int m_hostWidth;
         IntPtr m_hwndChild = IntPtr.Zero;
 
-        public ControlHost(double height, double width)
+        public SceneView(double height, double width)
         {
             m_hostHeight = (int)height;
             m_hostWidth  = (int)width;
