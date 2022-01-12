@@ -1,4 +1,6 @@
-﻿<Window x:Class="BananasEditor.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window 
+    x:Class="BananasEditor.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -56,28 +58,7 @@
                 VerticalAlignment="Stretch" />
 
             <Grid Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="3*" />
-                </Grid.ColumnDefinitions>
-
-                <local:PropertyGrid Grid.Column="0" />
-
-                <!-- <Label Content="Name" -->
-                <!--     Grid.Column="0" -->
-                <!--     Height="25" -->
-                <!--     Margin="5" -->
-                <!--     Padding="5" -->
-                <!--     VerticalAlignment="Top" /> -->
-
-                <TextBox Grid.Column="1" 
-                    Height="25"
-                    Margin="5"
-                    Padding="5"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Center" > 
-                    Placeholder_Name
-                </TextBox>
+                <local:PropertyGrid />
             </Grid>
 
         </Grid>
