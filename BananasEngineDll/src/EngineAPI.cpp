@@ -123,3 +123,9 @@ void SceneShutdown()
 {
     delete g_scene;
 }
+
+EDITOR_INTERFACE
+std::string SceneGetMeshName()
+{
+    return g_window->m_renderDevice->m_scene->m_models[0].m_name;
+}

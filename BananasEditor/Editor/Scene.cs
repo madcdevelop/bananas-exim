@@ -29,9 +29,15 @@ namespace BananasEditor
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SceneShutdown();
 
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern string SceneGetMeshName();
+
         #endregion
 
         IntPtr m_renderScene = IntPtr.Zero;
+        private string m_meshName = "";
+
+        public string MeshName { get{ return m_meshName; } set{ this.m_meshName = value; } }
 
         public Scene()
         {
@@ -70,5 +76,11 @@ namespace BananasEditor
         {
             SceneShutdown();
         }
+
+        public void SetMeshName()
+        {
+            MeshName = SceneGetMeshName();
+        }
+
     }
 }

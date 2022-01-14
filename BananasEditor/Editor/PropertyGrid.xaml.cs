@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BananasEditor.Editor
+namespace BananasEditor
 {
     /// <summary>
     /// Interaction logic for PropertyGrid.xaml
@@ -46,17 +46,20 @@ namespace BananasEditor.Editor
             Grid.SetRow(kvpGrid, 1);
 
             kvpGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
-            kvpGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(3, GridUnitType.Star) });
+            kvpGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
 
             for (int i = 0; i < 5; i++)
             {
                 kvpGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             }
 
-            for (int i = 0; i < 5; i++)
+            CreateLabel(kvpGrid, 0, 0, "Name");
+            // TODO(neil): Use model name.
+            CreateTextBox(kvpGrid, 1, 0, "Minecraft Hill");
+            for (int i = 1; i < 5; i++)
             {
                 CreateLabel(kvpGrid, 0, i, "Name");
-                CreateTextBox(kvpGrid, 1, i);
+                CreateTextBox(kvpGrid, 1, i, "Placeholder text");
             }
 
             grid.Children.Add(kvpGrid);
@@ -77,7 +80,7 @@ namespace BananasEditor.Editor
             grid.Children.Add(propertyKey);
         }
 
-        private void CreateTextBox(Grid grid, int col, int row)
+        private void CreateTextBox(Grid grid, int col, int row, string text)
         {
             var propertyValue = new TextBox();
             propertyValue.Height = 30.0;
@@ -85,7 +88,7 @@ namespace BananasEditor.Editor
             propertyValue.Padding = new Thickness(5);
             propertyValue.VerticalAlignment = VerticalAlignment.Top;
             propertyValue.HorizontalAlignment = HorizontalAlignment.Center;
-            propertyValue.Text = "Placeholder Text";
+            propertyValue.Text = text;
             Grid.SetColumn(propertyValue, col);
             Grid.SetRow(propertyValue, row);
             grid.Children.Add(propertyValue);

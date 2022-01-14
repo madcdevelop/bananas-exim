@@ -55,6 +55,7 @@ void Scene::LoadModels(const std::string fileName)
     }
 
     Model model1;
+    model1.m_name = "Minecraft_Hill"; // TODO(neil): Use filename of .obj file as the name of the model
     model1.LoadModel(fileName);
     m_models.push_back(model1);
 
