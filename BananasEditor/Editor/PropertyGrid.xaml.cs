@@ -35,7 +35,15 @@ namespace BananasEditor.Editor
         private void CreatePropertyGrid()
         {
             // TODO(neil): Add in parent grid to hold title(Property Grid) and kvpGrid
+            Grid grid = new Grid();
+
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30, 0) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
             Grid kvpGrid = new Grid();
+
+            CreateLabel(grid, 0, 0, "Property Grid");
+            Grid.SetRow(kvpGrid, 1);
 
             kvpGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
             kvpGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(3, GridUnitType.Star) });
@@ -47,21 +55,23 @@ namespace BananasEditor.Editor
 
             for (int i = 0; i < 5; i++)
             {
-                CreateLabel(kvpGrid, 0, i);
+                CreateLabel(kvpGrid, 0, i, "Name");
                 CreateTextBox(kvpGrid, 1, i);
             }
 
-            LayoutRoot.Children.Add(kvpGrid);
+            grid.Children.Add(kvpGrid);
+            LayoutRoot.Children.Add(grid);
         }
 
-        private void CreateLabel(Grid grid, int col, int row)
+        private void CreateLabel(Grid grid, int col, int row, string content)
         {
             var propertyKey = new Label();
-            propertyKey.Content = "Name";
+            propertyKey.Content = content; 
             propertyKey.Height = 30.0;
             propertyKey.Margin = new Thickness(5);
             propertyKey.Padding = new Thickness(5);
             propertyKey.VerticalAlignment = VerticalAlignment.Top;
+            propertyKey.HorizontalAlignment = HorizontalAlignment.Center;
             Grid.SetColumn(propertyKey, col);
             Grid.SetRow(propertyKey, row);
             grid.Children.Add(propertyKey);
