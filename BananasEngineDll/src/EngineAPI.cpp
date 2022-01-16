@@ -110,8 +110,6 @@ void SceneImportModels(const char* fileName)
     g_window->m_renderDevice->m_scene->CreateImportThread(std::string(fileName));
 }
 
-}
-
 EDITOR_INTERFACE
 void SceneExportModels(const char* fileName)
 {
@@ -128,4 +126,6 @@ EDITOR_INTERFACE
 std::string SceneGetMeshName()
 {
     return g_window->m_renderDevice->m_scene->m_models[0].m_name;
+}
+
 }

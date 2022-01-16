@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Interop;
-using System.Diagnostics;
+using System.Windows.Media;
 
 namespace BananasEditor
 {
@@ -22,6 +23,7 @@ namespace BananasEditor
         private Window m_parentWindow;
         private SceneView m_windowHost;
         private Scene m_renderScene;
+        private StartupWindow m_startupWindow;
 
         private readonly string m_untitled = "Bananas Import/Export " + "[Untitled.bscene]";
         private string m_fileName;
@@ -33,9 +35,10 @@ namespace BananasEditor
             get { return m_renderScene; } set { m_renderScene = value; }
         }
 
-        public MainWindow()
+        public MainWindow(StartupWindow startupWindow)
         {
             InitializeComponent();
+            m_startupWindow = startupWindow;
             Loaded += On_UIReady;
         }
 
@@ -95,8 +98,9 @@ namespace BananasEditor
             if(result == true)
             {
                 m_fileName = openFileDlg.FileName;
-                string[] tokens = m_fileName.Split(".");
-                m_renderScene.LoadScene(tokens[0]);
+                string[] filePathNoExt = m_fileName.Split(".");
+                m_startupWindow.AddRecentScene(filePathNoExt[0]);
+                m_renderScene.LoadScene(filePathNoExt[0]);
                 this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
         }
@@ -115,16 +119,17 @@ namespace BananasEditor
                 if (result == true)
                 {
                     m_fileName = saveFileDlg.FileName;
-                    string[] tokens = m_fileName.Split(".");
-                    m_renderScene.SaveScene(tokens[0]);
+                    string[] filePathNoExt = m_fileName.Split(".");
+                    m_startupWindow.AddRecentScene(filePathNoExt[0]);
+                    m_renderScene.SaveScene(filePathNoExt[0]);
                     File.Create(m_fileName);
                     this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
                 }
             }
             else
             {
-                string[] tokens = m_fileName.Split(".");
-                m_renderScene.SaveScene(tokens[0]);
+                string[] filePathNoExt = m_fileName.Split(".");
+                m_renderScene.SaveScene(filePathNoExt[0]);
                 File.Create(m_fileName);
             }
         }
@@ -141,8 +146,9 @@ namespace BananasEditor
             if(result == true)
             {
                 m_fileName = saveFileDlg.FileName;
-                string[] tokens = m_fileName.Split(".");
-                m_renderScene.SaveScene(tokens[0]);
+                string[] filePathNoExt = m_fileName.Split(".");
+                m_startupWindow.AddRecentScene(filePathNoExt[0]);
+                m_renderScene.SaveScene(filePathNoExt[0]);
                 File.Create(m_fileName);
                 this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }

@@ -56,9 +56,6 @@
             <Button Content="_"
                     Style="{StaticResource smallButtonStyle}"
                     Click="buttonMinimize_Click" />
-            <Button Content="□"
-                    Style="{StaticResource smallButtonStyle}"
-                    Click="buttonMaximize_Click" />
             <Button Content="x"
                     Style="{StaticResource smallButtonStyle}"
                     Click="buttonExit_Click"/>
@@ -108,15 +105,12 @@
                     HorizontalAlignment="Left"
                     Grid.Row="2"
                     Grid.Column="2"
-                    Margin="60,30,0,0">
-            <TextBlock Text="Recent Files"
+                    Margin="60,40,0,0">
+            <TextBlock Text="Recent Scenes"
                        FontSize="20" />
-            <ListBox>
-                <TextBlock>PlaceholderScene1.scene</TextBlock>
-                <TextBlock>PlaceholderScene2.scene</TextBlock>
-                <TextBlock>PlaceholderScene3.scene</TextBlock>
-                <TextBlock>PlaceholderScene4.scene</TextBlock>
-                <TextBlock>PlaceholderSceneN.scene</TextBlock>
+            <ListBox
+                ItemsSource="{Binding RecentFiles}"
+                MinHeight="100">
             </ListBox>
         </StackPanel>
     </Grid>

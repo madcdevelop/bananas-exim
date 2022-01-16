@@ -34,7 +34,6 @@ namespace BananasEditor
 
         private void CreatePropertyGrid()
         {
-            // TODO(neil): Add in parent grid to hold title(Property Grid) and kvpGrid
             Grid grid = new Grid();
 
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30, 0) });
