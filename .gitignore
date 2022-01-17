@@ -6,6 +6,9 @@
 .vscode/
 bananas-exim.code-workspace
 
+# Content
+Content/Scenes/RecentScenes
+
 # Binaries
 Build/
 bin/

@@ -55,12 +55,14 @@ void Scene::LoadModels(const std::string fileName)
     }
 
     Model model1;
-    model1.m_name = "Minecraft_Hill"; // TODO(neil): Use filename of .obj file as the name of the model
+    std::string filePathNoExt = fileName.substr(0, fileName.find_last_of("."));
+    model1.m_name = filePathNoExt.substr(filePathNoExt.find_last_of("\\")+1);
     model1.LoadModel(fileName);
     m_models.push_back(model1);
 
     Model lightCube;
-    lightCube.LoadModel("C:\\Code\\bananas-exim\\Content\\Models\\cube_example_triangle.obj");
+    lightCube.m_name = "Light_Cubes";
+    lightCube.LoadModel("C:\\Code\\bananas-exim\\Content\\Models\\cube_example.obj");
     m_models.push_back(lightCube);
 
     m_isModelLoaded = ModelLoadState::FILE_LOADED;

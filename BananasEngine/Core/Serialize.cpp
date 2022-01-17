@@ -82,6 +82,7 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
     for (uint32 modelIndex = 0; modelIndex < scene->m_models.size(); modelIndex++)
     {
         SerializeBeginTagXMLAttributes(fileOut, 1, "Model", XMLAttribute{ 1, {"id"}, {++id} });
+        // TODO(neil): Add in model name to Serialize.
         SerializeBeginTagXMLAttributes(fileOut, 2, "Array", XMLAttribute{ 1, {"size"}, {static_cast<int32>(scene->m_models[modelIndex].m_meshes.size())} });
 
         for (uint32 meshIndex = 0; meshIndex < scene->m_models[modelIndex].m_meshes.size(); meshIndex++)
@@ -338,6 +339,8 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
         }
         else
             continue;
+
+        // TODO(neil): Add in model name to Deserialize.
             
         // Mark current scope
         if (tag.compare("Camera") == 0)
@@ -703,6 +706,7 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
     {
         SerializeBeginJSON(fileOut, 2, CURLY_BRACKET_START);
         SerializeItemJSON(fileOut, 3, "Id", id++, true);
+        // TODO(neil): Add in model name to Serialize.
         SerializeItemJSON(fileOut, 3, "Size", static_cast<uint32>(scene->m_models[modelIndex].m_meshes.size()), true);
 
         SerializeBeginObjectJSON(fileOut, 3, "Mesh", SQUARE_BRACKET_START);
@@ -1033,6 +1037,7 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
 
         else if (key.compare("Id") == 0)
             stack->Pop();
+        // TODO(neil): Add in model name to Deserialize.
         
         else if ((key.compare("Size") == 0) && 
                  (stack->Parent().compare("Model") == 0))
@@ -1383,6 +1388,7 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
     {
         SerializeBeginYAML(fileOut, 0, "Model");
         SerializeItemYAML(fileOut, 1, "Id", id++, YAML_DASH_START);
+        SerializeItemYAML(fileOut, 1, "Name", scene->m_models[modelIndex].m_name, YAML_DASH_START);
         SerializeItemYAML(fileOut, 1, "Size", static_cast<uint32>(scene->m_models[modelIndex].m_meshes.size()), YAML_DASH_START);
 
         for (uint32 meshIndex = 0; meshIndex < scene->m_models[modelIndex].m_meshes.size(); meshIndex++)
@@ -1557,11 +1563,13 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
     std::vector<uint32> tempIndices;
 
     std::vector<std::string> meshNames;
+    std::vector<std::string> modelNames;
     std::vector<std::vector<GraphicsEngine::Vertex>> meshVertices;
     std::vector<std::vector<uint32>> meshIndices;
     std::vector<GraphicsEngine::Material> meshMaterials;
 
     int32 meshCount = 0;
+    int32 modelIndex = 0;
 
     std::string currentScope = "";
 
@@ -1673,6 +1681,12 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
         
         if (key.compare("Id") == 0)
             stack->Pop();
+        else if ((key.compare("Name") == 0) && 
+                 (stack->Parent().compare("Model") == 0))
+        {
+            modelNames.push_back(tokens[1]);
+            stack->Pop();
+        }
         else if ((key.compare("Size") == 0) && 
                  (stack->Parent().compare("Model") == 0))
         {
@@ -1852,6 +1866,9 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
         {
             std::vector<GraphicsEngine::Mesh> meshes;
             GraphicsEngine::Model model;
+            // TODO(neil): replace with actual error check later on
+            ASSERT(modelIndex <= modelNames.size());
+            model.m_name = modelNames[modelIndex++];
             for(int32 i = 0; i < meshCount; i++)
             {
                 GraphicsEngine::Mesh mesh{meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i]};
@@ -1873,6 +1890,9 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
     {
         std::vector<GraphicsEngine::Mesh> meshes;
         GraphicsEngine::Model model;
+        // TODO(neil): replace with actual error check later on
+        ASSERT(modelIndex <= modelNames.size());
+        model.m_name = modelNames[modelIndex];
         for (int32 i = 0; i < meshCount; i++)
         {
             GraphicsEngine::Mesh mesh{ meshNames[i], meshVertices[i], meshIndices[i], meshMaterials[i] };
