@@ -123,9 +123,10 @@ void SceneShutdown()
 }
 
 EDITOR_INTERFACE
-std::string SceneGetMeshName()
+const char* SceneGetMeshName()
 {
-    return g_window->m_renderDevice->m_scene->m_models[0].m_name;
+    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_name.c_str();
+    return result;
 }
 
 }

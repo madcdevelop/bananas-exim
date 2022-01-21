@@ -6,6 +6,70 @@
     xmlns:local="clr-namespace:BananasEditor"
     mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" />
+    <UserControl.Resources>
+        <local:Scene x:Key="myScene" />
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource myScene}"/>
+    </UserControl.DataContext>
 
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                HorizontalAlignment="Center"
+                Content="Property Grid" /> 
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <Label Height="Auto"
+                        Margin="5"
+                        Padding="5"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Content="Name" />
+                    <Label Height="Auto"
+                        Margin="5"
+                        Padding="5"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Content="Name" />
+                    <Label Height="Auto"
+                        Margin="5"
+                        Padding="5"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Content="Name" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBox Height="Auto"
+                        Margin="5"
+                        Padding="5"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Path=MeshName}"/>
+                    <TextBox Height="Auto"
+                        Margin="5"
+                        Padding="5"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Text="Minecraft_Hill" />
+                    <TextBox Height="Auto"
+                        Margin="5"
+                        Padding="5"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Text="Minecraft_Hill" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
 </UserControl>

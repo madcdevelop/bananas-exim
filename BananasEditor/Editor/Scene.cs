@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace BananasEditor
 {
-    public class Scene
+    public class Scene : INotifyPropertyChanged
     {
         #region PInvoke
 
@@ -35,19 +37,40 @@ namespace BananasEditor
         #endregion
 
         IntPtr m_renderScene = IntPtr.Zero;
-        private string m_meshName = "";
+        private string m_meshName = "Placeholder Name";
+        
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public string MeshName { get{ return m_meshName; } set{ this.m_meshName = value; } }
+        // This method is called by the Set accessor of each property.  
+        // The CallerMemberName attribute that is applied to the optional propertyName  
+        // parameter causes the property name of the caller to be substituted as an argument.  
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")  
+        {  
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }  
+
+        public string MeshName 
+        { 
+            get
+            { 
+                return m_meshName; 
+            } 
+            set
+            { 
+                if (value != this.m_meshName)
+                {
+                    m_meshName = value; 
+                    NotifyPropertyChanged();
+                }
+            } 
+        }
 
         public Scene()
         {
-            CreateScene();
-            m_renderScene = GetScene();
         }
 
         public void NewScene()
         {
-            SceneShutdown();
             CreateScene();
             m_renderScene = GetScene();
         }
@@ -77,10 +100,12 @@ namespace BananasEditor
             SceneShutdown();
         }
 
-        public void SetMeshName()
+        public string GetMeshName()
         {
-            MeshName = SceneGetMeshName();
+            // TODO(neil): Crashes when trying to retrieve name.
+            // Figure out how to convert unmanaged C string to managed C# string
+            string result = new string(SceneGetMeshName());
+            return result;
         }
-
     }
 }
