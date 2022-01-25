@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace BananasEditor
 {
@@ -21,6 +22,9 @@ namespace BananasEditor
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr GetScene();
+        
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int GetModelLoadState(); 
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SceneImportModels(string fileName);
@@ -32,37 +36,42 @@ namespace BananasEditor
         internal static extern void SceneShutdown();
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern string SceneGetMeshName();
+        internal static extern IntPtr SceneEngineGetModelName();
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void SceneEngineSetModelName(string name);
 
         #endregion
 
-        IntPtr m_renderScene = IntPtr.Zero;
-        private string m_meshName = "Placeholder Name";
-        
+        private enum ModelLoaded
+        {
+            NOT_LOADED  = 0,
+            FILE_LOADED = 1,
+            DATA_LOADING = 2,
+            DATA_LOADED = 3
+        }
+
+        private Thread importThread;
+        private IntPtr m_renderScene = IntPtr.Zero;
+        private string m_ModelName = String.Empty;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // This method is called by the Set accessor of each property.  
-        // The CallerMemberName attribute that is applied to the optional propertyName  
-        // parameter causes the property name of the caller to be substituted as an argument.  
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")  
-        {  
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }  
-
-        public string MeshName 
+        public string ModelName 
         { 
             get
-            { 
-                return m_meshName; 
-            } 
+            {
+                return m_ModelName;
+            }
             set
-            { 
-                if (value != this.m_meshName)
+            {
+                if (value != this.m_ModelName)
                 {
-                    m_meshName = value; 
+                    m_ModelName = value;
+                    EngineSetModelName(m_ModelName);
                     NotifyPropertyChanged();
                 }
-            } 
+            }
         }
 
         public Scene()
@@ -73,6 +82,7 @@ namespace BananasEditor
         {
             CreateScene();
             m_renderScene = GetScene();
+            ModelName = String.Empty;
         }
 
         public void SaveScene(string fileName)
@@ -83,11 +93,31 @@ namespace BananasEditor
         public void LoadScene(string fileName)
         {
             SceneLoadScene(fileName);
+            // NOTE(neil): This is fine as no new thread is created for 
+            // opening a scene.
+            GetModelProperties();
         }
 
         public void ImportModels(string fileName)
         {
             SceneImportModels(fileName);
+            importThread = new Thread(new ThreadStart(this.CreateImportThread));
+            importThread.IsBackground = true;
+            importThread.Start();
+        }
+
+        private void CreateImportThread()
+        {
+            while (true)
+            {
+                int result = GetModelLoadState();
+                if (result >= (int)ModelLoaded.FILE_LOADED)
+                {
+                    GetModelProperties();
+                    break;
+                }
+                Thread.Sleep(100);
+            }
         }
 
         public void ExportModels(string fileName)
@@ -100,12 +130,28 @@ namespace BananasEditor
             SceneShutdown();
         }
 
-        public string GetMeshName()
+        public void EngineGetModelName()
         {
-            // TODO(neil): Crashes when trying to retrieve name.
-            // Figure out how to convert unmanaged C string to managed C# string
-            string result = new string(SceneGetMeshName());
-            return result;
+            string result = Marshal.PtrToStringAnsi(SceneEngineGetModelName());
+            ModelName = result;
+        }
+
+        public void EngineSetModelName(string name)
+        {
+            SceneEngineSetModelName(name);
+        }
+
+        private void GetModelProperties()
+        {
+            EngineGetModelName();
+        }
+
+        // This method is called by the Set accessor of each property.  
+        // The CallerMemberName attribute that is applied to the optional propertyName  
+        // parameter causes the property name of the caller to be substituted as an argument.  
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

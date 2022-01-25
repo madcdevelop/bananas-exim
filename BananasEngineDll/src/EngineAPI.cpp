@@ -105,6 +105,13 @@ GraphicsEngine::Scene* GetScene()
 } 
 
 EDITOR_INTERFACE
+int GetModelLoadState()
+{
+    int result = (int)g_window->m_renderDevice->m_scene->m_isModelLoaded;
+    return result;
+}
+
+EDITOR_INTERFACE
 void SceneImportModels(const char* fileName)
 {
     g_window->m_renderDevice->m_scene->CreateImportThread(std::string(fileName));
@@ -123,10 +130,30 @@ void SceneShutdown()
 }
 
 EDITOR_INTERFACE
-const char* SceneGetMeshName()
+const char* SceneEngineGetModelName()
 {
-    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_name.c_str();
-    return result;
+    size_t modelSize = g_window->m_renderDevice->m_scene->m_models.size();
+    if (modelSize > 0)
+    {
+        const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_name.c_str();
+        return result;
+    }
+    return nullptr;
 }
 
+EDITOR_INTERFACE
+void SceneEngineSetModelName(const char* name)
+{
+    if (name)
+    {
+        if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
+        {
+            g_window->m_renderDevice->m_scene->m_models[0].m_name = std::string(name);
+        }
+    }
 }
+
+
+
+}
+

@@ -56,8 +56,11 @@ namespace BananasEditor
             m_windowHost = new SceneView(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
             m_windowHost.MessageHook += new HwndSourceHook(MsgProc);
             ControlHostElement.Child = m_windowHost;
+
             m_renderScene = new Scene();
+            DataContext = m_renderScene;
             m_renderScene.NewScene();
+            
             CompositionTarget.Rendering += new EventHandler(Render);
         }
 
@@ -103,7 +106,6 @@ namespace BananasEditor
                 string[] filePathNoExt = m_fileName.Split(".");
                 m_startupWindow.AddRecentScene(filePathNoExt[0]);
                 m_renderScene.LoadScene(filePathNoExt[0]);
-                // m_renderScene.MeshName = m_renderScene.GetMeshName();
                 this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
         }

@@ -6,13 +6,6 @@
     xmlns:local="clr-namespace:BananasEditor"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <local:Scene x:Key="myScene" />
-    </UserControl.Resources>
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource myScene}"/>
-    </UserControl.DataContext>
-
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -51,11 +44,12 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1">
                     <TextBox Height="Auto"
+                        MinWidth="90"
                         Margin="5"
                         Padding="5"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Center"
-                        Text="{Binding Path=MeshName}"/>
+                        Text="{Binding ModelName, Mode=TwoWay}"/>
                     <TextBox Height="Auto"
                         Margin="5"
                         Padding="5"
