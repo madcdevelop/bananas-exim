@@ -6,6 +6,33 @@
     xmlns:local="clr-namespace:BananasEditor"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <Style x:Key="keyStyle">
+            <Setter Property="Label.Height"
+                    Value="Auto" />
+            <Setter Property="Label.Margin"
+                    Value="5" />
+            <Setter Property="Label.Padding"
+                    Value="5" />
+            <Setter Property="Label.VerticalAlignment"
+                    Value="Top" />
+            <Setter Property="Label.HorizontalAlignment"
+                    Value="Center" />
+        </Style>
+        <Style x:Key="valueStyle">
+            <Setter Property="TextBlock.Height"
+                    Value="Auto" />
+            <Setter Property="TextBlock.Margin"
+                    Value="5" />
+            <Setter Property="TextBlock.Padding"
+                    Value="5" />
+            <Setter Property="TextBlock.VerticalAlignment"
+                    Value="Top" />
+            <Setter Property="TextBlock.HorizontalAlignment"
+                    Value="Center" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -23,24 +50,14 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0">
-                    <Label Height="Auto"
-                        Margin="5"
-                        Padding="5"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Content="Name" />
-                    <Label Height="Auto"
-                        Margin="5"
-                        Padding="5"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Content="Name" />
-                    <Label Height="Auto"
-                        Margin="5"
-                        Padding="5"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Content="Name" />
+                    <Label Content="Name"
+                           Style="{StaticResource keyStyle}" />
+                    <Label Content="Mesh Count"
+                           Style="{StaticResource keyStyle}" />
+                    <Label Content="Vertices Count"
+                           Style="{StaticResource keyStyle}" />
+                    <Label Content="Indices Count"
+                           Style="{StaticResource keyStyle}" />
                 </StackPanel>
                 <StackPanel Grid.Column="1">
                     <TextBox Height="Auto"
@@ -49,19 +66,13 @@
                         Padding="5"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Center"
-                        Text="{Binding ModelName, Mode=TwoWay}"/>
-                    <TextBox Height="Auto"
-                        Margin="5"
-                        Padding="5"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Text="Minecraft_Hill" />
-                    <TextBox Height="Auto"
-                        Margin="5"
-                        Padding="5"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Text="Minecraft_Hill" />
+                        Text="{Binding ModelName, Mode=TwoWay}" />
+                    <TextBlock Text="{Binding MeshCount, Mode=OneWay}"
+                               Style="{StaticResource valueStyle}" />
+                    <TextBlock Text="{Binding VerticesCount, Mode=OneWay}"
+                               Style="{StaticResource valueStyle}" />
+                    <TextBlock Text="{Binding IndicesCount, Mode=OneWay}"
+                               Style="{StaticResource valueStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

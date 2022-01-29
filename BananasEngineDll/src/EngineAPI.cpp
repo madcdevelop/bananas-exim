@@ -153,7 +153,35 @@ void SceneEngineSetModelName(const char* name)
     }
 }
 
-
-
+EDITOR_INTERFACE
+int SceneEngineGetMeshCount()
+{
+    int result = (int)g_window->m_renderDevice->m_scene->m_models[0].m_meshes.size();
+    return result; 
 }
 
+EDITOR_INTERFACE
+int SceneEngineGetVerticesCount()
+{
+    int result = 0;
+    auto model = g_window->m_renderDevice->m_scene->m_models[0];
+    for (int i = 0; i < model.m_meshes.size(); i++)
+    {
+        result += (int)model.m_meshes[i].m_vertices.size();
+    }
+    return result;
+}
+
+EDITOR_INTERFACE
+int SceneEngineGetIndicesCount()
+{
+    int result = 0;
+    auto model = g_window->m_renderDevice->m_scene->m_models[0];
+    for (int i = 0; i < model.m_meshes.size(); i++)
+    {
+        result += (int)model.m_meshes[i].m_indices.size();
+    }
+    return result;
+}
+
+}

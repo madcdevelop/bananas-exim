@@ -41,6 +41,15 @@ namespace BananasEditor
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SceneEngineSetModelName(string name);
 
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int SceneEngineGetMeshCount();
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int SceneEngineGetVerticesCount();
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int SceneEngineGetIndicesCount();
+
         #endregion
 
         private enum ModelLoaded
@@ -53,7 +62,12 @@ namespace BananasEditor
 
         private Thread importThread;
         private IntPtr m_renderScene = IntPtr.Zero;
-        private string m_ModelName = String.Empty;
+
+        // Property Grid
+        private string m_modelName = String.Empty;
+        private int m_meshCount = 0;
+        private int m_verticesCount = 0;
+        private int m_indicesCount = 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -61,14 +75,53 @@ namespace BananasEditor
         { 
             get
             {
-                return m_ModelName;
+                return m_modelName;
             }
             set
             {
-                if (value != this.m_ModelName)
+                if (value != this.m_modelName)
                 {
-                    m_ModelName = value;
-                    EngineSetModelName(m_ModelName);
+                    m_modelName = value;
+                    EngineSetModelName(m_modelName);
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public int MeshCount
+        {
+            get{ return m_meshCount; }
+            set
+            {
+                if (value != this.m_meshCount)
+                {
+                    m_meshCount = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public int VerticesCount
+        {
+            get{ return m_verticesCount; }
+            set
+            {
+                if (value != this.m_verticesCount)
+                {
+                    m_verticesCount = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public int IndicesCount
+        {
+            get{ return m_indicesCount; }
+            set
+            {
+                if (value != this.m_indicesCount)
+                {
+                    m_indicesCount = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -93,8 +146,7 @@ namespace BananasEditor
         public void LoadScene(string fileName)
         {
             SceneLoadScene(fileName);
-            // NOTE(neil): This is fine as no new thread is created for 
-            // opening a scene.
+            // NOTE(neil): This is fine as no new thread is created for opening a scene.
             GetModelProperties();
         }
 
@@ -130,10 +182,10 @@ namespace BananasEditor
             SceneShutdown();
         }
 
-        public void EngineGetModelName()
+        public string EngineGetModelName()
         {
             string result = Marshal.PtrToStringAnsi(SceneEngineGetModelName());
-            ModelName = result;
+            return result;
         }
 
         public void EngineSetModelName(string name)
@@ -141,9 +193,27 @@ namespace BananasEditor
             SceneEngineSetModelName(name);
         }
 
+        public int EngineGetMeshCount()
+        {
+            return SceneEngineGetMeshCount();
+        }
+
+        public int EngineGetVerticesCount()
+        {
+            return SceneEngineGetVerticesCount();
+        }
+
+        public int EngineGetIndicesCount()
+        {
+            return SceneEngineGetIndicesCount();
+        }
+
         private void GetModelProperties()
         {
-            EngineGetModelName();
+            ModelName = EngineGetModelName();
+            MeshCount = EngineGetMeshCount();
+            VerticesCount = EngineGetVerticesCount();
+            IndicesCount = EngineGetIndicesCount();
         }
 
         // This method is called by the Set accessor of each property.  
