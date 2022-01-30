@@ -198,14 +198,18 @@ namespace BananasEditor
 
         private void window_KeyDown(object sender, KeyEventArgs e)
         {
-            // Camera Movement
-            if(e.Key == Key.W || 
-               e.Key == Key.S ||
-               e.Key == Key.A ||
-               e.Key == Key.D)
+            IInputElement focusedControl = Keyboard.FocusedElement;
+            if (this == focusedControl)
             {
-                e.Handled = true;
-                m_windowHost.KeyboardCameraMove();
+                // Camera Movement
+                if (e.Key == Key.W ||
+                    e.Key == Key.S ||
+                    e.Key == Key.A ||
+                    e.Key == Key.D)
+                {
+                    e.Handled = true;
+                    m_windowHost.KeyboardCameraMove();
+                }
             }
         }
     }

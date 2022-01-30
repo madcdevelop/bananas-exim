@@ -47,7 +47,7 @@
             <Border Name="ControlHostElement"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-            BorderThickness="1"
+                BorderThickness="1"
                 BorderBrush="LightGray"
                 DockPanel.Dock="Left"
                 Grid.Column="0" />

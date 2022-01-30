@@ -24,5 +24,26 @@ namespace BananasEditor
         {
             InitializeComponent();
         }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape || e.Key == Key.Enter)
+            {
+                UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
+                if (elementWithFocus is System.Windows.Controls.TextBox tb)
+                {
+                    if (Keyboard.FocusedElement != null)
+                    {
+                        Keyboard.FocusedElement.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
+                        // Clear logical focus
+                        FocusManager.SetFocusedElement(FocusManager.GetFocusScope(elementWithFocus), null);
+                        // Clear keyboard focus
+                        Keyboard.ClearFocus();
+                        var mainWindow = Application.Current.MainWindow;
+                        Keyboard.Focus(mainWindow);
+                    }
+                }
+            }
+        }
     }
 }
