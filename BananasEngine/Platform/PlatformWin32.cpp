@@ -186,9 +186,9 @@ void PlatformWin32::CameraMouseCallback(const POINT& pos)
 
 std::string PlatformWin32::GetFilePath(const wchar_t* relativePath)
 {
-#define BUFSIZE 4096
-    TCHAR path[BUFSIZE];
-	DWORD result = GetFullPathName(relativePath, BUFSIZE, path, NULL);
+    const uint32 bufsize = 4096;
+    TCHAR path[bufsize];
+	DWORD result = GetFullPathName(relativePath, bufsize, path, NULL);
     if (result == 0)
     {
         OutputDebugString(L"ERROR\t\tFailed to get full path!\n");
