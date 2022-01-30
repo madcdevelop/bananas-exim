@@ -1,7 +1,6 @@
 #ifndef GRAPHICS_ENGINE_RENDERER_H
 #define GRAPHICS_ENGINE_RENDERER_H
 
-// TODO(neil): replace with interface RenderDevice
 #include "RenderDeviceOpenGL.h"
 
 namespace GraphicsEngine

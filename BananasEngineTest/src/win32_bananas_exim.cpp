@@ -29,7 +29,6 @@ real32 g_deltaTime = 0.0f;
 
 // Graphics
 GraphicsEngine::Renderer* g_renderer = NULL;
-// TODO(neil): replace with interface RenderDevice
 GraphicsEngine::RenderDeviceOpenGL* g_renderDevice = NULL;
 GraphicsEngine::Scene* g_scene = NULL;
 

@@ -62,7 +62,19 @@ void Scene::LoadModels(const std::string fileName)
 
     Model lightCube;
     lightCube.m_name = "Light_Cubes";
+#if false
+#define BUFSIZE 4096
+    char path[BUFSIZE];
+	DWORD result = GetFullPathName(L"../../../Content/Models/cube_example.obj", BUFSIZE, (LPWSTR)path, NULL);
+    if (result == 0)
+    {
+        OutputDebugString(L"ERROR\t\tFailed to get full path!\n");
+    }
+    std::string filePath = std::string(&path[0]);
+    lightCube.LoadModel(filePath);
+#else
     lightCube.LoadModel("C:\\Code\\bananas-exim\\Content\\Models\\cube_example.obj");
+#endif
     m_models.push_back(lightCube);
 
     m_isModelLoaded = ModelLoadState::FILE_LOADED;

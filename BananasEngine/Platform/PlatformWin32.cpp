@@ -42,7 +42,6 @@ bool PlatformWin32::Win32CreateWindow()
     // Initialize PlatformWin32
     Init();
 
-    // TODO(neil): Move this section out of function and into EngineDll.
     // Initialize Renderer
     m_renderer = new GraphicsEngine::Renderer{m_hInstance};
     m_renderer->CreateRenderDevice(m_renderDevice);
