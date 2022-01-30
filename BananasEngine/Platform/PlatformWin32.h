@@ -5,7 +5,7 @@
 #include "../Core/Timestep.h"
 #include "../Graphics/Renderer.h"
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK WndProcEngine(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace PlatformEngine
 {
@@ -47,6 +47,8 @@ public:
     LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     void CameraKeyboardCallback();
+
+    static std::string GetFilePath(const wchar_t* relativePath);
 
 private:
     void CameraMouseCallback(const POINT& pos);

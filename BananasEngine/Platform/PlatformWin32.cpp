@@ -5,7 +5,7 @@ namespace
     PlatformEngine::PlatformWin32 *g_PlatformWin32;
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProcEngine(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     if(g_PlatformWin32)
         return g_PlatformWin32->MsgProc(hwnd, msg, wParam, lParam);
@@ -65,7 +65,7 @@ bool PlatformWin32::Init()
     wc.cbWndExtra = 0;
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.hInstance = m_hInstance;
-    wc.lpfnWndProc = WndProc;
+    wc.lpfnWndProc = WndProcEngine;
     wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -182,6 +182,23 @@ void PlatformWin32::CameraMouseCallback(const POINT& pos)
     m_lastY = (real32)pos.y;
 
     m_renderDevice->m_scene->m_camera.MouseMovement(xoffset, yoffset);
+}
+
+std::string PlatformWin32::GetFilePath(const wchar_t* relativePath)
+{
+#define BUFSIZE 4096
+    TCHAR path[BUFSIZE];
+	DWORD result = GetFullPathName(relativePath, BUFSIZE, path, NULL);
+    if (result == 0)
+    {
+        OutputDebugString(L"ERROR\t\tFailed to get full path!\n");
+    }
+    else
+    {
+        std::wstring wp(&path[0]);
+        std::string filePath(wp.begin(), wp.end());
+        return filePath;
+    }
 }
 
 }
