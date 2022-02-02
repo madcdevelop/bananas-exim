@@ -37,12 +37,31 @@
             <Setter Property="TextBlock.Foreground"
                     Value="White" />
         </Style>
+        <Style x:Key="vectorValueStyle">
+            <Setter Property="TextBlock.Height"
+                    Value="Auto" />
+            <Setter Property="TextBlock.MinWidth"
+                    Value="25" />
+            <Setter Property="TextBlock.Margin"
+                    Value="5" />
+            <Setter Property="TextBlock.Padding"
+                    Value="5" />
+            <Setter Property="TextBlock.VerticalAlignment"
+                    Value="Top" />
+            <Setter Property="TextBlock.HorizontalAlignment"
+                    Value="Left" />
+            <Setter Property="TextBlock.Background"
+                    Value="SlateGray" />
+            <Setter Property="TextBlock.Foreground"
+                    Value="White" />
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -100,6 +119,106 @@
                                Style="{StaticResource valueStyle}" />
                 </StackPanel>
             </Grid>
+
+            <StackPanel Grid.Row="3">
+                <Expander Name="meshExpander"
+                    HorizontalAlignment="Left"
+                    Header="Meshes"
+                    ExpandDirection="Down"
+                    IsExpanded="False"
+                    HorizontalContentAlignment="Stretch">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Name:"
+                                       Style="{StaticResource keyStyle}" />
+                                <Label Content="Vertex Count:"
+                                       Style="{StaticResource keyStyle}" />
+                                <Label Content="Index Count:"
+                                       Style="{StaticResource keyStyle}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Placeholder Name"
+                                           Style="{StaticResource valueStyle}" />
+                                <TextBlock Text="24"
+                                           Style="{StaticResource valueStyle}" />
+                                <TextBlock Text="36"
+                                           Style="{StaticResource valueStyle}" />
+                            </StackPanel>
+                        </Grid>
+                        <Expander Name="materialExpander"
+                            HorizontalAlignment="Left"
+                            Header="Material"
+                            ExpandDirection="Down"
+                            IsExpanded="False"
+                            HorizontalContentAlignment="Stretch">
+                        </Expander>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Name:"
+                                       Style="{StaticResource keyStyle}" />
+                                <Label Content="Ambient:"
+                                       Style="{StaticResource keyStyle}" />
+                                <Label Content="Diffuse:"
+                                       Style="{StaticResource keyStyle}" />
+                                <Label Content="Specular:"
+                                       Style="{StaticResource keyStyle}" />
+                                <Label Content="Emissive:"
+                                       Style="{StaticResource keyStyle}" />
+                                <Label Content="Shininess:"
+                                       Style="{StaticResource keyStyle}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Placeholder Name"
+                                           Style="{StaticResource valueStyle}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="1.0"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="1.0"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="1.0"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="0.5"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="0.5"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="0.5"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="0.8"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="0.8"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="0.8"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="1.0"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="1.0"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                    <TextBlock Text="1.0"
+                                               Style="{StaticResource vectorValueStyle}" />
+                                </StackPanel>
+                                <TextBlock Text="324.00"
+                                           Style="{StaticResource valueStyle}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+
         </Grid>
     </Grid>
 </UserControl>
