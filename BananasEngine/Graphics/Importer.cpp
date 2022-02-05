@@ -220,10 +220,6 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
     std::vector<real32> shininess;
     std::vector<Texture> textures;
     std::vector<std::vector<Texture>> texturesPerMesh;
-    std::string textureFilePath;
-
-    textureFilePath = filePath.substr(0, filePath.find_last_of("\\"));
-    textureFilePath = textureFilePath.substr(0, textureFilePath.find_last_of("\\"));
 
     uint32 materialCount = 0;
 
@@ -289,13 +285,13 @@ bool Importer::LoadModelMTL(std::string& filePath, std::vector<std::string>& use
         else if(start == "map_Kd")
         {
             std::string textureFileName = tokens[1].substr(tokens[1].find_last_of("\\")+1);
-            textures.push_back(Texture("texture_diffuse", textureFilePath + std::string("\\Textures\\" + textureFileName)));
+            textures.push_back(Texture("texture_diffuse", "../../../Content/Textures/" + textureFileName));
         }
         // Specular Texture File Path
         else if(start == "map_Ks")
         {
             std::string textureFileName = tokens[1].substr(tokens[1].find_last_of("\\")+1);
-            textures.push_back(Texture("texture_specular", textureFilePath + std::string("\\Textures\\" + textureFileName)));
+            textures.push_back(Texture("texture_specular", "../../../Content/Textures/" + textureFileName));
             texturesPerMesh.push_back(textures);
             // Last texture file to load. Clear for next material.
             textures.clear();

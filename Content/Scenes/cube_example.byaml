@@ -1,12 +1,12 @@
 # Bananas Import/Export v1.0
 - Camera:
   - Id: 0
-  - Position: {x:-2.50017, y:2.70167, z:9.67376}
-  - Front: {x:0.0609266, y:-0.0610482, z:-0.996274}
+  - Position: {x:10.3665, y:10, z:0.969048}
+  - Front: {x:-0.839431, y:-0.528438, z:-0.126919}
   - Up: {x:0, y:1, z:0}
-  - Right: {x:0.998135, y:-0, z:0.0610404}
-  - Yaw: -86.5005
-  - Pitch: -3.49998
+  - Right: {x:0.149497, y:0, z:-0.988762}
+  - Yaw: -171.402
+  - Pitch: -31.9
   - Fov: 45
   - MovementSpeed: 0.02
   - Sensitivity: 0.1
@@ -100,9 +100,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
 - Model:
   - Id: 3
   - Name: Light_Cubes
@@ -193,6 +193,6 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp

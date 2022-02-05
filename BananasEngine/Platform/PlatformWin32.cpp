@@ -192,6 +192,7 @@ std::string PlatformWin32::GetFilePath(const wchar_t* relativePath)
     if (result == 0)
     {
         OutputDebugString(L"ERROR\t\tFailed to get full path!\n");
+        return "";
     }
     else
     {

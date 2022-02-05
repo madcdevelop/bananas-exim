@@ -1,12 +1,12 @@
 # Bananas Import/Export v1.0
 - Camera:
   - Id: 0
-  - Position: {x:5, y:10, z:10}
-  - Front: {x:-0.433013, y:-0.5, z:-0.75}
+  - Position: {x:5.73041, y:10, z:-11.0414}
+  - Front: {x:-0.623519, y:-0.557745, z:0.547855}
   - Up: {x:0, y:1, z:0}
-  - Right: {x:0.866025, y:0, z:-0.5}
-  - Yaw: -120
-  - Pitch: -30
+  - Right: {x:-0.660057, y:0, z:-0.751216}
+  - Yaw: -221.304
+  - Pitch: -33.9
   - Fov: 45
   - MovementSpeed: 0.02
   - Sensitivity: 0.1
@@ -100,9 +100,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 3
     - Name: Cube.001
@@ -189,9 +189,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 4
     - Name: Cube.002_Cube.008
@@ -278,9 +278,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 5
     - Name: Cube.003_Cube.009
@@ -367,9 +367,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 6
     - Name: Cube.007_Cube.013
@@ -456,9 +456,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 7
     - Name: Cube.006_Cube.012
@@ -545,9 +545,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 8
     - Name: Cube.005_Cube.011
@@ -634,9 +634,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 9
     - Name: Cube.004_Cube.010
@@ -723,9 +723,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 10
     - Name: Cube.011_Cube.017
@@ -812,9 +812,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 11
     - Name: Cube.010_Cube.016
@@ -901,9 +901,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 12
     - Name: Cube.009_Cube.015
@@ -990,9 +990,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 13
     - Name: Cube.008_Cube.014
@@ -1079,9 +1079,9 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
 - Model:
   - Id: 14
   - Name: Light_Cubes
@@ -1172,6 +1172,6 @@
       - Shininess: 324
       - Textures:
         - Type: texture_diffuse
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
         - Type: texture_specular
-          FilePath: C:\Code\bananas-exim\Content\Textures\minecraft_cube_texture.bmp
+          FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
