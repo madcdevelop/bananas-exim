@@ -142,11 +142,11 @@
                                        Style="{StaticResource keyStyle}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="Placeholder Name"
+                                <TextBlock Text="{Binding MeshName, Mode=OneWay}"
                                            Style="{StaticResource valueStyle}" />
-                                <TextBlock Text="24"
+                                <TextBlock Text="{Binding MeshVertexCount, Mode=OneWay}"
                                            Style="{StaticResource valueStyle}" />
-                                <TextBlock Text="36"
+                                <TextBlock Text="{Binding MeshIndexCount, Mode=OneWay}"
                                            Style="{StaticResource valueStyle}" />
                             </StackPanel>
                         </Grid>
@@ -176,38 +176,38 @@
                                            Style="{StaticResource keyStyle}" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Placeholder Name"
+                                    <TextBlock Text="{Binding MaterialName, Mode=OneWay}"
                                                Style="{StaticResource valueStyle}" />
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="1.0"
+                                        <TextBlock Text="{Binding MaterialAmbient.X, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="1.0"
+                                        <TextBlock Text="{Binding MaterialAmbient.Y, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="1.0"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="0.5"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="0.5"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="0.5"
+                                        <TextBlock Text="{Binding MaterialAmbient.Z, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="0.8"
+                                        <TextBlock Text="{Binding MaterialDiffuse.X, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="0.8"
+                                        <TextBlock Text="{Binding MaterialDiffuse.Y, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="0.8"
+                                        <TextBlock Text="{Binding MaterialDiffuse.Z, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="1.0"
+                                        <TextBlock Text="{Binding MaterialSpecular.X, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="1.0"
+                                        <TextBlock Text="{Binding MaterialSpecular.Y, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="1.0"
+                                        <TextBlock Text="{Binding MaterialSpecular.Z, Mode=OneWay}"
+                                                   Style="{StaticResource vectorValueStyle}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding MaterialEmissive.X, Mode=OneWay}"
+                                                   Style="{StaticResource vectorValueStyle}" />
+                                        <TextBlock Text="{Binding MaterialEmissive.Y, Mode=OneWay}"
+                                                   Style="{StaticResource vectorValueStyle}" />
+                                        <TextBlock Text="{Binding MaterialEmissive.Z, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
                                     </StackPanel>
                                     <TextBlock Text="324.00"

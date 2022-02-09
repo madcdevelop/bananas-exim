@@ -132,8 +132,7 @@ void SceneShutdown()
 EDITOR_INTERFACE
 const char* SceneEngineGetModelName()
 {
-    size_t modelSize = g_window->m_renderDevice->m_scene->m_models.size();
-    if (modelSize > 0)
+    if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
     {
         const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_name.c_str();
         return result;
@@ -181,6 +180,72 @@ int SceneEngineGetIndicesCount()
     {
         result += (int)model.m_meshes[i].m_indices.size();
     }
+    return result;
+}
+
+EDITOR_INTERFACE
+const char* SceneEngineGetMeshName()
+{
+    if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
+    {
+        const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_name.c_str();
+        return result;
+    }
+    return nullptr;
+}
+
+EDITOR_INTERFACE
+int SceneEngineMeshGetVerticesCount()
+{
+    auto model = g_window->m_renderDevice->m_scene->m_models[0];
+    int result = (int)model.m_meshes[0].m_vertices.size();
+    return result;
+}
+
+EDITOR_INTERFACE
+int SceneEngineMeshGetIndicesCount()
+{
+    auto model = g_window->m_renderDevice->m_scene->m_models[0];
+    int result = (int)model.m_meshes[0].m_indices.size();
+    return result;
+}
+
+EDITOR_INTERFACE
+const char* SceneEngineMeshGetMaterialName()
+{
+    if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
+    {
+        const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_name.c_str();
+        return result;
+    }
+    return nullptr;
+}
+
+EDITOR_INTERFACE
+const glm::vec3* SceneEngineMaterialGetAmbient()
+{
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_ambient);
+    return result;
+}
+
+EDITOR_INTERFACE
+const glm::vec3* SceneEngineMaterialGetDiffuse()
+{
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_diffuse);
+    return result;
+}
+
+EDITOR_INTERFACE
+const glm::vec3* SceneEngineMaterialGetSpecular()
+{
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_specular);
+    return result;
+}
+
+EDITOR_INTERFACE
+const glm::vec3* SceneEngineMaterialGetEmissive()
+{
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_emissive);
     return result;
 }
 
