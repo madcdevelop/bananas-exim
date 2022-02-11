@@ -210,7 +210,7 @@
                                         <TextBlock Text="{Binding MaterialEmissive.Z, Mode=OneWay}"
                                                    Style="{StaticResource vectorValueStyle}" />
                                     </StackPanel>
-                                    <TextBlock Text="324.00"
+                                    <TextBlock Text="{Binding MaterialShininess, Mode=OneWay}"
                                                Style="{StaticResource valueStyle}" />
                                 </StackPanel>
                             </Grid>
@@ -234,9 +234,9 @@
                                        Style="{StaticResource keyStyle}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Diffuse"
+                                        <TextBlock Text="{Binding MaterialTextureType, Mode=OneWay}"
                                            Style="{StaticResource valueStyle}" />
-                                        <TextBlock Text="minecraft_cube_texture.bmp"
+                                        <TextBlock Text="{Binding MaterialTextureFilePath, Mode=OneWay}"
                                            Style="{StaticResource valueStyle}" />
                                     </StackPanel>
                                 </Grid>

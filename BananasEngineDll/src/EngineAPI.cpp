@@ -249,4 +249,25 @@ const glm::vec3* SceneEngineMaterialGetEmissive()
     return result;
 }
 
+EDITOR_INTERFACE
+float SceneEngineMaterialGetShininess()
+{
+    float result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_shininess;
+    return result;
+}
+
+EDITOR_INTERFACE
+const char* SceneEngineMaterialTextureType()
+{
+    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_textures[0].m_type.c_str();
+    return result;
+}
+
+EDITOR_INTERFACE
+const char* SceneEngineMaterialTextureFilePath()
+{
+    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_textures[0].m_filePath.c_str();
+    return result;
+}
+
 }

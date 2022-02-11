@@ -74,6 +74,15 @@ namespace BananasEditor
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr SceneEngineMaterialGetEmissive();
 
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern float SceneEngineMaterialGetShininess();
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr SceneEngineMaterialTextureType();
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr SceneEngineMaterialTextureFilePath();
+
         #endregion
 
         private enum ModelLoaded
@@ -109,6 +118,9 @@ namespace BananasEditor
         private Vec3 m_diffuse;
         private Vec3 m_specular;
         private Vec3 m_emissive;
+        private float m_shininess;
+        private string m_textureType;
+        private string m_textureFilePath;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -244,6 +256,24 @@ namespace BananasEditor
             set{ m_emissive = value; NotifyPropertyChanged(); }
         }
 
+        public float MaterialShininess
+        {
+            get{ return m_shininess; }
+            set{ m_shininess = value; NotifyPropertyChanged(); }
+        }
+
+        public string MaterialTextureType
+        {
+            get{ return m_textureType; }
+            set{ m_textureType = value; NotifyPropertyChanged(); }
+        }
+
+        public string MaterialTextureFilePath
+        {
+            get{ return m_textureFilePath; }
+            set{ m_textureFilePath = value; NotifyPropertyChanged(); }
+        }
+
         public Scene()
         {
         }
@@ -375,6 +405,23 @@ namespace BananasEditor
             return result;
         }
 
+        public float EngineMaterialGetShininess()
+        {
+            return SceneEngineMaterialGetShininess();
+        }
+
+        public string EngineMaterialGetTextureType()
+        {
+            string result = Marshal.PtrToStringAnsi(SceneEngineMaterialTextureType());
+            return result;
+        }
+
+        public string EngineMaterialGetTextureFilePath()
+        {
+            string result = Marshal.PtrToStringAnsi(SceneEngineMaterialTextureFilePath());
+            return result;
+        }
+
         private void GetModelProperties()
         {
             ModelName = EngineGetModelName();
@@ -389,6 +436,9 @@ namespace BananasEditor
             MaterialDiffuse = EngineMaterialGetDiffuse();
             MaterialSpecular = EngineMaterialGetSpecular();
             MaterialEmissive = EngineMaterialGetEmissive();
+            MaterialShininess = EngineMaterialGetShininess();
+            MaterialTextureType = EngineMaterialGetTextureType();
+            MaterialTextureFilePath = EngineMaterialGetTextureFilePath();
         }
 
         // This method is called by the Set accessor of each property.  
