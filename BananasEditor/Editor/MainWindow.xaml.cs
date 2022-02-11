@@ -24,6 +24,7 @@ namespace BananasEditor
         private SceneView m_windowHost;
         private Scene m_renderScene;
         private StartupWindow m_startupWindow;
+        private EntityViewModel m_entityViewModel;
 
         private readonly string m_untitled = "Bananas Import/Export " + "[Untitled.bscene]";
         private string m_fileName;
@@ -57,8 +58,10 @@ namespace BananasEditor
             m_windowHost.MessageHook += new HwndSourceHook(MsgProc);
             ControlHostElement.Child = m_windowHost;
 
-            m_renderScene = new Scene();
-            DataContext = m_renderScene;
+            m_entityViewModel = new EntityViewModel();
+            DataContext = m_entityViewModel;
+
+            m_renderScene = new Scene(m_entityViewModel);
             m_renderScene.NewScene();
             
             CompositionTarget.Rendering += new EventHandler(Render);

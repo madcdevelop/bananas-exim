@@ -130,7 +130,7 @@ void SceneShutdown()
 }
 
 EDITOR_INTERFACE
-const char* SceneEngineGetModelName()
+const char* EntityEngineGetModelName()
 {
     if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
     {
@@ -141,7 +141,7 @@ const char* SceneEngineGetModelName()
 }
 
 EDITOR_INTERFACE
-void SceneEngineSetModelName(const char* name)
+void EntityEngineSetModelName(const char* name)
 {
     if (name)
     {
@@ -153,14 +153,14 @@ void SceneEngineSetModelName(const char* name)
 }
 
 EDITOR_INTERFACE
-int SceneEngineGetMeshCount()
+int EntityEngineGetMeshCount()
 {
     int result = (int)g_window->m_renderDevice->m_scene->m_models[0].m_meshes.size();
     return result; 
 }
 
 EDITOR_INTERFACE
-int SceneEngineGetVerticesCount()
+int EntityEngineGetVerticesCount()
 {
     int result = 0;
     auto model = g_window->m_renderDevice->m_scene->m_models[0];
@@ -172,7 +172,7 @@ int SceneEngineGetVerticesCount()
 }
 
 EDITOR_INTERFACE
-int SceneEngineGetIndicesCount()
+int EntityEngineGetIndicesCount()
 {
     int result = 0;
     auto model = g_window->m_renderDevice->m_scene->m_models[0];
@@ -184,7 +184,7 @@ int SceneEngineGetIndicesCount()
 }
 
 EDITOR_INTERFACE
-const char* SceneEngineGetMeshName()
+const char* EntityEngineGetMeshName()
 {
     if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
     {
@@ -195,7 +195,7 @@ const char* SceneEngineGetMeshName()
 }
 
 EDITOR_INTERFACE
-int SceneEngineMeshGetVerticesCount()
+int EntityEngineMeshGetVerticesCount()
 {
     auto model = g_window->m_renderDevice->m_scene->m_models[0];
     int result = (int)model.m_meshes[0].m_vertices.size();
@@ -203,7 +203,7 @@ int SceneEngineMeshGetVerticesCount()
 }
 
 EDITOR_INTERFACE
-int SceneEngineMeshGetIndicesCount()
+int EntityEngineMeshGetIndicesCount()
 {
     auto model = g_window->m_renderDevice->m_scene->m_models[0];
     int result = (int)model.m_meshes[0].m_indices.size();
@@ -211,7 +211,7 @@ int SceneEngineMeshGetIndicesCount()
 }
 
 EDITOR_INTERFACE
-const char* SceneEngineMeshGetMaterialName()
+const char* EntityEngineMeshGetMaterialName()
 {
     if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
     {
@@ -222,49 +222,49 @@ const char* SceneEngineMeshGetMaterialName()
 }
 
 EDITOR_INTERFACE
-const glm::vec3* SceneEngineMaterialGetAmbient()
+const glm::vec3* EntityEngineMaterialGetAmbient()
 {
     auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_ambient);
     return result;
 }
 
 EDITOR_INTERFACE
-const glm::vec3* SceneEngineMaterialGetDiffuse()
+const glm::vec3* EntityEngineMaterialGetDiffuse()
 {
     auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_diffuse);
     return result;
 }
 
 EDITOR_INTERFACE
-const glm::vec3* SceneEngineMaterialGetSpecular()
+const glm::vec3* EntityEngineMaterialGetSpecular()
 {
     auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_specular);
     return result;
 }
 
 EDITOR_INTERFACE
-const glm::vec3* SceneEngineMaterialGetEmissive()
+const glm::vec3* EntityEngineMaterialGetEmissive()
 {
     auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_emissive);
     return result;
 }
 
 EDITOR_INTERFACE
-float SceneEngineMaterialGetShininess()
+float EntityEngineMaterialGetShininess()
 {
     float result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_shininess;
     return result;
 }
 
 EDITOR_INTERFACE
-const char* SceneEngineMaterialTextureType()
+const char* EntityEngineMaterialTextureType()
 {
     const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_textures[0].m_type.c_str();
     return result;
 }
 
 EDITOR_INTERFACE
-const char* SceneEngineMaterialTextureFilePath()
+const char* EntityEngineMaterialTextureFilePath()
 {
     const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_textures[0].m_filePath.c_str();
     return result;

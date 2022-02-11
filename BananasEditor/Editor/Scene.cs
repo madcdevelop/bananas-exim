@@ -1,16 +1,13 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace BananasEditor
 {
-    public class Scene : INotifyPropertyChanged
+    public class Scene
     {
         #region PInvoke
 
-        // PInvoke declarations
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void CreateScene();
 
@@ -22,9 +19,9 @@ namespace BananasEditor
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr GetScene();
-        
+
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int GetModelLoadState(); 
+        internal static extern int GetModelLoadState();
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SceneImportModels(string fileName);
@@ -34,54 +31,6 @@ namespace BananasEditor
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void SceneShutdown();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineGetModelName();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void SceneEngineSetModelName(string name);
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int SceneEngineGetMeshCount();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int SceneEngineGetVerticesCount();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int SceneEngineGetIndicesCount();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineGetMeshName();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int SceneEngineMeshGetVerticesCount();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int SceneEngineMeshGetIndicesCount();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineMeshGetMaterialName();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineMaterialGetAmbient();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineMaterialGetDiffuse();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineMaterialGetSpecular();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineMaterialGetEmissive();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern float SceneEngineMaterialGetShininess();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineMaterialTextureType();
-
-        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr SceneEngineMaterialTextureFilePath();
 
         #endregion
 
@@ -93,196 +42,20 @@ namespace BananasEditor
             DATA_LOADED = 3
         }
 
-        public struct Vec3
-        {
-            public float X { get; set; }
-            public float Y { get; set; }
-            public float Z { get; set; }
-        }
-
         private Thread importThread;
         private IntPtr m_renderScene = IntPtr.Zero;
+        private EntityViewModel m_entityViewModel;
 
-        // Property Grid
-        private string m_modelName = String.Empty;
-        private int m_meshCount = 0;
-        private int m_verticesCount = 0;
-        private int m_indicesCount = 0;
-
-        private string m_meshName = String.Empty;
-        private int m_meshVertexCount = 0;
-        private int m_meshIndexCount = 0;
-        private string m_materialName = String.Empty;
-
-        private Vec3 m_ambient;
-        private Vec3 m_diffuse;
-        private Vec3 m_specular;
-        private Vec3 m_emissive;
-        private float m_shininess;
-        private string m_textureType;
-        private string m_textureFilePath;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string ModelName 
-        { 
-            get
-            {
-                return m_modelName;
-            }
-            set
-            {
-                if (value != this.m_modelName)
-                {
-                    m_modelName = value;
-                    EngineSetModelName(m_modelName);
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public int MeshCount
+        public Scene(EntityViewModel entityViewModel)
         {
-            get{ return m_meshCount; }
-            set
-            {
-                if (value != this.m_meshCount)
-                {
-                    m_meshCount = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public int VerticesCount
-        {
-            get{ return m_verticesCount; }
-            set
-            {
-                if (value != this.m_verticesCount)
-                {
-                    m_verticesCount = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public int IndicesCount
-        {
-            get{ return m_indicesCount; }
-            set
-            {
-                if (value != this.m_indicesCount)
-                {
-                    m_indicesCount = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public string MeshName
-        {
-            get{ return m_meshName; }
-            set
-            {
-                if (value != this.m_meshName)
-                {
-                    m_meshName = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public int MeshVertexCount
-        {
-            get{ return m_meshVertexCount; }
-            set
-            {
-                if (value != this.m_meshVertexCount)
-                {
-                    m_meshVertexCount = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public int MeshIndexCount 
-        {
-            get{ return m_meshIndexCount; }
-            set
-            {
-                if (value != this.m_meshIndexCount)
-                {
-                    m_meshIndexCount = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public string MaterialName
-        {
-            get{ return m_materialName; }
-            set
-            {
-                if (value != this.m_materialName)
-                {
-                    m_materialName = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public Vec3 MaterialAmbient 
-        {
-            get{ return m_ambient; }
-            set{ m_ambient = value; NotifyPropertyChanged(); }
-        }
-
-        public Vec3 MaterialDiffuse 
-        {
-            get{ return m_diffuse; }
-            set{ m_diffuse = value; NotifyPropertyChanged(); }
-        }
-
-        public Vec3 MaterialSpecular 
-        {
-            get{ return m_specular; }
-            set{ m_specular = value; NotifyPropertyChanged(); }
-        }
-
-        public Vec3 MaterialEmissive 
-        {
-            get{ return m_emissive; }
-            set{ m_emissive = value; NotifyPropertyChanged(); }
-        }
-
-        public float MaterialShininess
-        {
-            get{ return m_shininess; }
-            set{ m_shininess = value; NotifyPropertyChanged(); }
-        }
-
-        public string MaterialTextureType
-        {
-            get{ return m_textureType; }
-            set{ m_textureType = value; NotifyPropertyChanged(); }
-        }
-
-        public string MaterialTextureFilePath
-        {
-            get{ return m_textureFilePath; }
-            set{ m_textureFilePath = value; NotifyPropertyChanged(); }
-        }
-
-        public Scene()
-        {
+            m_entityViewModel = entityViewModel;
         }
 
         public void NewScene()
         {
             CreateScene();
             m_renderScene = GetScene();
-            ModelName = String.Empty;
+            m_entityViewModel.ModelName = String.Empty;
         }
 
         public void SaveScene(string fileName)
@@ -294,7 +67,7 @@ namespace BananasEditor
         {
             SceneLoadScene(fileName);
             // NOTE(neil): This is fine as no new thread is created for opening a scene.
-            GetModelProperties();
+            m_entityViewModel.GetModelProperties();
         }
 
         public void ImportModels(string fileName)
@@ -312,7 +85,7 @@ namespace BananasEditor
                 int result = GetModelLoadState();
                 if (result >= (int)ModelLoaded.FILE_LOADED)
                 {
-                    GetModelProperties();
+                    m_entityViewModel.GetModelProperties();
                     break;
                 }
                 Thread.Sleep(100);
@@ -327,126 +100,6 @@ namespace BananasEditor
         public static void Shutdown()
         {
             SceneShutdown();
-        }
-
-        public string EngineGetModelName()
-        {
-            string result = Marshal.PtrToStringAnsi(SceneEngineGetModelName());
-            return result;
-        }
-
-        public void EngineSetModelName(string name)
-        {
-            SceneEngineSetModelName(name);
-        }
-
-        public int EngineGetMeshCount()
-        {
-            return SceneEngineGetMeshCount();
-        }
-
-        public int EngineGetVerticesCount()
-        {
-            return SceneEngineGetVerticesCount();
-        }
-
-        public int EngineGetIndicesCount()
-        {
-            return SceneEngineGetIndicesCount();
-        }
-
-        public string EngineGetMeshName()
-        {
-            string result = Marshal.PtrToStringAnsi(SceneEngineGetMeshName());
-            return result;
-        }
-
-        public int EngineMeshGetVerticesCount()
-        {
-            return SceneEngineMeshGetVerticesCount();
-        }
-
-        public int EngineMeshGetIndicesCount()
-        {
-            return SceneEngineMeshGetIndicesCount();
-        }
-
-        public string EngineMeshGetMaterialName()
-        {
-            string result = Marshal.PtrToStringAnsi(SceneEngineMeshGetMaterialName());
-            return result;
-        }
-
-        public Vec3 EngineMaterialGetAmbient()
-        {
-            IntPtr ambient = SceneEngineMaterialGetAmbient();
-            Vec3 result= (Vec3)Marshal.PtrToStructure(ambient, typeof(Vec3));
-            return result;
-        }
-
-        public Vec3 EngineMaterialGetDiffuse()
-        {
-            IntPtr diffuse = SceneEngineMaterialGetDiffuse();
-            Vec3 result= (Vec3)Marshal.PtrToStructure(diffuse, typeof(Vec3));
-            return result;
-        }
-
-        public Vec3 EngineMaterialGetSpecular()
-        {
-            IntPtr specular = SceneEngineMaterialGetSpecular();
-            Vec3 result= (Vec3)Marshal.PtrToStructure(specular, typeof(Vec3));
-            return result;
-        }
-
-        public Vec3 EngineMaterialGetEmissive()
-        {
-            IntPtr emissive = SceneEngineMaterialGetEmissive();
-            Vec3 result= (Vec3)Marshal.PtrToStructure(emissive, typeof(Vec3));
-            return result;
-        }
-
-        public float EngineMaterialGetShininess()
-        {
-            return SceneEngineMaterialGetShininess();
-        }
-
-        public string EngineMaterialGetTextureType()
-        {
-            string result = Marshal.PtrToStringAnsi(SceneEngineMaterialTextureType());
-            return result;
-        }
-
-        public string EngineMaterialGetTextureFilePath()
-        {
-            string result = Marshal.PtrToStringAnsi(SceneEngineMaterialTextureFilePath());
-            return result;
-        }
-
-        private void GetModelProperties()
-        {
-            ModelName = EngineGetModelName();
-            MeshCount = EngineGetMeshCount();
-            VerticesCount = EngineGetVerticesCount();
-            IndicesCount = EngineGetIndicesCount();
-            MeshName = EngineGetMeshName();
-            MeshVertexCount = EngineMeshGetVerticesCount();
-            MeshIndexCount = EngineMeshGetIndicesCount();
-            MaterialName = EngineMeshGetMaterialName();
-            MaterialAmbient = EngineMaterialGetAmbient();
-            MaterialDiffuse = EngineMaterialGetDiffuse();
-            MaterialSpecular = EngineMaterialGetSpecular();
-            MaterialEmissive = EngineMaterialGetEmissive();
-            MaterialShininess = EngineMaterialGetShininess();
-            MaterialTextureType = EngineMaterialGetTextureType();
-            MaterialTextureFilePath = EngineMaterialGetTextureFilePath();
-        }
-
-        // This method is called by the Set accessor of each property.  
-        // The CallerMemberName attribute that is applied to the optional propertyName  
-        // parameter causes the property name of the caller to be substituted as an argument.  
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
