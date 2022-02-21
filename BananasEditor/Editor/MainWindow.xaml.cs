@@ -63,6 +63,8 @@ namespace BananasEditor
 
             m_renderScene = new Scene(m_entityViewModel);
             m_renderScene.NewScene();
+
+            m_propertyGrid.LoadPropertyGridUI(m_entityViewModel);
             
             CompositionTarget.Rendering += new EventHandler(Render);
         }

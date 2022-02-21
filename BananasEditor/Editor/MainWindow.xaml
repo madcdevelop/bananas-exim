@@ -12,6 +12,7 @@
     VerticalAlignment="Center"
     ShowInTaskbar="True"
     Keyboard.KeyDown="window_KeyDown"
+    WindowState="Maximized"
     WindowStartupLocation="CenterScreen">
 
     <DockPanel Background="LightGray">
@@ -39,9 +40,9 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="85*" />
+                <ColumnDefinition Width="72*" />
                 <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="15*" />
+                <ColumnDefinition Width="23*" />
             </Grid.ColumnDefinitions>
 
             <Border Name="ControlHostElement"
@@ -58,7 +59,7 @@
                 VerticalAlignment="Stretch" />
 
             <Grid Grid.Column="2">
-                <local:PropertyGrid />
+                <local:PropertyGrid x:Name="m_propertyGrid"/>
             </Grid>
 
         </Grid>

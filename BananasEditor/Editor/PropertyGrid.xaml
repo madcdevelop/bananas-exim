@@ -55,6 +55,286 @@
             <Setter Property="TextBlock.Foreground"
                     Value="White" />
         </Style>
+
+        <DataTemplate x:Key="ModelPropertiesDataTemplate">
+            <StackPanel>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Name: "
+                               FontWeight="Bold" />
+                    <TextBox Grid.Column="1"
+                             Text="{Binding ModelName}"
+                             Background="SlateGray"
+                             Foreground="White"
+                             Padding="2,0,0,2"
+                             KeyDown="TextBox_KeyDown" />
+                </Grid>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Mesh Count: " 
+                               FontWeight="Bold" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding MeshCount, Mode=OneWay}" 
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                </Grid>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Vertices Count: "
+                               FontWeight="Bold" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding VerticesCount, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                </Grid>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Indices Count: "
+                               FontWeight="Bold" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding IndicesCount, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TexturePropertiesDataTemplate">
+            <StackPanel>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Texture Type: "
+                               FontWeight="Bold" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Type, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                </Grid>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Texture File Path: "
+                               FontWeight="Bold" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding FilePath, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="MeshPropertiesDataTemplate">
+            <Expander>
+                <Expander.Header>
+                    <TextBlock Text="{Binding MeshName, Mode=OneWay}"
+                               FontWeight="Bold" />
+                </Expander.Header>
+                <StackPanel>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Mesh Name: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MeshName, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Mesh Vertex Count: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MeshVertexCount, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Mesh Index Count: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MeshIndexCount, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Material Name: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MaterialName, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Material Ambient: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MaterialAmbient.X, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="3"
+                               Text="{Binding MaterialAmbient.Y, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="5"
+                               Text="{Binding MaterialAmbient.Z, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Material Diffuse: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MaterialDiffuse.X, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="3"
+                               Text="{Binding MaterialDiffuse.Y, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="5"
+                               Text="{Binding MaterialDiffuse.Z, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Material Specular: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MaterialSpecular.X, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="3"
+                               Text="{Binding MaterialSpecular.Y, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="5"
+                               Text="{Binding MaterialSpecular.Z, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Material Emissive: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MaterialEmissive.X, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="3"
+                               Text="{Binding MaterialEmissive.Y, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                        <TextBlock Grid.Column="5"
+                               Text="{Binding MaterialEmissive.Z, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Material Shininess: "
+                               FontWeight="Bold" />
+                        <TextBlock Grid.Column="1"
+                               Text="{Binding MaterialShininess, Mode=OneWay}"
+                               Background="SlateGray" 
+                               Foreground="White" 
+                               Padding="2,0,0,2" />
+                    </Grid>
+                    <ListView ItemsSource="{Binding Textures}" 
+                          ItemTemplate="{StaticResource TexturePropertiesDataTemplate}"
+                          Background="Transparent"
+                          BorderBrush="Transparent"
+                          HorizontalContentAlignment="Stretch">
+                    </ListView>
+                </StackPanel>
+            </Expander>
+        </DataTemplate>
+
     </UserControl.Resources>
 
     <Grid>
@@ -62,189 +342,29 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <!-- Height="*" Required for ScrollView "bar" to show up and able to scroll through ListView -->
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
             <Label Grid.Row="0"
                    HorizontalAlignment="Center"
-                   Content="Property Grid" /> 
-            
-            <Grid Grid.Row="1"
-                  HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Label Grid.Column="0"
-                       Content="Name"
-                       Margin="5"
-                       Padding="5"
-                       VerticalAlignment="Top"
-                       HorizontalAlignment="Left"/>
-                <TextBox Grid.Column="1"
-                         MinWidth="250"
-                         MaxLength="63"
-                         Margin="5"
-                         Padding="5"
-                         VerticalAlignment="Top"
-                         HorizontalAlignment="Left"
-                         Background="SlateGray"
-                         Foreground="White"
-                         KeyDown="TextBox_KeyDown"
-                         Text="{Binding ModelName, Mode=TwoWay}" />
-            </Grid>
-
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="0">
-                    <Label Content="Mesh Count"
-                           Style="{StaticResource keyStyle}" />
-                    <Label Content="Vertices Count"
-                           Style="{StaticResource keyStyle}" />
-                    <Label Content="Indices Count"
-                           Style="{StaticResource keyStyle}" />
-                </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="{Binding MeshCount, Mode=OneWay}"
-                               Style="{StaticResource valueStyle}" />
-                    <TextBlock Text="{Binding VerticesCount, Mode=OneWay}"
-                               Style="{StaticResource valueStyle}" />
-                    <TextBlock Text="{Binding IndicesCount, Mode=OneWay}"
-                               Style="{StaticResource valueStyle}" />
-                </StackPanel>
-            </Grid>
-
-            <StackPanel Grid.Row="3">
-                <Expander Name="meshExpander"
-                    HorizontalAlignment="Left"
-                    Header="Meshes"
-                    ExpandDirection="Down"
-                    IsExpanded="False"
-                    HorizontalContentAlignment="Stretch">
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <Label Content="Name:"
-                                       Style="{StaticResource keyStyle}" />
-                                <Label Content="Vertex Count:"
-                                       Style="{StaticResource keyStyle}" />
-                                <Label Content="Index Count:"
-                                       Style="{StaticResource keyStyle}" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{Binding MeshName, Mode=OneWay}"
-                                           Style="{StaticResource valueStyle}" />
-                                <TextBlock Text="{Binding MeshVertexCount, Mode=OneWay}"
-                                           Style="{StaticResource valueStyle}" />
-                                <TextBlock Text="{Binding MeshIndexCount, Mode=OneWay}"
-                                           Style="{StaticResource valueStyle}" />
-                            </StackPanel>
-                        </Grid>
-                        <Expander Name="materialExpander"
-                            HorizontalAlignment="Left"
-                            Header="Material"
-                            ExpandDirection="Down"
-                            IsExpanded="False"
-                            HorizontalContentAlignment="Stretch">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="2*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
-                                    <Label Content="Name:"
-                                           Style="{StaticResource keyStyle}" />
-                                    <Label Content="Ambient:"
-                                           Style="{StaticResource keyStyle}" />
-                                    <Label Content="Diffuse:"
-                                           Style="{StaticResource keyStyle}" />
-                                    <Label Content="Specular:"
-                                           Style="{StaticResource keyStyle}" />
-                                    <Label Content="Emissive:"
-                                           Style="{StaticResource keyStyle}" />
-                                    <Label Content="Shininess:"
-                                           Style="{StaticResource keyStyle}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="{Binding MaterialName, Mode=OneWay}"
-                                               Style="{StaticResource valueStyle}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding MaterialAmbient.X, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialAmbient.Y, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialAmbient.Z, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding MaterialDiffuse.X, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialDiffuse.Y, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialDiffuse.Z, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding MaterialSpecular.X, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialSpecular.Y, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialSpecular.Z, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding MaterialEmissive.X, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialEmissive.Y, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                        <TextBlock Text="{Binding MaterialEmissive.Z, Mode=OneWay}"
-                                                   Style="{StaticResource vectorValueStyle}" />
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding MaterialShininess, Mode=OneWay}"
-                                               Style="{StaticResource valueStyle}" />
-                                </StackPanel>
-                            </Grid>
-                        </Expander>
-                        <Expander Name="textureExpander"
-                        HorizontalAlignment="Left"
-                        Header="Textures"
-                        ExpandDirection="Down"
-                        IsExpanded="False"
-                        HorizontalContentAlignment="Stretch">
-                            <StackPanel>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="2*" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0">
-                                        <Label Content="Type:"
-                                       Style="{StaticResource keyStyle}" />
-                                        <Label Content="Filename:"
-                                       Style="{StaticResource keyStyle}" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="{Binding MaterialTextureType, Mode=OneWay}"
-                                           Style="{StaticResource valueStyle}" />
-                                        <TextBlock Text="{Binding MaterialTextureFilePath, Mode=OneWay}"
-                                           Style="{StaticResource valueStyle}" />
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </Expander>
-                    </StackPanel>
-                </Expander>
-            </StackPanel>
+                   Content="Property Grid"
+                   FontWeight="Bold" />
+            <ListView Name="m_entity"
+                      Grid.Row="1"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      Grid.IsSharedSizeScope="True"
+                      HorizontalContentAlignment="Stretch"
+                      ItemTemplate="{StaticResource ModelPropertiesDataTemplate}">
+            </ListView>
+            <ListView Name="m_meshes"
+                      Grid.Row="2"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      Grid.IsSharedSizeScope="True"
+                      HorizontalContentAlignment="Stretch"
+                      ItemTemplate="{StaticResource MeshPropertiesDataTemplate}">
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>

@@ -184,89 +184,96 @@ int EntityEngineGetIndicesCount()
 }
 
 EDITOR_INTERFACE
-const char* EntityEngineGetMeshName()
+const char* EntityEngineGetMeshName(int mIndex)
 {
     if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
     {
-        const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_name.c_str();
+        const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_name.c_str();
         return result;
     }
     return nullptr;
 }
 
 EDITOR_INTERFACE
-int EntityEngineMeshGetVerticesCount()
+int EntityEngineMeshGetVerticesCount(int mIndex)
 {
     auto model = g_window->m_renderDevice->m_scene->m_models[0];
-    int result = (int)model.m_meshes[0].m_vertices.size();
+    int result = (int)model.m_meshes[mIndex].m_vertices.size();
     return result;
 }
 
 EDITOR_INTERFACE
-int EntityEngineMeshGetIndicesCount()
+int EntityEngineMeshGetIndicesCount(int mIndex)
 {
     auto model = g_window->m_renderDevice->m_scene->m_models[0];
-    int result = (int)model.m_meshes[0].m_indices.size();
+    int result = (int)model.m_meshes[mIndex].m_indices.size();
     return result;
 }
 
 EDITOR_INTERFACE
-const char* EntityEngineMeshGetMaterialName()
+const char* EntityEngineMeshGetMaterialName(int mIndex)
 {
     if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
     {
-        const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_name.c_str();
+        const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_name.c_str();
         return result;
     }
     return nullptr;
 }
 
 EDITOR_INTERFACE
-const glm::vec3* EntityEngineMaterialGetAmbient()
+const glm::vec3* EntityEngineMaterialGetAmbient(int mIndex)
 {
-    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_ambient);
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_ambient);
     return result;
 }
 
 EDITOR_INTERFACE
-const glm::vec3* EntityEngineMaterialGetDiffuse()
+const glm::vec3* EntityEngineMaterialGetDiffuse(int mIndex)
 {
-    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_diffuse);
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_diffuse);
     return result;
 }
 
 EDITOR_INTERFACE
-const glm::vec3* EntityEngineMaterialGetSpecular()
+const glm::vec3* EntityEngineMaterialGetSpecular(int mIndex)
 {
-    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_specular);
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_specular);
     return result;
 }
 
 EDITOR_INTERFACE
-const glm::vec3* EntityEngineMaterialGetEmissive()
+const glm::vec3* EntityEngineMaterialGetEmissive(int mIndex)
 {
-    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_emissive);
+    auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_emissive);
     return result;
 }
 
 EDITOR_INTERFACE
-float EntityEngineMaterialGetShininess()
+float EntityEngineMaterialGetShininess(int mIndex)
 {
-    float result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_shininess;
+    float result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_shininess;
     return result;
 }
 
 EDITOR_INTERFACE
-const char* EntityEngineMaterialTextureType()
+int EntityEngineMaterialGetTextureSize(int mIndex)
 {
-    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_textures[0].m_type.c_str();
+    int result = (int)g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_textures.size();
     return result;
 }
 
 EDITOR_INTERFACE
-const char* EntityEngineMaterialTextureFilePath()
+const char* EntityEngineMaterialTextureType(int mIndex, int textureIndex)
 {
-    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[0].m_material.m_textures[0].m_filePath.c_str();
+    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_textures[textureIndex].m_type.c_str();
+    return result;
+}
+
+EDITOR_INTERFACE
+const char* EntityEngineMaterialTextureFilePath(int mIndex, int textureIndex)
+{
+    const char* result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_textures[textureIndex].m_filePath.c_str();
     return result;
 }
 

@@ -65,6 +65,7 @@ namespace BananasEditor
 
         public void LoadScene(string fileName)
         {
+            m_entityViewModel.Meshes.Clear();
             SceneLoadScene(fileName);
             // NOTE(neil): This is fine as no new thread is created for opening a scene.
             m_entityViewModel.GetModelProperties();
@@ -72,6 +73,7 @@ namespace BananasEditor
 
         public void ImportModels(string fileName)
         {
+            m_entityViewModel.Meshes.Clear();
             SceneImportModels(fileName);
             importThread = new Thread(new ThreadStart(this.CreateImportThread));
             importThread.IsBackground = true;
@@ -85,7 +87,9 @@ namespace BananasEditor
                 int result = GetModelLoadState();
                 if (result >= (int)ModelLoaded.FILE_LOADED)
                 {
-                    m_entityViewModel.GetModelProperties();
+                    // Required for ObservableCollection, as it is instantiated on the UI Thread initially
+                    // https://stackoverflow.com/questions/18331723/this-type-of-collectionview-does-not-support-changes-to-its-sourcecollection-fro
+                    App.Current.Dispatcher.Invoke(() => m_entityViewModel.GetModelProperties());
                     break;
                 }
                 Thread.Sleep(100);

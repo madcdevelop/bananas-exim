@@ -25,6 +25,14 @@ namespace BananasEditor
             InitializeComponent();
         }
 
+        public void LoadPropertyGridUI(EntityViewModel entityViewModel)
+        {
+            List<EntityViewModel> items = new List<EntityViewModel>();
+            items.Add(entityViewModel);
+            m_entity.ItemsSource = items;
+            m_meshes.ItemsSource = items[0].Meshes;
+        }
+
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape || e.Key == Key.Enter)
