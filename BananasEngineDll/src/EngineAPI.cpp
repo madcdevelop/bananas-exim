@@ -195,6 +195,18 @@ const char* EntityEngineGetMeshName(int mIndex)
 }
 
 EDITOR_INTERFACE
+void EntityEngineSetMeshName(const char* name, int mIndex)
+{
+    if (name)
+    {
+        if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
+        {
+            g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_name = std::string(name);
+        }
+    }
+}
+
+EDITOR_INTERFACE
 int EntityEngineMeshGetVerticesCount(int mIndex)
 {
     auto model = g_window->m_renderDevice->m_scene->m_models[0];
@@ -219,6 +231,18 @@ const char* EntityEngineMeshGetMaterialName(int mIndex)
         return result;
     }
     return nullptr;
+}
+
+EDITOR_INTERFACE
+void EntityEngineMeshSetMaterialName(const char* name, int mIndex)
+{
+    if (name)
+    {
+        if (g_window->m_renderDevice->m_scene->m_models.size() > 0)
+        {
+            g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_name = std::string(name);
+        }
+    }
 }
 
 EDITOR_INTERFACE

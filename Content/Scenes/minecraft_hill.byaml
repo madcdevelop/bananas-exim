@@ -1,7 +1,7 @@
 # Bananas Import/Export v1.0
 - Camera:
   - Id: 0
-  - Position: {x:5.73041, y:10, z:-11.0414}
+  - Position: {x:7.02016, y:10.1836, z:-9.98737}
   - Front: {x:-0.623519, y:-0.557745, z:0.547855}
   - Up: {x:0, y:1, z:0}
   - Right: {x:-0.660057, y:0, z:-0.751216}
@@ -105,7 +105,7 @@
           FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 3
-    - Name: Cube.001
+    - Name: Cube01
     - Vertices:
       - Position: {x:-2.99968, y:-1, z:-1}
         Normal: {x:-1, y:0, z:0}
@@ -181,7 +181,7 @@
         TextureUV: {x:0.496476, y:0.663013}
     - Indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 18, 1, 3, 19, 4, 6, 20, 7, 9, 21, 10, 12, 22, 13, 15, 23, 16]
     - Material:
-      - Name: Grass.001
+      - Name: Grass
       - Ambient: {x:1, y:1, z:1}
       - Diffuse: {x:0.8, y:0.8, z:0.8}
       - Specular: {x:0.1, y:0.1, z:0.1}
@@ -194,7 +194,7 @@
           FilePath: ../../../Content/Textures/minecraft_cube_texture.bmp
   - Mesh:
     - Id: 4
-    - Name: Cube.002_Cube.008
+    - Name: Cube02
     - Vertices:
       - Position: {x:-4.99968, y:-1, z:-1}
         Normal: {x:-1, y:0, z:0}
@@ -270,7 +270,7 @@
         TextureUV: {x:0.496476, y:0.663013}
     - Indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 18, 1, 3, 19, 4, 6, 20, 7, 9, 21, 10, 12, 22, 13, 15, 23, 16]
     - Material:
-      - Name: Grass.008
+      - Name: Grass
       - Ambient: {x:1, y:1, z:1}
       - Diffuse: {x:0.8, y:0.8, z:0.8}
       - Specular: {x:0.1, y:0.1, z:0.1}

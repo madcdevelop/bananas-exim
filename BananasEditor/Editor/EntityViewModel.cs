@@ -136,12 +136,12 @@ namespace BananasEditor
 
             for (int i = 0; i < MeshCount; i++)
             {
-                Meshes.Add(new Mesh());
+                Meshes.Add(new Mesh(i));
             }
 
             for (int i = 0; i < Meshes.Count; i++)
             {
-                Meshes[i].GetMeshProperties(i);
+                Meshes[i].GetMeshProperties();
             }
         }
 

@@ -14,6 +14,9 @@ namespace BananasEditor
         internal static extern IntPtr EntityEngineGetMeshName(int mIndex);
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void EntityEngineSetMeshName(string name, int mIndex);
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int EntityEngineMeshGetVerticesCount(int mIndex);
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -21,6 +24,9 @@ namespace BananasEditor
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr EntityEngineMeshGetMaterialName(int mIndex);
+
+        [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void EntityEngineMeshSetMaterialName(string name, int mIndex);
 
         [DllImport("BananasEngineDll.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr EntityEngineMaterialGetAmbient(int mIndex);
@@ -61,6 +67,7 @@ namespace BananasEditor
             public string FilePath { get; set; }
         }
 
+        private int m_meshIndex;
         private string m_meshName = String.Empty;
         private int m_meshVertexCount = 0;
         private int m_meshIndexCount = 0;
@@ -88,6 +95,7 @@ namespace BananasEditor
                 if (value != this.m_meshName)
                 {
                     m_meshName = value;
+                    EntityEngineSetMeshName(m_meshName, m_meshIndex);
                     NotifyPropertyChanged();
                 }
             }
@@ -127,6 +135,7 @@ namespace BananasEditor
                 if (value != this.m_materialName)
                 {
                     m_materialName = value;
+                    EntityEngineMeshSetMaterialName(m_materialName, m_meshIndex);
                     NotifyPropertyChanged();
                 }
             }
@@ -166,102 +175,103 @@ namespace BananasEditor
 
         #region Functions
 
-        public Mesh()
+        public Mesh(int meshIndex)
         {
+            m_meshIndex = meshIndex;
             Textures = new ObservableCollection<Texture>();
         }
 
-        public string EngineGetMeshName(int mIndex)
+        public string EngineGetMeshName()
         {
-            string result = Marshal.PtrToStringAnsi(EntityEngineGetMeshName(mIndex));
+            string result = Marshal.PtrToStringAnsi(EntityEngineGetMeshName(m_meshIndex));
             return result;
         }
 
-        public int EngineMeshGetVerticesCount(int mIndex)
+        public int EngineMeshGetVerticesCount()
         {
-            return EntityEngineMeshGetVerticesCount(mIndex);
+            return EntityEngineMeshGetVerticesCount(m_meshIndex);
         }
 
-        public int EngineMeshGetIndicesCount(int mIndex)
+        public int EngineMeshGetIndicesCount()
         {
-            return EntityEngineMeshGetIndicesCount(mIndex);
+            return EntityEngineMeshGetIndicesCount(m_meshIndex);
         }
 
-        public string EngineMeshGetMaterialName(int mIndex)
+        public string EngineMeshGetMaterialName()
         {
-            string result = Marshal.PtrToStringAnsi(EntityEngineMeshGetMaterialName(mIndex));
+            string result = Marshal.PtrToStringAnsi(EntityEngineMeshGetMaterialName(m_meshIndex));
             return result;
         }
 
-        public Vec3 EngineMaterialGetAmbient(int mIndex)
+        public Vec3 EngineMaterialGetAmbient()
         {
-            IntPtr ambient = EntityEngineMaterialGetAmbient(mIndex);
+            IntPtr ambient = EntityEngineMaterialGetAmbient(m_meshIndex);
             Vec3 result= (Vec3)Marshal.PtrToStructure(ambient, typeof(Vec3));
             return result;
         }
 
-        public Vec3 EngineMaterialGetDiffuse(int mIndex)
+        public Vec3 EngineMaterialGetDiffuse()
         {
-            IntPtr diffuse = EntityEngineMaterialGetDiffuse(mIndex);
+            IntPtr diffuse = EntityEngineMaterialGetDiffuse(m_meshIndex);
             Vec3 result= (Vec3)Marshal.PtrToStructure(diffuse, typeof(Vec3));
             return result;
         }
 
-        public Vec3 EngineMaterialGetSpecular(int mIndex)
+        public Vec3 EngineMaterialGetSpecular()
         {
-            IntPtr specular = EntityEngineMaterialGetSpecular(mIndex);
+            IntPtr specular = EntityEngineMaterialGetSpecular(m_meshIndex);
             Vec3 result= (Vec3)Marshal.PtrToStructure(specular, typeof(Vec3));
             return result;
         }
 
-        public Vec3 EngineMaterialGetEmissive(int mIndex)
+        public Vec3 EngineMaterialGetEmissive()
         {
-            IntPtr emissive = EntityEngineMaterialGetEmissive(mIndex);
+            IntPtr emissive = EntityEngineMaterialGetEmissive(m_meshIndex);
             Vec3 result= (Vec3)Marshal.PtrToStructure(emissive, typeof(Vec3));
             return result;
         }
 
-        public float EngineMaterialGetShininess(int mIndex)
+        public float EngineMaterialGetShininess()
         {
-            return EntityEngineMaterialGetShininess(mIndex);
+            return EntityEngineMaterialGetShininess(m_meshIndex);
         }
         
-        public int EngineMaterialGetTextureSize(int mIndex)
+        public int EngineMaterialGetTextureSize()
         {
-            int result = EntityEngineMaterialGetTextureSize(mIndex); 
+            int result = EntityEngineMaterialGetTextureSize(m_meshIndex); 
             return result;
         }
 
-        public string EngineMaterialGetTextureType(int mIndex, int textureIndex)
+        public string EngineMaterialGetTextureType(int textureIndex)
         {
-            string result = Marshal.PtrToStringAnsi(EntityEngineMaterialTextureType(mIndex, textureIndex));
+            string result = Marshal.PtrToStringAnsi(EntityEngineMaterialTextureType(m_meshIndex, textureIndex));
             return result;
         }
 
-        public string EngineMaterialGetTextureFilePath(int mIndex, int textureIndex)
+        public string EngineMaterialGetTextureFilePath(int textureIndex)
         {
-            string result = Marshal.PtrToStringAnsi(EntityEngineMaterialTextureFilePath(mIndex, textureIndex));
+            string result = Marshal.PtrToStringAnsi(EntityEngineMaterialTextureFilePath(m_meshIndex, textureIndex));
             return result;
         }
 
-        public void GetMeshProperties(int mIndex)
+        public void GetMeshProperties()
         {
-            MeshName = EngineGetMeshName(mIndex);
-            MeshVertexCount = EngineMeshGetVerticesCount(mIndex);
-            MeshIndexCount = EngineMeshGetIndicesCount(mIndex);
-            MaterialName = EngineMeshGetMaterialName(mIndex);
-            MaterialAmbient = EngineMaterialGetAmbient(mIndex);
-            MaterialDiffuse = EngineMaterialGetDiffuse(mIndex);
-            MaterialSpecular = EngineMaterialGetSpecular(mIndex);
-            MaterialEmissive = EngineMaterialGetEmissive(mIndex);
-            MaterialShininess = EngineMaterialGetShininess(mIndex);
+            MeshName = EngineGetMeshName();
+            MeshVertexCount = EngineMeshGetVerticesCount();
+            MeshIndexCount = EngineMeshGetIndicesCount();
+            MaterialName = EngineMeshGetMaterialName();
+            MaterialAmbient = EngineMaterialGetAmbient();
+            MaterialDiffuse = EngineMaterialGetDiffuse();
+            MaterialSpecular = EngineMaterialGetSpecular();
+            MaterialEmissive = EngineMaterialGetEmissive();
+            MaterialShininess = EngineMaterialGetShininess();
 
-            int textureSize = EngineMaterialGetTextureSize(mIndex);
+            int textureSize = EngineMaterialGetTextureSize();
             for (int textureIndex = 0; textureIndex < textureSize; textureIndex++)
             {
                 Texture texture = new Texture();
-                texture.Type = EngineMaterialGetTextureType(mIndex, textureIndex);
-                texture.FilePath = EngineMaterialGetTextureFilePath(mIndex, textureIndex);
+                texture.Type = EngineMaterialGetTextureType(textureIndex);
+                texture.FilePath = EngineMaterialGetTextureFilePath(textureIndex);
                 Textures.Add(texture);
             }
         }
