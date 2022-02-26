@@ -53,9 +53,13 @@ namespace BananasEditor
 
         public void NewScene()
         {
+            if (m_entityViewModel.Meshes.Count > 0)
+            {
+                m_entityViewModel.ClearProperties();
+                m_entityViewModel.Meshes.Clear();
+            }
             CreateScene();
             m_renderScene = GetScene();
-            m_entityViewModel.ModelName = String.Empty;
         }
 
         public void SaveScene(string fileName)

@@ -63,8 +63,6 @@ namespace BananasEditor
 
             m_renderScene = new Scene(m_entityViewModel);
             m_renderScene.NewScene();
-
-            m_propertyGrid.LoadPropertyGridUI(m_entityViewModel);
             
             CompositionTarget.Rendering += new EventHandler(Render);
         }
@@ -89,9 +87,15 @@ namespace BananasEditor
             m_windowHost.Run();
         }
 
+        public void LoadPropertyGrid()
+        {
+            m_propertyGrid.LoadPropertyGridUI(m_entityViewModel);
+        }
+
         private void menuNewScene_Click(object sender, RoutedEventArgs e)
         {
             Scene.Shutdown();
+            m_propertyGrid.ClearPropertyGridUI();
             m_renderScene.NewScene();
             this.Title = m_untitled;
         }
@@ -111,6 +115,7 @@ namespace BananasEditor
                 string[] filePathNoExt = m_fileName.Split(".");
                 m_startupWindow.AddRecentScene(filePathNoExt[0]);
                 m_renderScene.LoadScene(filePathNoExt[0]);
+                LoadPropertyGrid();
                 this.Title = "Bananas Import/Export " + "[" + m_fileName + "]";
             }
         }
@@ -177,6 +182,7 @@ namespace BananasEditor
             {
                 string filename = openFileDlg.FileName;
                 m_renderScene.ImportModels(filename);
+                LoadPropertyGrid();
             }
         }
 

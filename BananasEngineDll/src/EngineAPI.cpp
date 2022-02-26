@@ -253,10 +253,22 @@ const glm::vec3* EntityEngineMaterialGetAmbient(int mIndex)
 }
 
 EDITOR_INTERFACE
+const void EntityEngineMaterialSetAmbient(int mIndex, const glm::vec3* ambient)
+{
+    g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_ambient = *ambient;
+}
+
+EDITOR_INTERFACE
 const glm::vec3* EntityEngineMaterialGetDiffuse(int mIndex)
 {
     auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_diffuse);
     return result;
+}
+
+EDITOR_INTERFACE
+const void EntityEngineMaterialSetDiffuse(int mIndex, const glm::vec3* diffuse)
+{
+    g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_diffuse = *diffuse;
 }
 
 EDITOR_INTERFACE
@@ -267,6 +279,12 @@ const glm::vec3* EntityEngineMaterialGetSpecular(int mIndex)
 }
 
 EDITOR_INTERFACE
+const void EntityEngineMaterialSetSpecular(int mIndex, const glm::vec3* specular)
+{
+    g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_specular = *specular;
+}
+
+EDITOR_INTERFACE
 const glm::vec3* EntityEngineMaterialGetEmissive(int mIndex)
 {
     auto result = &(g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_emissive);
@@ -274,10 +292,22 @@ const glm::vec3* EntityEngineMaterialGetEmissive(int mIndex)
 }
 
 EDITOR_INTERFACE
+const void EntityEngineMaterialSetEmissive(int mIndex, const glm::vec3* emissive)
+{
+    g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_emissive = *emissive;
+}
+
+EDITOR_INTERFACE
 float EntityEngineMaterialGetShininess(int mIndex)
 {
     float result = g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_shininess;
     return result;
+}
+
+EDITOR_INTERFACE
+void EntityEngineMaterialSetShininess(int mIndex, float shininess)
+{
+    g_window->m_renderDevice->m_scene->m_models[0].m_meshes[mIndex].m_material.m_shininess = shininess;
 }
 
 EDITOR_INTERFACE

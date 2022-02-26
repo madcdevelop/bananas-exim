@@ -100,7 +100,7 @@ namespace BananasEditor
                 this.AddRecentScene(filePathNoExt[0]);
 
                 mainWindow.RenderScene.LoadScene(filePathNoExt[0]);
-                // mainWindow.RenderScene.MeshName = mainWindow.RenderScene.GetMeshName();
+                mainWindow.LoadPropertyGrid();
                 this.Close();
             }
         }

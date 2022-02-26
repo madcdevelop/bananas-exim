@@ -28,7 +28,7 @@ namespace BananasEditor
         #endregion
 
         // Property Grid
-        private string m_modelName = String.Empty;
+        private string m_modelName = string.Empty;
         private int m_meshCount = 0;
         private int m_verticesCount = 0;
         private int m_indicesCount = 0;
@@ -99,6 +99,14 @@ namespace BananasEditor
         public EntityViewModel()
         {
             Meshes = new ObservableCollection<Mesh>();
+        }
+
+        public void ClearProperties()
+        {
+            ModelName = string.Empty;
+            MeshCount = 0;
+            VerticesCount = 0;
+            IndicesCount = 0;
         }
 
         public string EngineGetModelName()

@@ -228,21 +228,24 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Material Ambient: "
                                FontWeight="Bold" />
-                        <TextBlock Grid.Column="1"
-                               Text="{Binding MaterialAmbient.X, Mode=OneWay}"
+                        <TextBox Grid.Column="1"
+                               Text="{Binding MaterialAmbientX, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="3"
-                               Text="{Binding MaterialAmbient.Y, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="3"
+                               Text="{Binding MaterialAmbientY, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="5"
-                               Text="{Binding MaterialAmbient.Z, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="5"
+                               Text="{Binding MaterialAmbientZ, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
@@ -255,21 +258,24 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Material Diffuse: "
                                FontWeight="Bold" />
-                        <TextBlock Grid.Column="1"
-                               Text="{Binding MaterialDiffuse.X, Mode=OneWay}"
+                        <TextBox Grid.Column="1"
+                               Text="{Binding MaterialDiffuseX, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="3"
-                               Text="{Binding MaterialDiffuse.Y, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="3"
+                               Text="{Binding MaterialDiffuseY, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="5"
-                               Text="{Binding MaterialDiffuse.Z, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="5"
+                               Text="{Binding MaterialDiffuseZ, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
@@ -282,21 +288,24 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Material Specular: "
                                FontWeight="Bold" />
-                        <TextBlock Grid.Column="1"
-                               Text="{Binding MaterialSpecular.X, Mode=OneWay}"
+                        <TextBox Grid.Column="1"
+                               Text="{Binding MaterialSpecularX, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="3"
-                               Text="{Binding MaterialSpecular.Y, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="3"
+                               Text="{Binding MaterialSpecularY, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="5"
-                               Text="{Binding MaterialSpecular.Z, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="5"
+                               Text="{Binding MaterialSpecularZ, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
@@ -309,21 +318,24 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Material Emissive: "
                                FontWeight="Bold" />
-                        <TextBlock Grid.Column="1"
-                               Text="{Binding MaterialEmissive.X, Mode=OneWay}"
+                        <TextBox Grid.Column="1"
+                               Text="{Binding MaterialEmissiveX, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="3"
-                               Text="{Binding MaterialEmissive.Y, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="3"
+                               Text="{Binding MaterialEmissiveY, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
-                        <TextBlock Grid.Column="5"
-                               Text="{Binding MaterialEmissive.Z, Mode=OneWay}"
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
+                        <TextBox Grid.Column="5"
+                               Text="{Binding MaterialEmissiveZ, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
@@ -332,11 +344,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Material Shininess: "
                                FontWeight="Bold" />
-                        <TextBlock Grid.Column="1"
-                               Text="{Binding MaterialShininess, Mode=OneWay}"
+                        <TextBox Grid.Column="1"
+                               Text="{Binding MaterialShininess, Mode=TwoWay}"
                                Background="SlateGray" 
                                Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Padding="2,0,0,2"
+                               KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <ListView ItemsSource="{Binding Textures}" 
                               ItemTemplate="{StaticResource TexturePropertiesDataTemplate}"

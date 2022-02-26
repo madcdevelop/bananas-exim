@@ -33,6 +33,12 @@ namespace BananasEditor
             m_meshes.ItemsSource = items[0].Meshes;
         }
 
+        public void ClearPropertyGridUI()
+        {
+            m_entity.ItemsSource = null;
+            m_meshes.ItemsSource = null;
+        }
+
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape || e.Key == Key.Enter)
