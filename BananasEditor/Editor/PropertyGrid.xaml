@@ -7,53 +7,29 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style x:Key="keyStyle">
-            <Setter Property="Label.Height"
-                    Value="Auto" />
-            <Setter Property="Label.Margin"
-                    Value="5" />
-            <Setter Property="Label.Padding"
-                    Value="5" />
-            <Setter Property="Label.VerticalAlignment"
-                    Value="Top" />
-            <Setter Property="Label.HorizontalAlignment"
+        <Style x:Key="keyStyleTextBlock">
+            <Setter Property="TextBlock.FontWeight"
+                    Value="Bold" />
+            <Setter Property="TextBlock.HorizontalAlignment"
                     Value="Right" />
-        </Style>
-        <Style x:Key="valueStyle">
-            <Setter Property="TextBlock.Height"
-                    Value="Auto" />
-            <Setter Property="TextBlock.MinWidth"
-                    Value="90" />
-            <Setter Property="TextBlock.Margin"
-                    Value="5" />
             <Setter Property="TextBlock.Padding"
-                    Value="5" />
-            <Setter Property="TextBlock.VerticalAlignment"
-                    Value="Top" />
-            <Setter Property="TextBlock.HorizontalAlignment"
-                    Value="Left" />
+                    Value="0,0,4,0" />
+        </Style>
+        <Style x:Key="valueStyleTextBlock">
             <Setter Property="TextBlock.Background"
-                    Value="SlateGray" />
+                    Value="Gray" />
             <Setter Property="TextBlock.Foreground"
                     Value="White" />
-        </Style>
-        <Style x:Key="vectorValueStyle">
-            <Setter Property="TextBlock.Height"
-                    Value="Auto" />
-            <Setter Property="TextBlock.MinWidth"
-                    Value="25" />
-            <Setter Property="TextBlock.Margin"
-                    Value="5" />
             <Setter Property="TextBlock.Padding"
-                    Value="5" />
-            <Setter Property="TextBlock.VerticalAlignment"
-                    Value="Top" />
-            <Setter Property="TextBlock.HorizontalAlignment"
-                    Value="Left" />
-            <Setter Property="TextBlock.Background"
-                    Value="SlateGray" />
-            <Setter Property="TextBlock.Foreground"
+                    Value="4,0,2,0" />
+        </Style>
+        <Style x:Key="valueStyleTextBox">
+            <Setter Property="TextBox.Background"
+                    Value="Gray" />
+            <Setter Property="TextBox.Foreground"
                     Value="White" />
+            <Setter Property="TextBox.Padding"
+                    Value="2,0,2,0" />
         </Style>
 
         <Style x:Key="ListViewStyle" TargetType="{x:Type ListViewItem}">
@@ -67,6 +43,79 @@
             </Setter>
         </Style>
 
+        <ControlTemplate x:Key="ToggleButtonTemp" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Rectangle Fill="Transparent"
+                           Grid.ColumnSpan="2" />
+                <Ellipse Grid.Column="0" 
+                    x:Name="backgroundElement"
+                    Width="20"
+                    Height="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" />
+                <Path x:Name="Sign" 
+                    Grid.Column="0"
+                    StrokeThickness="2"
+                    Stroke="Black"
+                    Fill="Black"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    RenderTransformOrigin="0.5,0.5">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="0,0">
+                                <PolyLineSegment Points="5,5 0,10" />
+                                <LineSegment Point="0,0" IsStroked="False" />
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                    <Path.RenderTransform>
+                        <RotateTransform Angle="0" />
+                    </Path.RenderTransform>
+                </Path>
+                <ContentPresenter Grid.Column="1"
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked"
+                    Value="true">
+                    <Setter Property="RenderTransform"
+                            TargetName="Sign">
+                        <Setter.Value>
+                            <RotateTransform Angle="90" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ExpanderTemp" TargetType="{x:Type Expander}">
+            <DockPanel>
+                <ToggleButton x:Name="ExpanderButton"
+                    DockPanel.Dock="Top"
+                    Content="{TemplateBinding Header}"
+                    IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                    OverridesDefaultStyle="True"
+                    Template="{StaticResource ToggleButtonTemp}">
+                </ToggleButton>
+                <ContentPresenter x:Name="ExpanderContent"
+                    Visibility="Collapsed"
+                    DockPanel.Dock="Bottom" />
+            </DockPanel>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsExpanded" Value="True">
+                    <Setter TargetName="ExpanderContent"
+                        Property="Visibility" 
+                        Value="Visible" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <DataTemplate x:Key="ModelPropertiesDataTemplate">
             <StackPanel>
                 <Grid Margin="4">
@@ -74,13 +123,11 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Name: "
-                               FontWeight="Bold" />
+                    <TextBlock Text="Name"
+                               Style="{StaticResource keyStyleTextBlock}" />
                     <TextBox Grid.Column="1"
                              Text="{Binding ModelName}"
-                             Background="SlateGray"
-                             Foreground="White"
-                             Padding="2,0,0,2"
+                             Style="{StaticResource valueStyleTextBox}"
                              KeyDown="TextBox_KeyDown" />
                 </Grid>
                 <Grid Margin="4">
@@ -88,39 +135,33 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Mesh Count: " 
-                               FontWeight="Bold" />
+                    <TextBlock Text="Mesh Count" 
+                               Style="{StaticResource keyStyleTextBlock}" />
                     <TextBlock Grid.Column="1"
                                Text="{Binding MeshCount, Mode=OneWay}" 
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Style="{StaticResource valueStyleTextBlock}" />
                 </Grid>
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Vertices Count: "
-                               FontWeight="Bold" />
+                    <TextBlock Text="Vertices Count"
+                               Style="{StaticResource keyStyleTextBlock}" />
                     <TextBlock Grid.Column="1"
                                Text="{Binding VerticesCount, Mode=OneWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Style="{StaticResource valueStyleTextBlock}" />
                 </Grid>
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Indices Count: "
-                               FontWeight="Bold" />
+                    <TextBlock Text="Indices Count"
+                               Style="{StaticResource keyStyleTextBlock}" />
                     <TextBlock Grid.Column="1"
                                Text="{Binding IndicesCount, Mode=OneWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Style="{StaticResource valueStyleTextBlock}" />
                 </Grid>
             </StackPanel>
         </DataTemplate>
@@ -132,35 +173,31 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Texture Type: "
-                               FontWeight="Bold" />
+                    <TextBlock Text="Texture Type"
+                               Style="{StaticResource keyStyleTextBlock}" />
                     <TextBlock Grid.Column="1"
                                Text="{Binding Type, Mode=OneWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Style="{StaticResource valueStyleTextBlock}" />
                 </Grid>
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Texture File Path: "
-                               FontWeight="Bold" />
+                    <TextBlock Text="Texture File Path"
+                               Style="{StaticResource keyStyleTextBlock}" />
                     <TextBlock Grid.Column="1"
                                Text="{Binding FilePath, Mode=OneWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Style="{StaticResource valueStyleTextBlock}" />
                 </Grid>
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="MeshPropertiesDataTemplate">
-            <Expander>
+            <Expander Template="{StaticResource ExpanderTemp}">
                 <Expander.Header>
                     <TextBlock Text="{Binding MeshName, Mode=OneWay}"
-                               FontWeight="Bold" />
+                               Style="{StaticResource keyStyleTextBlock}" />
                 </Expander.Header>
                 <StackPanel>
                     <Grid Margin="4">
@@ -168,13 +205,11 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Mesh Name: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Mesh Name"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBox Grid.Column="1"
                                Text="{Binding MeshName, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
@@ -182,39 +217,33 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Mesh Vertex Count: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Mesh Vertex Count"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBlock Grid.Column="1"
                                Text="{Binding MeshVertexCount, Mode=OneWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Style="{StaticResource valueStyleTextBlock}" />
                     </Grid>
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Mesh Index Count: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Mesh Index Count"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBlock Grid.Column="1"
                                Text="{Binding MeshIndexCount, Mode=OneWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2" />
+                               Style="{StaticResource valueStyleTextBlock}" />
                     </Grid>
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Material Name: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Material Name"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBox Grid.Column="1"
                                Text="{Binding MaterialName, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
@@ -226,25 +255,19 @@
                             <ColumnDefinition Width="4" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Material Ambient: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Material Ambient"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBox Grid.Column="1"
                                Text="{Binding MaterialAmbientX, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="3"
                                Text="{Binding MaterialAmbientY, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="5"
                                Text="{Binding MaterialAmbientZ, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
@@ -256,25 +279,19 @@
                             <ColumnDefinition Width="4" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Material Diffuse: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Material Diffuse"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBox Grid.Column="1"
                                Text="{Binding MaterialDiffuseX, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="3"
                                Text="{Binding MaterialDiffuseY, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="5"
                                Text="{Binding MaterialDiffuseZ, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
@@ -286,25 +303,19 @@
                             <ColumnDefinition Width="4" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Material Specular: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Material Specular"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBox Grid.Column="1"
                                Text="{Binding MaterialSpecularX, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="3"
                                Text="{Binding MaterialSpecularY, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="5"
                                Text="{Binding MaterialSpecularZ, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
@@ -316,25 +327,19 @@
                             <ColumnDefinition Width="4" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Material Emissive: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Material Emissive"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBox Grid.Column="1"
                                Text="{Binding MaterialEmissiveX, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="3"
                                Text="{Binding MaterialEmissiveY, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                         <TextBox Grid.Column="5"
                                Text="{Binding MaterialEmissiveZ, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <Grid Margin="4">
@@ -342,13 +347,11 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Material Shininess: "
-                               FontWeight="Bold" />
+                        <TextBlock Text="Material Shininess"
+                               Style="{StaticResource keyStyleTextBlock}" />
                         <TextBox Grid.Column="1"
                                Text="{Binding MaterialShininess, Mode=TwoWay}"
-                               Background="SlateGray" 
-                               Foreground="White" 
-                               Padding="2,0,0,2"
+                               Style="{StaticResource valueStyleTextBox}"
                                KeyDown="TextBox_KeyDown" />
                     </Grid>
                     <ListView ItemsSource="{Binding Textures}" 
