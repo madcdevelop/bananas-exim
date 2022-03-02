@@ -194,7 +194,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="MeshPropertiesDataTemplate">
-            <Expander Template="{StaticResource ExpanderTemp}">
+            <Expander GotKeyboardFocus="GotKeyboardFocus"
+                      Template="{StaticResource ExpanderTemp}">
                 <Expander.Header>
                     <TextBlock Text="{Binding MeshName, Mode=OneWay}"
                                Style="{StaticResource keyStyleTextBlock}" />
@@ -385,6 +386,7 @@
                       BorderBrush="Transparent"
                       Grid.IsSharedSizeScope="True"
                       HorizontalContentAlignment="Stretch"
+                      GotKeyboardFocus="GotKeyboardFocus"
                       ItemTemplate="{StaticResource ModelPropertiesDataTemplate}"
                       ItemContainerStyle="{StaticResource ListViewStyle}">
             </ListView>
@@ -394,6 +396,7 @@
                       BorderBrush="Transparent"
                       Grid.IsSharedSizeScope="True"
                       HorizontalContentAlignment="Stretch"
+                      GotKeyboardFocus="GotKeyboardFocus"
                       ItemTemplate="{StaticResource MeshPropertiesDataTemplate}"
                       ItemContainerStyle="{StaticResource ListViewStyle}">
             </ListView>

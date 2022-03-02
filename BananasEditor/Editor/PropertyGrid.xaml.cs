@@ -44,20 +44,40 @@ namespace BananasEditor
             if (e.Key == Key.Escape || e.Key == Key.Enter)
             {
                 UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
-                if (elementWithFocus is System.Windows.Controls.TextBox tb)
+                if (elementWithFocus is System.Windows.Controls.TextBox)
                 {
-                    if (Keyboard.FocusedElement != null)
-                    {
-                        Keyboard.FocusedElement.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
-                        // Clear logical focus
-                        FocusManager.SetFocusedElement(FocusManager.GetFocusScope(elementWithFocus), null);
-                        // Clear keyboard focus
-                        Keyboard.ClearFocus();
-                        var mainWindow = Application.Current.MainWindow;
-                        Keyboard.Focus(mainWindow);
-                    }
+                    ClearFocus(elementWithFocus);
                 }
             }
         }
+
+        private void GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
+            if (elementWithFocus is System.Windows.Controls.Primitives.ToggleButton)
+            {
+                ClearFocus(elementWithFocus);
+            }
+            else if (elementWithFocus is System.Windows.Controls.ListViewItem)
+            {
+                ClearFocus(elementWithFocus);
+            }
+        }
+
+        private void ClearFocus(UIElement elementWithFocus)
+        {
+            if (Keyboard.FocusedElement != null)
+            {
+                Keyboard.FocusedElement.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
+                // Clear logical focus
+                FocusManager.SetFocusedElement(FocusManager.GetFocusScope(elementWithFocus), null);
+                // Clear keyboard focus
+                Keyboard.ClearFocus();
+                var mainWindow = Application.Current.MainWindow;
+                Keyboard.Focus(mainWindow);
+            }
+        }
+
+
     }
 }
