@@ -1,4 +1,5 @@
 #include "Exporter.h"
+#include "../Platform/PlatformWin32.h"
 
 #include <map>
 
@@ -297,14 +298,18 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
             textureIndex < models[0].m_meshes[meshIndex].m_material.m_textures.size(); 
             textureIndex++)
         {
+            std::string fileName = models[0].m_meshes[meshIndex].m_material.m_textures[textureIndex].m_filePath;
+            const std::wstring wFileName = std::wstring(fileName.begin(), fileName.end());
+            std::string texturePath = PlatformEngine::PlatformWin32::GetFilePath(wFileName.c_str());
+
             std::string materialType = models[0].m_meshes[meshIndex].m_material.m_textures[textureIndex].m_type;
             if(materialType == "texture_diffuse")
                 fileOut << "map_Kd" << " " 
-                        << models[0].m_meshes[meshIndex].m_material.m_textures[textureIndex].m_filePath 
+                        << texturePath
                         << std::endl;    
             else if(materialType == "texture_specular")
                 fileOut << "map_Ks" << " " 
-                        << models[0].m_meshes[meshIndex].m_material.m_textures[textureIndex].m_filePath 
+                        << texturePath
                         << std::endl;
         }
         fileOut << std::endl;
