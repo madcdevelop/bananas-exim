@@ -18,7 +18,7 @@ RenderDeviceOpenGL::~RenderDeviceOpenGL()
 void RenderDeviceOpenGL::Render()
 {
     // Loading data for Rendering
-    if(m_scene->m_isModelLoaded == ModelLoadState::FILE_LOADED)
+    if(m_scene->m_modelLoadState == ModelLoadState::FILE_LOADED)
     {
         #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
             // TODO(neil): sometimes not all meshes are rendered. Data is intact.
@@ -37,7 +37,7 @@ void RenderDeviceOpenGL::Render()
         if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))
             MessageBoxA(NULL, "Failed create and activate render context.", "Error", 0);
         m_meshTexturesLoaded = 0;
-        m_scene->m_isModelLoaded = ModelLoadState::DATA_LOADED;
+        m_scene->m_modelLoadState = ModelLoadState::DATA_LOADED;
     }
     // OpenGL context is checked after the models are loaded so parts of the models are not missing
     else if (wglGetCurrentContext())
@@ -47,7 +47,7 @@ void RenderDeviceOpenGL::Render()
 
         if (m_scene)
         {
-            if (m_scene->m_isModelLoaded == ModelLoadState::DATA_LOADED)
+            if (m_scene->m_modelLoadState == ModelLoadState::DATA_LOADED)
             {
                 if (m_scene->m_models.size() > 0)
                 {
@@ -62,7 +62,7 @@ void RenderDeviceOpenGL::Render()
 
 int32 RenderDeviceOpenGL::InitMeshesTextures()
 {
-    m_scene->m_isModelLoaded = ModelLoadState::DATA_LOADING;
+    m_scene->m_modelLoadState = ModelLoadState::DATA_LOADING;
     
     #if USE_THREAD_TO_LOAD_OPENGL_MESH_TEXTURES_FEATURE_FLAG
         if(!wglMakeCurrent(m_hDeviceContext, m_hRenderContext))

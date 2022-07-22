@@ -107,7 +107,7 @@ GraphicsEngine::Scene* GetScene()
 EDITOR_INTERFACE
 int GetModelLoadState()
 {
-    int result = (int)g_window->m_renderDevice->m_scene->m_isModelLoaded;
+    int result = (int)g_window->m_renderDevice->m_scene->m_modelLoadState;
     return result;
 }
 

@@ -51,7 +51,7 @@ namespace BananasEditor
             }
         }
 
-        private void GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private new void GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
             if (elementWithFocus is System.Windows.Controls.Primitives.ToggleButton)

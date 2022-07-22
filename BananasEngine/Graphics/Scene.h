@@ -24,7 +24,7 @@ public:
     std::vector<Model> m_models;
     Camera m_camera;
 
-    ModelLoadState m_isModelLoaded = ModelLoadState::NOT_LOADED;
+    ModelLoadState m_modelLoadState = ModelLoadState::NOT_LOADED;
     std::thread m_importThread;
 
 private:

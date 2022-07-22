@@ -626,7 +626,7 @@ bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scen
     }   // end of fileStream 
 
     delete stack;
-    scene->m_isModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+    scene->m_modelLoadState = GraphicsEngine::ModelLoadState::FILE_LOADED;
     fileStream.close();
     return true;
 }
@@ -1322,7 +1322,7 @@ bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* sce
     } // end of fileStream
     
     delete stack;
-    scene->m_isModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+    scene->m_modelLoadState = GraphicsEngine::ModelLoadState::FILE_LOADED;
     fileStream.close();
     return true;
 }
@@ -1902,7 +1902,7 @@ bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* sce
     }
 
     delete stack;
-    scene->m_isModelLoaded = GraphicsEngine::ModelLoadState::FILE_LOADED;
+    scene->m_modelLoadState = GraphicsEngine::ModelLoadState::FILE_LOADED;
     fileStream.close();
     return true;
 }

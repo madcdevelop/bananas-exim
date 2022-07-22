@@ -44,8 +44,8 @@ void Scene::CreateImportThread(const std::string& fileName)
 
 void Scene::LoadModels(const std::string fileName)
 {
-    if(m_isModelLoaded == ModelLoadState::DATA_LOADED)
-        m_isModelLoaded = ModelLoadState::NOT_LOADED;
+    if(m_modelLoadState == ModelLoadState::DATA_LOADED)
+        m_modelLoadState = ModelLoadState::NOT_LOADED;
 
     // Clear Scene for next import
     if(!m_models.empty())
@@ -65,7 +65,7 @@ void Scene::LoadModels(const std::string fileName)
     lightCube.LoadModel(filePath);
     m_models.push_back(lightCube);
 
-    m_isModelLoaded = ModelLoadState::FILE_LOADED;
+    m_modelLoadState = ModelLoadState::FILE_LOADED;
 
     OutputDebugString(L"INFO\t\tThread Ended!\n");
 }
