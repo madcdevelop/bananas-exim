@@ -64,13 +64,13 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
     /////////////////////////////////////
 
     // First line is comment about the program and version the obj file came from
-    fileOut << "# Bananas Import Export Tool v1.00.0 OBJ File" << std::endl;
-    fileOut << "# https://github.com/madcdevelop/bananas-exim" << std::endl;
+    fileOut << "# Bananas Import Export Tool v1.00.0 OBJ File" << '\n';
+    fileOut << "# https://github.com/madcdevelop/bananas-exim" << '\n';
     
     // mtllib name_of_obj_file.mtl
     std::string fileName = filePath.substr(filePath.find_last_of("\\")+1);
     fileName = fileName.substr(0, fileName.find_last_of("."));
-    fileOut << "mtllib" << " " << fileName << ".mtl" << std::endl;
+    fileOut << "mtllib" << " " << fileName << ".mtl" << '\n';
 
     uint32 positionFaceIndex  = 0;
     uint32 textureUVFaceIndex = 0;
@@ -78,7 +78,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
     for(uint32 meshIndex = 0; meshIndex < models[0].m_meshes.size(); meshIndex++)
     {
         // o name_of_object
-        fileOut << "o" << " " << models[0].m_meshes[meshIndex].m_name << std::endl;
+        fileOut << "o" << " " << models[0].m_meshes[meshIndex].m_name << '\n';
 
         // v reverse the index and only output unique vertex positions
         std::map<std::string, int32> distinctPositions;
@@ -111,7 +111,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
             {
                 fileOut << " " << std::to_string(vertex->position[i]);
             }
-            fileOut << std::endl;
+            fileOut << '\n';
         }
 
         // vt reverse the index and only output unique texture coordinates
@@ -142,7 +142,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
             {
                 fileOut << " " << std::to_string(vertex->textureUV[i]);
             }
-            fileOut << std::endl;
+            fileOut << '\n';
         }
 
         // vn reverse the index and only output unique vertex normals
@@ -174,14 +174,14 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
             {
                 fileOut << " " << std::to_string(vertex->normal[i]);
             }
-            fileOut << std::endl;
+            fileOut << '\n';
         }
 
         // usemtl name_of_material_for_mesh
-        fileOut << "usemtl" << " " << models[0].m_meshes[meshIndex].m_material.m_name << std::endl;
+        fileOut << "usemtl" << " " << models[0].m_meshes[meshIndex].m_material.m_name << '\n';
 
         // s off
-        fileOut << "s" << " " << "off" << std::endl;
+        fileOut << "s" << " " << "off" << '\n';
 
         // f output with / in between to get face indices
         fileOut << "f" << " ";
@@ -219,7 +219,7 @@ bool Exporter::ExportModelOBJ(const std::string& filePath, std::vector<Model>& m
             // Output new line every 3 vertices
             if((indicesIndex+1) % 3 == 0)
             {
-                fileOut << std::endl;
+                fileOut << '\n';
                 if(indicesIndex+1 == models[0].m_meshes[meshIndex].m_indices.size())
                 {
                     break;
@@ -252,47 +252,47 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
         return false;
     }
 
-    fileOut << "# Bananas Import Export Tool MTL File" << std::endl;
+    fileOut << "# Bananas Import Export Tool MTL File" << '\n';
     // TODO(neil): Change static Material Count to dynamic
-    fileOut << "# Material Count: " << "1" << std::endl;
-    fileOut << std::endl;
+    fileOut << "# Material Count: " << "1" << '\n';
+    fileOut << '\n';
     
     for(uint32 meshIndex = 0; 
         meshIndex < models[0].m_meshes.size(); 
         meshIndex++)
     {
-        fileOut << "newmtl" << " " << models[0].m_meshes[meshIndex].m_material.m_name << std::endl;
+        fileOut << "newmtl" << " " << models[0].m_meshes[meshIndex].m_material.m_name << '\n';
 
-        fileOut << "Ns" << " " << std::to_string(models[0].m_meshes[meshIndex].m_material.m_shininess) << std::endl;
+        fileOut << "Ns" << " " << std::to_string(models[0].m_meshes[meshIndex].m_material.m_shininess) << '\n';
 
         fileOut << "Ka" << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_ambient[0]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_ambient[1]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_ambient[2]);
-        fileOut << std::endl;
+        fileOut << '\n';
 
         fileOut << "Kd" << " "; 
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_diffuse[0]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_diffuse[1]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_diffuse[2]);
-        fileOut << std::endl;
+        fileOut << '\n';
 
         fileOut << "Ks" << " "; 
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_specular[0]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_specular[1]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_specular[2]);
-        fileOut << std::endl;
+        fileOut << '\n';
 
         fileOut << "Ke" << " "; 
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_emissive[0]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_emissive[1]) << " ";
         fileOut << std::to_string(models[0].m_meshes[meshIndex].m_material.m_emissive[2]);
-        fileOut << std::endl;
+        fileOut << '\n';
 
         // TODO(neil): add to material on import to be able to export the values
-        fileOut << "Ni" << " " << "1.450000" << std::endl;
-        fileOut << "d" << " " << "1.000000" << std::endl;
-        fileOut << "illum" << " " << "2" << std::endl;
+        fileOut << "Ni" << " " << "1.450000" << '\n';
+        fileOut << "d" << " " << "1.000000" << '\n';
+        fileOut << "illum" << " " << "2" << '\n';
 
         for(uint32 textureIndex = 0; 
             textureIndex < models[0].m_meshes[meshIndex].m_material.m_textures.size(); 
@@ -306,13 +306,13 @@ bool Exporter::ExportModelMTL(const std::string& filePath, std::vector<Model>& m
             if(materialType == "texture_diffuse")
                 fileOut << "map_Kd" << " " 
                         << texturePath
-                        << std::endl;    
+                        << '\n';    
             else if(materialType == "texture_specular")
                 fileOut << "map_Ks" << " " 
                         << texturePath
-                        << std::endl;
+                        << '\n';
         }
-        fileOut << std::endl;
+        fileOut << '\n';
 
     }
     fileOut.close();

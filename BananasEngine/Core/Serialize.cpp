@@ -28,7 +28,7 @@ bool SerializeToXML(const std::string& filePath, GraphicsEngine::Scene* scene)
     int32 id = 0;
     int32 version = 1;
 
-    fileOut << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
+    fileOut << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << '\n';
     
     /////////////////////////////////////
     // Scene - Root
@@ -188,7 +188,7 @@ void SerializeBeginTagXML(std::fstream &output, int32 indents, const std::string
     output << "<";
     output << tag;
     output << ">";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeBeginTagXMLAttributes(std::fstream& output, int32 indents, const std::string& tag, XMLAttribute attribute)
@@ -211,7 +211,7 @@ void SerializeBeginTagXMLAttributes(std::fstream& output, int32 indents, const s
     }
 
     output << ">";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeEndTagXML(std::fstream& output, int32 indents, const std::string& tag)
@@ -222,7 +222,7 @@ void SerializeEndTagXML(std::fstream& output, int32 indents, const std::string& 
     output << "</";
     output << tag;
     output << ">";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemXML(std::fstream& output, int32 indents, const std::string& tag, const std::string& value)
@@ -234,7 +234,7 @@ void SerializeItemXML(std::fstream& output, int32 indents, const std::string& ta
     output << ">";
     output << value;
     output << "</" << tag;
-    output << ">" << std::endl;
+    output << ">" << '\n';
 }
 
 void SerializeItemXML(std::fstream& output, int32 indents, const std::string& tag, const uint32 value)
@@ -246,7 +246,7 @@ void SerializeItemXML(std::fstream& output, int32 indents, const std::string& ta
     output << ">";
     output << value;
     output << "</" << tag;
-    output << ">" << std::endl;
+    output << ">" << '\n';
 }
 
 void SerializeItemXML(std::fstream& output, int32 indents, const std::string& tag, const real32 value)
@@ -258,7 +258,7 @@ void SerializeItemXML(std::fstream& output, int32 indents, const std::string& ta
     output << ">";
     output << value;
     output << "</" << tag;
-    output << ">" << std::endl;
+    output << ">" << '\n';
 }
 
 bool DeSerializeFromXML(const std::string& filePath, GraphicsEngine::Scene* scene)
@@ -652,7 +652,7 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
     uint32 version = 1;
 
     // Opening
-    fileOut << CURLY_BRACKET_START << std::endl;
+    fileOut << CURLY_BRACKET_START << '\n';
 
     /////////////////////////////////////
     // Camera
@@ -822,7 +822,7 @@ bool SerializeToJSON(const std::string &filePath, GraphicsEngine::Scene *scene)
     SerializeEndJSON(fileOut, 1, SQUARE_BRACKET_END, false); // model
 
     // Closing
-    fileOut << CURLY_BRACKET_END << std::endl;
+    fileOut << CURLY_BRACKET_END << '\n';
 
     return true;
 }
@@ -833,7 +833,7 @@ void SerializeBeginJSON(std::fstream& output, int32 indents, char bracket)
         output << "\t";
 
     output << bracket;
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeBeginObjectJSON(std::fstream& output, int32 indents, const std::string& object, char bracket)
@@ -847,7 +847,7 @@ void SerializeBeginObjectJSON(std::fstream& output, int32 indents, const std::st
     output << ":";
     output << " ";
     output << bracket;
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeEndJSON(std::fstream& output, int32 indents, char bracket, bool comma)
@@ -858,7 +858,7 @@ void SerializeEndJSON(std::fstream& output, int32 indents, char bracket, bool co
     output << bracket;
     if (comma)
         output << ",";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const std::string& value, bool comma)
@@ -876,7 +876,7 @@ void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& k
     output <<  "\"";
     if (comma)
         output << ",";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const uint32 value, bool comma)
@@ -892,7 +892,7 @@ void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& k
     output << value;
     if (comma)
         output << ",";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& key, const real32 value, bool comma)
@@ -908,7 +908,7 @@ void SerializeItemJSON(std::fstream& output, int32 indents, const std::string& k
     output << value;
     if (comma)
         output << ",";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemNoKeyJSON(std::fstream& output, int32 indents, const uint32 value, bool comma)
@@ -919,7 +919,7 @@ void SerializeItemNoKeyJSON(std::fstream& output, int32 indents, const uint32 va
     output << value;
     if (comma)
         output << ",";
-    output << std::endl;
+    output << '\n';
 }
 
 bool DeSerializeFromJSON(const std::string& filePath, GraphicsEngine::Scene* scene)
@@ -1347,7 +1347,7 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
     uint32 id = 0;
     uint32 version = 1;
 
-    fileOut << "# Bananas Import/Export v1.0" << std::endl;
+    fileOut << "# Bananas Import/Export v1.0" << '\n';
 
     /////////////////////////////////////
     // Camera
@@ -1416,7 +1416,7 @@ bool SerializeToYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
                 fileOut << mesh->m_indices[indicesIndex] << ", ";
             }
             fileOut << mesh->m_indices[mesh->m_indices.size()-1];
-            fileOut << "]" << std::endl;
+            fileOut << "]" << '\n';
 
             SerializeBeginYAML(fileOut, 2, "Material");
             SerializeItemYAML(fileOut, 3, "Name", mesh->m_material.m_name, YAML_DASH_START);
@@ -1460,7 +1460,7 @@ void SerializeBeginYAML(std::fstream& output, int32 indents, const std::string& 
     output << "- ";
     output << name;
     output << ":";
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, const std::string& value, const char* start)
@@ -1472,7 +1472,7 @@ void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& k
     output << key;
     output << ": ";
     output << value;
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, uint32 value, const char* start)
@@ -1484,7 +1484,7 @@ void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& k
     output << key;
     output << ": ";
     output << value;
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& key, real32 value, const char* start)
@@ -1496,7 +1496,7 @@ void SerializeItemYAML(std::fstream& output, int32 indents, const std::string& k
     output << key;
     output << ": ";
     output << value;
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeVector3DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, real32 z, const char* start)
@@ -1519,7 +1519,7 @@ void SerializeVector3DYAML(std::fstream& output, int32 indents, const std::strin
     output << z;
     output << CURLY_BRACKET_END;
     
-    output << std::endl;
+    output << '\n';
 }
 
 void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::string& key, real32 x, real32 y, const char* start)
@@ -1539,7 +1539,7 @@ void SerializeVector2DYAML(std::fstream& output, int32 indents, const std::strin
     output << y;
     output << CURLY_BRACKET_END;
     
-    output << std::endl;
+    output << '\n';
 }
 
 bool DeSerializeFromYAML(const std::string& filePath, GraphicsEngine::Scene* scene)
